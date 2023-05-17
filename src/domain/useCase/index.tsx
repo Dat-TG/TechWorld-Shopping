@@ -1,0 +1,1 @@
+// using data from repository to create usecase for each entity
