@@ -45,11 +45,11 @@ export default function Footer() {
                 <div className={styles.footer_col}>
                     <h4>Kết nối với chúng tôi</h4>
                     <div className="d-flex flex-column justify-content-center">
-                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-facebook m-2" style={{fontSize: 25, color: 'white'}}></i> Facebook</Link>
-                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-twitter m-2" style={{fontSize: 25, color: 'white'}}></i> Twitter</Link>
-                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-instagram m-2" style={{fontSize: 25, color: 'white'}}></i> Instagram</Link>
-                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-tiktok m-2" style={{fontSize: 25, color: 'white'}}></i> Tiktok</Link>
-                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-youtube m-2" style={{fontSize: 25, color: 'white'}}></i> Youtube</Link>
+                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-facebook m-2" style={{fontSize: 25, color: 'white'}}></i> Facebook</Link><br></br>
+                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-twitter m-2" style={{fontSize: 25, color: 'white'}}></i> Twitter</Link><br></br>
+                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-instagram m-2" style={{fontSize: 25, color: 'white'}}></i> Instagram</Link><br></br>
+                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-tiktok m-2" style={{fontSize: 25, color: 'white'}}></i> Tiktok</Link><br></br>
+                        <Link href="#" className="text-white text-decoration-none"><i className="bi bi-youtube m-2" style={{fontSize: 25, color: 'white'}}></i> Youtube</Link><br></br>
                     </div>
                 </div>
             </div>
