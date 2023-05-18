@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import '../globals.css';
 import Head from 'next/head';
 import Script from 'next/script';
