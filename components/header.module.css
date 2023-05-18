@@ -1,0 +1,7 @@
+.noOutline, .noOutline:focus, .noOutline:hover, .noOutline:active {
+    border: none !important;
+    outline: none !important;
+}
+.header {
+    background-color: rgb(242, 203, 10) !important;
+}

@@ -20,14 +20,8 @@ body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
  }  */
-.noOutline,
-.noOutline:focus,
-.noOutline:hover,
-.noOutline:active {
-  border: none !important;
-  outline: none !important;
-}
-
-/* https://github.com/nanosoftonline/clean-mvvm-react/blob/master/src/Presentation/Views/Product/Detail/ProductDetail.js
-https://paulallies.medium.com/clean-mvvm-with-react-and-react-hooks-ebc37b22542f
- */
+ 
+ /* https://github.com/nanosoftonline/clean-mvvm-react/blob/master/src/Presentation/Views/Product/Detail/ProductDetail.js
+ https://paulallies.medium.com/clean-mvvm-with-react-and-react-hooks-ebc37b22542f
+  */
+ 
