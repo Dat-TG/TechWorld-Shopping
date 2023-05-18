@@ -27,7 +27,7 @@
         "camelcase": "error",
         "spaced-comment": "error",
         "quotes": [
-            "warm",
+            "warn",
             "single"
         ],
         "no-duplicate-imports": "error",

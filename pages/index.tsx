@@ -101,5 +101,3 @@ export default function Home() {
       </nav>
    );
 }
-
-
