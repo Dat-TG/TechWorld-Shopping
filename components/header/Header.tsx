@@ -1,9 +1,7 @@
 'use client';
-import styles from './header.module.css';
+import styles from './Header.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function Header() {
     return (

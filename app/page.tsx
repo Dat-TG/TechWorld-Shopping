@@ -1,11 +1,13 @@
-import Head from 'next/head';
-import { siteTitle } from './layout';
+import {siteTitle } from './layout';
+import { Metadata } from 'next';
+ 
+export const metadata: Metadata = {
+  title: siteTitle,
+};
 
 // `app/page.tsx` is the UI for the `/` URL
 export default function Page() {
     return (
-        <Head>
-            <title>{siteTitle}</title>
-        </Head>
+        <></>
     );
 }
