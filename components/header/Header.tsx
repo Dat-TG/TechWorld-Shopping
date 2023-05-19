@@ -5,7 +5,7 @@ export default function Header() {
     return (
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>
-                <a href='https://flowbite.com/' className='flex items-center me-6'>
+                <a href='/' className='flex items-center me-6'>
                     <img src='/images/logo.png' className='h-8 mr-3' alt='TechWorld Logo' />
                     <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>
                         TechWorld
