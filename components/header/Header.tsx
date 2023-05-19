@@ -34,7 +34,7 @@ export default function Header() {
                     </svg>
                 </button>
 
-                <div className='pt-2 relative mx-auto text-gray-600'>
+                <div className='pt-2 relative mx-auto text-gray-600 ms-2'>
                     <input
                         className='bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none'
                         type='search'
@@ -43,13 +43,13 @@ export default function Header() {
                         autoComplete='off'
                         style={{ width: '40vw' }}
                     />
-                    <button type='submit' className='absolute right-0 top-0 mt-5 mr-4'>
+                    <button type='submit' className='absolute right-0 top-0 mt-4 mr-4'>
                         <i className='bi bi-search'></i>
                     </button>
                 </div>
 
                 <div className='hidden w-full md:block md:w-auto ms-4' id='navbar-default'>
-                    <ul className='flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
+                    <ul className='flex flex-col items-center p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
                         <li>
                             <a
                                 href='#'
