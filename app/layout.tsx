@@ -7,21 +7,17 @@ import '../styles/globals.css';
 
 export const siteTitle = 'TechWord - Điện thoại, Laptop, PC, Đồng hồ, Phụ kiện chính hãng';
 
-
-
-export default function RootLayout({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <>
+        <html lang='vi'>
             <Head>
                 <link rel='icon' href='/images/logo.png' />
             </Head>
-            <Header/>
-            <main>{children}</main>
-            <Footer/>
-        </>
+            <body suppressHydrationWarning={true}>
+                <Header />
+                <main>{children}</main>
+                <Footer />
+            </body>
+        </html>
     );
 }

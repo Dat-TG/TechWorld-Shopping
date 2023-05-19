@@ -43,7 +43,7 @@ export default function Header() {
                                 placeholder='Bạn tìm gì...'
                                 aria-label='Search'
                                 aria-describedby='button-search'
-                                size={100}
+                                size={75}
                             />
                             <button
                                 type='button'
