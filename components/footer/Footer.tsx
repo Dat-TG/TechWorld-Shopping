@@ -44,7 +44,7 @@ export default function Footer() {
                 </div>
                 <div className={styles.footer_col}>
                     <h4>Kết nối với chúng tôi</h4>
-                    <div className="d-flex flex-column justify-content-center">
+                    <div className="flex flex-col justify-center">
                         <Link href="#" className="text-white text-decoration-none"><i className="bi bi-facebook m-2" style={{fontSize: 25, color: 'white'}}></i> Facebook</Link><br></br>
                         <Link href="#" className="text-white text-decoration-none"><i className="bi bi-twitter m-2" style={{fontSize: 25, color: 'white'}}></i> Twitter</Link><br></br>
                         <Link href="#" className="text-white text-decoration-none"><i className="bi bi-instagram m-2" style={{fontSize: 25, color: 'white'}}></i> Instagram</Link><br></br>
@@ -55,6 +55,7 @@ export default function Footer() {
             </div>
         </div>
         <hr className="text-white"></hr>
+        <br></br>
         <div className="text-center text-white">© 2023. TechWord Group</div>
         <div className="text-center text-white">Địa chỉ: 227 Nguyễn Văn Cừ, Phường 4, Quận 5, Thành phố Hồ Chí Minh</div>
    </footer>

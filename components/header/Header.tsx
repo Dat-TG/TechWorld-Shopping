@@ -1,147 +1,175 @@
 'use client';
-import styles from './Header.module.css';
-import Image from 'next/image';
-import Link from 'next/link';
+// import styles from './Header.module.css';
 
 export default function Header() {
     return (
-        <nav
-            className={[
-                'navbar navbar-expand-lg navbar-light bg-light flex-column',
-                styles.header,
-            ].join(' ')}
-        >
-            <div className='container-fluid d-flex justify-content-center'>
-                <Link
-                    className='navbar-brand d-inline-flex justify-content-center align-items-center'
-                    href='/'
-                >
-                    <Image
-                        className='me-2'
-                        src='/images/logo.png'
-                        width={50}
-                        height={50}
-                        alt='Tech World Logo'
-                    />
-                    <span>
-                        <b>TechWorld</b>
+        <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
+            <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>
+                <a href='/' className='flex items-center me-6'>
+                    <img src='/images/logo.png' className='h-8 mr-3' alt='TechWorld Logo' />
+                    <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>
+                        TechWorld
                     </span>
-                </Link>
-                <div className='collapse navbar-collapse d-flex justify-content-center flex-grow-0'>
-                    <ul className='navbar-nav mb-2 mb-lg-0'>
-                        <li className='nav-item'>
-                            <Link className='nav-link active' aria-current='page' href='/'>
-                                Trang chủ
-                            </Link>
+                </a>
+                <button
+                    data-collapse-toggle='navbar-default'
+                    type='button'
+                    className='inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+                    aria-controls='navbar-default'
+                    aria-expanded='false'
+                >
+                    <span className='sr-only'>Open main menu</span>
+                    <svg
+                        className='w-6 h-6'
+                        aria-hidden='true'
+                        fill='currentColor'
+                        viewBox='0 0 20 20'
+                        xmlns='http://www.w3.org/2000/svg'
+                    >
+                        <path
+                            fillRule='evenodd'
+                            d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
+                            clipRule='evenodd'
+                        ></path>
+                    </svg>
+                </button>
+
+                <div className='pt-2 relative mx-auto text-gray-600'>
+                    <input
+                        className='bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none'
+                        type='search'
+                        name='search'
+                        placeholder='Bạn tìm gì...'
+                        autoComplete='off'
+                        style={{ width: '40vw' }}
+                    />
+                    <button type='submit' className='absolute right-0 top-0 mt-5 mr-4'>
+                        <i className='bi bi-search'></i>
+                    </button>
+                </div>
+
+                <div className='hidden w-full md:block md:w-auto ms-4' id='navbar-default'>
+                    <ul className='flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
+                        <li>
+                            <a
+                                href='#'
+                                className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                                aria-current='page'
+                            >
+                                <i className='bi bi-bell' style={{ fontSize: 25 }}></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href='#'
+                                className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                            >
+                                <i className='bi bi-cart3' style={{ fontSize: 25 }}></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href='#'
+                                className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                            >
+                                Đăng ký
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href='#'
+                                className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                            >
+                                Đăng nhập
+                            </a>
                         </li>
                     </ul>
-                    <form className='d-flex mt-3 ms-3'>
-                        <div className='input-group mb-3'>
-                            <input
-                                type='text'
-                                className={['form-control shadow-none', styles.noOutline].join(' ')}
-                                placeholder='Bạn tìm gì...'
-                                aria-label='Search'
-                                aria-describedby='button-search'
-                                size={75}
-                            />
-                            <button
-                                type='button'
-                                className='btn bg-white border-0'
-                                id='button-search'
-                            >
-                                <i className='bi bi-search'></i>
-                            </button>
-                        </div>
-                    </form>
-                    <button type='button' className='btn border-0 btn-outline-dark bg-transparent'>
-                        <b>
-                            <i className='bi bi-bell' style={{ fontSize: 25 }}></i>
-                        </b>
-                    </button>
-                    <button type='button' className='btn border-0 btn-outline-dark bg-transparent'>
-                        <b>
-                            <i className='bi bi-cart3' style={{ fontSize: 25 }}></i>
-                        </b>
-                    </button>
-                    <button type='button' className='btn border-0 btn-outline-dark bg-transparent'>
-                        Đăng ký
-                    </button>
-                    <button type='button' className='btn border-0 btn-outline-dark bg-transparent'>
-                        Đăng nhập
-                    </button>
                 </div>
             </div>
-            <div className='container-fluid d-flex justify-content-center'>
-                <div className='collapse navbar-collapse d-flex justify-content-center flex-grow-0'>
-                    <ul className='navbar-nav mb-2 mb-lg-0'>
-                        <li className='nav-item'>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-phone' style={{ fontSize: 20 }}></i> Điện thoại
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-laptop' style={{ fontSize: 20 }}></i> Laptop
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-tablet' style={{ fontSize: 20 }}></i> Tablet
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-headphones' style={{ fontSize: 20 }}></i> Phụ
-                                kiện
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-smartwatch' style={{ fontSize: 20 }}></i>{' '}
-                                Smartwatch
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-watch' style={{ fontSize: 20 }}></i> Đồng hồ
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-phone-fill' style={{ fontSize: 20 }}></i> Máy cũ
-                                giá rẻ
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-pc-display' style={{ fontSize: 20 }}></i> PC
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-printer' style={{ fontSize: 20 }}></i> Máy in
-                            </button>
-                            <button
-                                type='button'
-                                className='btn border-0 btn-outline-dark bg-transparent'
-                            >
-                                <i className='bi bi-fan' style={{ fontSize: 20 }}></i> Điện gia dụng
-                            </button>
-                        </li>
-                    </ul>
-                </div>
+            <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-0'>
+                <ul className='flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-phone' style={{ fontSize: 20 }}></i> Điện thoại
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-laptop' style={{ fontSize: 20 }}></i> Laptop
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-tablet' style={{ fontSize: 20 }}></i> Tablet
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-headphones' style={{ fontSize: 20 }}></i> Phụ kiện
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-smartwatch' style={{ fontSize: 20 }}></i> Smartwatch
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-watch' style={{ fontSize: 20 }}></i> Đồng hồ
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-phone-fill' style={{ fontSize: 20 }}></i> Máy cũ giá
+                            rẻ
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-pc-display' style={{ fontSize: 20 }}></i> PC
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-printer' style={{ fontSize: 20 }}></i> Máy in
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href='#'
+                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                        >
+                            <i className='bi bi-fan' style={{ fontSize: 20 }}></i> Điện gia dụng
+                        </a>
+                    </li>
+                </ul>
             </div>
         </nav>
     );
