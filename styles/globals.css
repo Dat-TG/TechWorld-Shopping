@@ -1,4 +1,4 @@
-/* @import "tailwindcss/base";
+@import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
@@ -19,7 +19,7 @@
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
- }  */
+ }  
  
  /* https://github.com/nanosoftonline/clean-mvvm-react/blob/master/src/Presentation/Views/Product/Detail/ProductDetail.js
  https://paulallies.medium.com/clean-mvvm-with-react-and-react-hooks-ebc37b22542f
