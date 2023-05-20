@@ -1,16 +1,19 @@
 'use client';
+
+import Link from 'next/link';
+
 // import styles from './Header.module.css';
 
 export default function Header() {
     return (
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>
-                <a href='/' className='flex items-center me-6'>
+                <Link href='/' className='flex items-center me-6'>
                     <img src='/images/logo.png' className='h-8 mr-3' alt='TechWorld Logo' />
                     <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>
                         TechWorld
                     </span>
-                </a>
+                </Link>
                 <button
                     data-collapse-toggle='navbar-default'
                     type='button'
@@ -51,37 +54,37 @@ export default function Header() {
                 <div className='hidden w-full md:block md:w-auto ms-4' id='navbar-default'>
                     <ul className='flex flex-col items-center p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
                         <li>
-                            <a
+                            <Link
                                 href='#'
                                 className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                                 aria-current='page'
                             >
                                 <i className='bi bi-bell' style={{ fontSize: 25 }}></i>
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
+                            <Link
                                 href='#'
                                 className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                             >
                                 <i className='bi bi-cart3' style={{ fontSize: 25 }}></i>
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
+                            <Link
                                 href='#'
                                 className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                             >
                                 Đăng ký
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
+                            <Link
                                 href='#'
                                 className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                             >
                                 Đăng nhập
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -89,85 +92,85 @@ export default function Header() {
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto p-0'>
                 <ul className='flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-phone' style={{ fontSize: 20 }}></i> Điện thoại
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-laptop' style={{ fontSize: 20 }}></i> Laptop
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-tablet' style={{ fontSize: 20 }}></i> Tablet
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-headphones' style={{ fontSize: 20 }}></i> Phụ kiện
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-smartwatch' style={{ fontSize: 20 }}></i> Smartwatch
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-watch' style={{ fontSize: 20 }}></i> Đồng hồ
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-phone-fill' style={{ fontSize: 20 }}></i> Máy cũ giá
                             rẻ
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-pc-display' style={{ fontSize: 20 }}></i> PC
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-printer' style={{ fontSize: 20 }}></i> Máy in
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href='#'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-fan' style={{ fontSize: 20 }}></i> Điện gia dụng
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>
