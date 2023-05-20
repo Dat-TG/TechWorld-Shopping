@@ -1,12 +1,12 @@
 import { siteTitle } from '../../layout';
 import { Metadata } from 'next';
-import LoginForm from '../../../components/form/LoginForm';
+import RegisterForm from '../../../components/form/RegisterForm';
 
 export const metadata: Metadata = {
-    title: 'Đăng nhập - ' + siteTitle,
+    title: 'Đăng ký - ' + siteTitle,
     icons: '/images/logo.png',
 };
 
 export default function Page() {
-    return <LoginForm />;
+    return <RegisterForm />;
 }

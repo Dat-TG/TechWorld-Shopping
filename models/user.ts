@@ -49,15 +49,14 @@ export async function listUsers(): Promise<User[]> {
     return users;
 }
 
-export async function addUser(name: string, phone: string, password: string): Promise<User> {
+export async function addUser(newUser: User): Promise<User> {
     const mongoClient = await clientPromise;
-    const user = await mongoClient.db().collection('user').insertOne({
-        name,
-        phone,
-        password,
-        role: Role.USER,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    });
+    const user = await mongoClient.db().collection('user').insertOne(newUser);
     return user as unknown as User;
+}
+
+export async function authentication(phone: string, password: string): Promise<User | null> {
+    const mongoClient = await clientPromise;
+    const user = (await mongoClient.db().collection('user').findOne({ phone, password })) as User;
+    return user;
 }

@@ -1,19 +1,24 @@
 'use client';
-import { signIn } from 'next-auth/react';
 import { FormEventHandler, useState } from 'react';
 
-export default function Login() {
+export default function RegisterForm() {
     const [userInfo, setUserInfo] = useState({ phone: '', password: '' });
     const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
         // validate your userinfo
         e.preventDefault();
 
-        const res = await signIn('credentials', {
-            phone: userInfo.phone,
-            password: userInfo.password,
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                phone: userInfo.phone,
+                password: userInfo.password,
+            }),
         });
 
-        console.log(res);
+        console.log(await res.json());
     };
     return (
         <div className='sign-in-form'>
@@ -31,7 +36,7 @@ export default function Login() {
                     type='password'
                     placeholder='********'
                 />
-                <input type='submit' value='Login' />
+                <input type='submit' value='Register' />
             </form>
         </div>
     );

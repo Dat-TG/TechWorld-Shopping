@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { authentication } from '../../../../models/user';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -16,22 +17,23 @@ export const authOptions: NextAuthOptions = {
                 };
                 // perform you login logic
                 // find out user from db
-                if (phone !== '1234' || password !== '1234') {
-                    throw new Error('invalid credentials');
+                const user = await authentication(phone, password);
+                if (!user) {
+                    throw new Error('invalid_credentials');
                 }
 
                 // if everything is fine
                 return {
-                    id: '1234',
-                    name: 'John Doe',
-                    email: 'john@gmail.com',
-                    role: 'admin',
+                    id: user._id?.toString() || '1',
+                    name: user.name,
+                    phone: user.phone,
+                    role: user.role,
                 };
             },
         }),
     ],
     pages: {
-        signIn: '/',
+        signIn: '/auth/login',
     },
     debug: process.env.NODE_ENV === 'development',
     session: {
