@@ -1,3 +1,5 @@
+'use client';
+
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Head from 'next/head';
 import Header from '../components/header/Header';
@@ -16,7 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body suppressHydrationWarning={true}>
                 <Provider>
                     <Header />
-                    <main>{children}</main>
+                    <main className='max-w-screen-xl mx-auto align-middle items-center'>
+                        {children}
+                    </main>
                     <Footer />
                 </Provider>
             </body>
