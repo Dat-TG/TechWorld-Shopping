@@ -1,7 +1,10 @@
 'use client';
+
+import Link from "next/link";
+
 // import styles from './Header.module.css';
 
-export default function Header() {
+export default function Header({isRegistering, isLogIning, isLogIned}:{isRegistering:boolean, isLogIning: boolean, isLogIned: boolean}) {
     return (
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>
@@ -67,15 +70,15 @@ export default function Header() {
                                 <i className='bi bi-cart3' style={{ fontSize: 25 }}></i>
                             </a>
                         </li>
-                        <li>
-                            <a
-                                href='#'
+                        <li className={(isRegistering||isLogIned)?'hidden':'visible'}>
+                            <Link
+                                href='/dang-ky'
                                 className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                             >
                                 Đăng ký
-                            </a>
+                            </Link>
                         </li>
-                        <li>
+                        <li className={(isLogIning||isLogIned)?'hidden':'visible'}>
                             <a
                                 href='#'
                                 className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
