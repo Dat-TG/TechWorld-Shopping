@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import React from 'react';
 import styles from './sideBarCategory.module.css';
-import Input from '../Input/Input';
-import Button from '../button/Button';
+import Button from '../widgets/button/Button';
+import Input from '../widgets/input/Input';
 
 function SideBarCategory() {
     return (
@@ -39,20 +39,24 @@ function SideBarCategory() {
                 </p>
             </div>
 
+            <hr className='w-full bg-red-500 mt-4' />
+            
             {/* Filter */}
-            <div className='flex flex-row items-center mb-2 justify-center text-md font-bold '>
+            <div className='flex flex-row items-center mb-1 justify-center text-md font-bold '>
                 <i className='bi bi-funnel mr-2 text-lg py-4'></i>
                 <h2>Bộ lọc tìm kiếm</h2>
             </div>
 
             {/* Search price */}
-            <div className='font-light text-base mb-4 mt-2'>Khoảng giá</div>
+            <div className='font-light text-base mb-4'>Khoảng giá</div>
             <div className='flex flex-row items-center justify-between w-full'>
                 <Input type='text' className='border-black flex-2 w-20' placeholder='₫ TỪ' />
                 <hr className='flex-1 h-0.5 bg-slate-300 mx-2' />
                 <Input type='text' className='border-black flex-2 w-20' placeholder='₫ ĐẾN' />
             </div>
-            <Button className='bg-yellow-600 w-full mt-4'>Áp dụng</Button>
+            <Button className='bg-yellow-600 hover:bg-yellow-700 text-white w-full mt-4'>
+                Áp dụng
+            </Button>
 
             <hr className='w-full bg-red-500 mt-4' />
             {/* Status */}

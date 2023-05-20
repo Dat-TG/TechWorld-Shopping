@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState } from 'react';
 import Link from 'next/link';
 
@@ -20,7 +19,7 @@ export default function DropDown(dropdown: DropDown) {
             <div>
                 <button
                     type='button'
-                    className='inline-flex w-40 justify-between items-center px-4 py-2 text-md bg-white border border-solid border-transparent rounded shadow-md'
+                    className='inline-flex w-40 justify-between items-center px-4 py-2 text-sm font-medium bg-white border border-solid border-transparent rounded shadow-md'
                     id='menu-button'
                     aria-expanded='true'
                     aria-haspopup='true'

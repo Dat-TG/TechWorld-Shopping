@@ -2,9 +2,9 @@
 
 import React from 'react';
 import ListProduct from '../../../components/listProduct/ListProduct';
-import DropDown from '../../../components/dropdown/DropDown';
-import Button from '../../../components/button/Button';
+import DropDown from '../../../components/widgets/dropdown/DropDown';
 import SideBarCategory from '../../../components/sideBarCategory/SideBarCategory';
+import Button from '../../../components/widgets/button/Button';
 
 function page() {
     return (

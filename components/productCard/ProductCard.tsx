@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import Button from '../button/Button';
+import Button from '../widgets/button/Button';
 
 export default function ProductCard() {
     return (
