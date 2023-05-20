@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import '../styles/globals.css';
+import Provider from '../components/provider/Provider';
 
 export const siteTitle = 'TechWord - Điện thoại, Laptop, PC, Đồng hồ, Phụ kiện chính hãng';
 
@@ -13,9 +14,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <link rel='icon' href='/images/logo.png' />
             </Head>
             <body suppressHydrationWarning={true}>
-                <Header />
-                <main>{children}</main>
-                <Footer />
+                <Provider>
+                    <Header />
+                    <main>{children}</main>
+                    <Footer />
+                </Provider>
             </body>
         </html>
     );
