@@ -6,15 +6,11 @@ import { useState } from 'react';
 
 
 export const metadata: Metadata = {
-    title: 'Đăng ký tài khoản TechWorld',
+    title: 'Đăng nhập tài khoản TechWorld',
     icons: '/images/logo.png',
 };
 
 export default function Page() {
-    const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
-    function toggleRetypePasswordVisibility() {
-        setIsRetypePasswordVisible((prevState) => !prevState);
-    }
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
         setIsPasswordVisible((prevState) => !prevState);
@@ -25,7 +21,7 @@ export default function Page() {
         watch,
         formState: { errors },
     } = useForm({
-        mode: 'all',
+        mode: 'onSubmit',
     });
     const onSubmit = (data: unknown) => console.log(data);
     return (
@@ -46,13 +42,13 @@ export default function Page() {
                 <div className='flex h-fit flex-col justify-center px-6 py-6 lg:px-8 bg-white border border-gray-200 shadow rounded-md'>
                     <div className='sm:mx-auto sm:w-80'>
                         <h2 className='text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
-                            Đăng ký tài khoản
+                            Đăng nhập
                         </h2>
                     </div>
 
                     <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm w-full'>
                         <form
-                            id='FormRegister'
+                            id='FormLogin'
                             className='space-y-6'
                             action='#'
                             method='POST'
@@ -102,9 +98,8 @@ export default function Page() {
                                 <div className='mt-2 flex items-center relative'>
                                     <input
                                         id='password'
-                                        {...register('password', {
-                                            required: true,
-                                            minLength: 6,
+                                        {...register('password',{
+                                            required: true
                                         })}
                                         type={isPasswordVisible ? 'text' : 'password'}
                                         aria-invalid={errors.password ? 'true' : 'false'}
@@ -133,69 +128,6 @@ export default function Page() {
                                         Vui lòng nhập mật khẩu
                                     </p>
                                 )}
-                                {errors.password?.type !== 'required' &&
-                                    errors.password?.type === 'minLength' && (
-                                        <p role='alert' className='text-sm text-red-500'>
-                                            Mật khẩu ít nhất 6 ký tự
-                                        </p>
-                                    )}
-                            </div>
-
-                            <div>
-                                <div className='flex items-center justify-between'>
-                                    <label
-                                        htmlFor='passwordRetype'
-                                        className='block text-sm font-medium leading-6 text-gray-900'
-                                    >
-                                        Xác nhận mật khẩu
-                                    </label>
-                                </div>
-                                <div className='mt-2 relative'>
-                                    <input
-                                    {...register('passwordRetype', {
-                                        required: true,
-                                        validate: (val:string)=>{
-                                            if (watch('password') != val) {
-                                                return 'Mật khẩu không khớp';
-                                              }
-                                        }
-                                    })}
-                                        id='passwordRetype'
-                                        type={isRetypePasswordVisible ? 'text' : 'password'}
-                                        required
-                                        aria-invalid={errors.passwordRetype ? 'true' : 'false'}
-                                        className={
-                                            'border border-gray-300 ' +
-                                            (errors.passwordRetype
-                                                ? 'border-red-500'
-                                                : 'border-green-500') +
-                                            ' focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
-                                        }
-                                    />
-                                    <button
-                                        className='absolute inset-y-0 right-0 flex items-center px-4 text-gray-600'
-                                        onClick={toggleRetypePasswordVisibility}
-                                    >
-                                        <i
-                                            className={
-                                                isRetypePasswordVisible
-                                                    ? 'bi bi-eye'
-                                                    : 'bi bi-eye-slash'
-                                            }
-                                        ></i>
-                                    </button>
-                                </div>
-                                {errors.passwordRetype?.type === 'required' && (
-                                    <p role='alert' className='text-sm text-red-500'>
-                                        Vui lòng nhập lại mật khẩu
-                                    </p>
-                                )}
-                                {errors.passwordRetype?.type !== 'required' &&
-                                    errors.passwordRetype?.type === 'validate' && (
-                                        <p role='alert' className='text-sm text-red-500'>
-                                            Mật khẩu không khớp
-                                        </p>
-                                    )}
                             </div>
 
                             <div>
@@ -203,18 +135,18 @@ export default function Page() {
                                     type='submit'
                                     className='flex w-full justify-center rounded-md bg-amber-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300'
                                 >
-                                    Đăng ký
+                                    Đăng nhập
                                 </button>
                             </div>
                         </form>
 
                         <p className='mt-10 text-center text-sm text-gray-500'>
-                            Bạn đã có tài khoản?
+                            Bạn chưa có tài khoản?
                             <Link
-                                href='/dang-nhap'
+                                href='/dang-ky'
                                 className='font-semibold leading-6 text-amber-400 hover:text-amber-300 ms-1'
                             >
-                                Đăng nhập
+                                Đăng ký
                             </Link>
                         </p>
                     </div>
