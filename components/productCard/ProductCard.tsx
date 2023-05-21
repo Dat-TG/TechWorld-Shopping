@@ -31,16 +31,16 @@ export default function ProductCard() {
                                 <span className='font-normal line-through text-sm'>170000₫</span>{' '}
                                 -20%
                             </div>
-                            <div className='text-red-500 font-bold text-md'>135.000₫</div>
+                            <div className='text-amber-500 font-bold text-md'>135.000₫</div>
                             <div className='flex flex-row  w-28 items-center justify-between text-sm mt-2'>
-                                <i className='bi bi-star-fill text-yellow-500'></i>
-                                <i className='bi bi-star-fill text-yellow-500'></i>
-                                <i className='bi bi-star-fill text-yellow-500'></i>
-                                <i className='bi bi-star-fill text-yellow-500'></i>
-                                <i className='bi bi-star-fill text-yellow-500'></i>
+                                <i className='bi bi-star-fill text-amber-500'></i>
+                                <i className='bi bi-star-fill text-amber-500'></i>
+                                <i className='bi bi-star-fill text-amber-500'></i>
+                                <i className='bi bi-star-fill text-amber-500'></i>
+                                <i className='bi bi-star-fill text-amber-500'></i>
                                 <div className='text-md font-normal'>512</div>
                             </div>
-                            <Button className='w-full mt-4 text-white bg-yellow-600 hover:bg-yellow-700 font-medium rounded-lg py-2'>
+                            <Button className='w-full mt-4 text-white bg-amber-600 hover:bg-amber-700 font-medium rounded-lg py-2'>
                                 Thêm vào giỏ hàng
                             </Button>
                         </div>

@@ -16,33 +16,33 @@ function SideBarCategory() {
                     Tất cả danh mục
                 </Link>
             </div>
-            <hr className='w-full bg-red-500' />
+            <hr className='w-full bg-amber-500' />
             <div className='flex flex-row items-center my-2 text-sm ml-4 relative'>
                 <div className={styles.triangle_right} />
-                <p className='ml-4 font-medium text-sm text-red-500 hover:text-red-700 hover:cursor-pointer'>
+                <p className='ml-4 font-medium text-sm text-amber-500 hover:text-amber-700 hover:cursor-pointer'>
                     Đồng hồ
                 </p>
             </div>
             <div className='flex flex-row items-center my-2 text-sm ml-4 relative'>
-                <p className='ml-4 font-medium text-sm hover:text-red-700 hover:cursor-pointer'>
+                <p className='ml-4 font-medium text-sm hover:text-amber-700 hover:cursor-pointer'>
                     Đồng hồ
                 </p>
             </div>
             <div className='flex flex-row items-center my-2 text-sm ml-4 relative'>
-                <p className='ml-4 font-medium text-sm hover:text-red-700 hover:cursor-pointer'>
+                <p className='ml-4 font-medium text-sm hover:text-amber-700 hover:cursor-pointer'>
                     Đồng hồ
                 </p>
             </div>
             <div className='flex flex-row items-center my-2 text-sm ml-4 relative'>
-                <p className='ml-4 font-medium text-sm hover:text-red-700 hover:cursor-pointer'>
+                <p className='ml-4 font-medium text-sm hover:text-amber-700 hover:cursor-pointer'>
                     Đồng hồ
                 </p>
             </div>
 
-            <hr className='w-full bg-red-500 mt-4' />
-            
+            <hr className='w-full bg-amber-500 mt-4' />
+
             {/* Filter */}
-            <div className='flex flex-row items-center mb-1 justify-center text-md font-bold '>
+            <div className='flex flex-row items-center justify-center text-md font-bold '>
                 <i className='bi bi-funnel mr-2 text-lg py-4'></i>
                 <h2>Bộ lọc tìm kiếm</h2>
             </div>
@@ -54,11 +54,11 @@ function SideBarCategory() {
                 <hr className='flex-1 h-0.5 bg-slate-300 mx-2' />
                 <Input type='text' className='border-black flex-2 w-20' placeholder='₫ ĐẾN' />
             </div>
-            <Button className='bg-yellow-600 hover:bg-yellow-700 text-white w-full mt-4'>
+            <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
                 Áp dụng
             </Button>
 
-            <hr className='w-full bg-red-500 mt-4' />
+            <hr className='w-full bg-amber-500 mt-4' />
             {/* Status */}
             <div className='font-light text-base mb-4 mt-2'>Tình trạng</div>
             <div className='flex flex-col justify-start w-full'>
