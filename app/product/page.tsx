@@ -1,9 +1,13 @@
+<<<<<<< HEAD
+import { listProducts } from '../../models/product';
+=======
 import { listUsers } from '../../models/user';
 import { siteTitle } from '../layout';
+>>>>>>> main
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: siteTitle,
+    title: 'Product',
     icons: '/images/logo.png',
 };
 
