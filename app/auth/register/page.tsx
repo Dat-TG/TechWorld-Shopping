@@ -1,12 +1,12 @@
-import { siteTitle } from '../../layout';
-import { Metadata } from 'next';
-import RegisterForm from '../../../components/form/RegisterForm';
+import Register from '../../../components/form/Register';
 
-export const metadata: Metadata = {
-    title: 'Đăng ký - ' + siteTitle,
-    icons: '/images/logo.png',
-};
+export const metadata = {
+    title: 'Đăng ký tài khoản | TechWorld',
+    icons: '/images/logo.png'
+  };
 
 export default function Page() {
-    return <RegisterForm />;
+    return (
+        <Register/>
+    );
 }

@@ -1,12 +1,12 @@
-import { siteTitle } from '../../layout';
-import { Metadata } from 'next';
-import LoginForm from '../../../components/form/LoginForm';
+import Login from '../../../components/form/Login';
 
-export const metadata: Metadata = {
-    title: 'Đăng nhập - ' + siteTitle,
-    icons: '/images/logo.png',
-};
+export const metadata = {
+    title: 'Đăng nhập tài khoản | TechWorld',
+    icons: '/images/logo.png'
+  };
 
 export default function Page() {
-    return <LoginForm />;
+    return (
+        <Login/>
+    );
 }
