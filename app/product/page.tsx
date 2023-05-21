@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { listProducts } from '../../models/product';
+=======
+import { listUsers } from '../../models/user';
+import { siteTitle } from '../layout';
+>>>>>>> main
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,6 +12,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-    const data = await listProducts();
+    const data = await listUsers();
     return <div>{JSON.stringify(data)}</div>;
 }

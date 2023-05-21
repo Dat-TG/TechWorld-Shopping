@@ -4,6 +4,7 @@ import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import '../styles/globals.css';
 import { usePathname } from 'next/navigation';
+import Provider from '../components/provider/Provider';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -13,13 +14,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang='vi'>
             <body suppressHydrationWarning={true}>
-                <Header
-                    isLogIned={isLogIned}
-                    isLogIning={isLogIning}
-                    isRegistering={isRegistering}
-                />
-                <main>{children}</main>
-                <Footer />
+                <Provider>
+                    <Header
+                        isLogIned={isLogIned}
+                        isLogIning={isLogIning}
+                        isRegistering={isRegistering}
+                    />
+                    <main className='max-w-screen-xl mx-auto align-middle items-center'>
+                        {children}
+                    </main>
+                    <Footer />
+                </Provider>
             </body>
         </html>
     );
