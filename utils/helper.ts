@@ -30,3 +30,11 @@ export function toSlug(str: string) {
     // return
     return str;
 }
+
+export function convertBreadcrumb(s: string) {
+    return s
+        .replace(/-/g, ' ')
+        .replace(/oe/g, 'ö')
+        .replace(/ae/g, 'ä')
+        .replace(/ue/g, 'ü');
+}

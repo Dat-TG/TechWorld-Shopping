@@ -8,7 +8,7 @@ interface DropDown {
 }
 
 export default function DropDown(dropdown: DropDown) {
-    const [hidden, setHidden] = useState(false);
+    const [hidden, setHidden] = useState(true);
 
     return (
         <div
@@ -54,7 +54,7 @@ export default function DropDown(dropdown: DropDown) {
                         <Link
                             key={option}
                             href='#'
-                            className='text-gray-700 block px-4 py-2 text-sm hover:text-yellow-700 hover:font-medium'
+                            className='text-gray-700 block px-4 py-2 text-sm hover:text-amber-700 hover:font-medium'
                             role='menuitem'
                             tabIndex={-1}
                             id='menu-item-0'
