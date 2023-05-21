@@ -11,7 +11,7 @@ interface ButtonProps {
 function Button({ className, children, onClick }: ButtonProps) {
     return (
         <button
-            className={`px-2 py-2 text-sm  border border-solid border-transparent rounded shadow-md font-medium ${className}`}
+            className={`px-2 py-2 text-sm  border border-solid rounded shadow-md font-medium ${className}`}
             onClick={onClick}
         >
             {children}

@@ -1,4 +1,4 @@
-import ListProduct from '../components/listProduct/ListProduct';
+import ListProduct from '../components/product/ListProduct';
 
 export const metadata = {
     title: 'TechWord - Điện thoại, Laptop, PC, Đồng hồ, Phụ kiện chính hãng',

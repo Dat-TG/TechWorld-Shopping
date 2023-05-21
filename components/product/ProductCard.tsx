@@ -9,7 +9,7 @@ export default function ProductCard() {
     return (
         <div className='pb-6 w-full'>
             <Link
-                href={'/'}
+                href={'/product/1234'}
                 className='block hover:-translate-y-0.5 ease-out transition duration-30'
             >
                 <div className='max-w-md mx-auto'>

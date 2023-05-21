@@ -21,10 +21,7 @@ function Input(props: InputProps) {
             placeholder={props.placeholder}
             name={props.name}
             value={props.value}
-        >
-            {props.children}
-            
-        </input>
+        />
     );
 }
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import ProductCard from '../productCard/ProductCard';
+import ProductCard from './ProductCard';
 
 function ListProduct() {
     return (
