@@ -62,3 +62,106 @@ export const promotion = [
         href:'#'
     },
 ];
+
+export const listCat=[
+    {
+        img: 'images/cat/Laptop-129x129.webp',
+        name: 'Laptop',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Tablet-128x129.webp',
+        name: 'Tablet',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Donghothongminh-128x129.webp',
+        name: 'Đồng hồ thông minh',
+        href: '#'
+    },
+    {
+        img: 'images/cat/dienthoai.jpg',
+        name: 'Điện thoại',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Donghothoitrang-128x129.webp',
+        name: 'Đồng hồ thời trang',
+        href: '#'
+    },
+    {
+        img: 'images/cat/maycu.jpg',
+        name: 'Máy cũ giá rẻ',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Oplung-128x128.webp',
+        name: 'Ốp lưng',
+        href: '#'
+    },
+    {
+        img: 'images/cat/chuot-128x129.webp',
+        name: 'Chuột máy tính',
+        href: '#'
+    },
+    {
+        img: 'images/cat/ban-phim-128x129.webp',
+        name: 'Bàn phím',
+        href: '#'
+    },
+    {
+        img: 'images/cat/mousepad.jpg',
+        name: 'Lót chuột',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Loa-128x128.webp',
+        name: 'Loa',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Tainghe-128x129.webp',
+        name: 'Tai nghe',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Sacduphong-128x129.webp',
+        name: 'Sạc dự phòng',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Capsac-129x129.webp',
+        name: 'Cáp sạc',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Maytinhbo-128x129.webp',
+        name: 'Máy tính bộ',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Mayin-128x129.webp',
+        name: 'Máy in',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Manhinhmaytinh-128x129.webp',
+        name: 'Màn hình',
+        href: '#'
+    },
+    {
+        img: 'images/cat/Phukiengaming-128x129.webp',
+        name: 'Phụ kiện gaming',
+        href: '#'
+    },
+    {
+        img: 'images/cat/icon-camera-128x129.webp',
+        name: 'Camera, webcam',
+        href: '#'
+    },
+    {
+        img: 'images/cat/may-chieu-icon-128x129.webp',
+        name: 'Thiết bị nhà thông minh',
+        href: '#'
+    },
+];
