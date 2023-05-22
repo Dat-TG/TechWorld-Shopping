@@ -20,7 +20,7 @@ function CartItem() {
             </div>
             <div className=' mr-4 w-40'>
                 <div className='text-amber-700 font-bold text-lg'>₫ 135.000</div>
-                <div>₫ 170.000</div>
+                <div className='text-gray-600 line-through'>₫ 170.000</div>
             </div>
             <div className=' flex flex-row items-center mr-6'>
                 <Button className=' bg-white text-base px-4 '>-</Button>

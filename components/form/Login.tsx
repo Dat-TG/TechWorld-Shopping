@@ -28,7 +28,7 @@ export default function Login() {
         });
 
         console.log(res);
-    }
+    };
     return (
         <>
             <div className='flex justify-evenly items-center h-screen'>
