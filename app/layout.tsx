@@ -5,6 +5,7 @@ import Footer from '../components/footer/Footer';
 import '../styles/globals.css';
 import { usePathname } from 'next/navigation';
 import Provider from '../components/provider/Provider';
+import FAB from '../components/widgets/fab/FAB';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <main className='max-w-screen-xl mx-auto align-middle items-center'>
                         {children}
                     </main>
+                    <FAB/>
                     <Footer />
                 </Provider>
             </body>
