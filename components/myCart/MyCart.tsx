@@ -1,7 +1,5 @@
 import React from 'react';
 import Input from '../widgets/input/Input';
-import Image from 'next/image';
-import Button from '../widgets/button/Button';
 import CartItem from './CartItem';
 
 function MyCart() {

@@ -63,11 +63,11 @@ function SideBarCategory() {
             <div className='font-light text-base mb-4 mt-2'>Tình trạng</div>
             <div className='flex flex-col justify-start w-full'>
                 <div className='flex flex-row items-center justify-start mb-2'>
-                    <Input type='radio' value='old' name='status' />
+                    <Input type='radio' defaultValue='old' name='status' />
                     <div className='ml-2 text-base font-medium'>Đã qua sử dụng</div>
                 </div>
                 <div className='flex flex-row items-center justify-start'>
-                    <Input type='radio' value='new' name='status' />
+                    <Input type='radio' defaultValue='new' name='status' />
                     <div className='ml-2 text-base font-medium'>Hàng mới</div>
                 </div>
             </div>

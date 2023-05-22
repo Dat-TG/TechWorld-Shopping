@@ -1,6 +1,6 @@
 'use client';
 import Button from '../widgets/button/Button';
-import ListProduct from '../listProduct/ListProduct';
+import ListProduct from '../product/ListProduct';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -16,7 +16,7 @@ export default function Suggest({ filter }: { filter: Array<Filter> }) {
             <p className='text-2xl mb-5 mt-5 ms-5 font-bold'>GỢI Ý HÔM NAY</p>
             <div className='flex justify-between mb-10'>
                 {filter.map(({ icon, name }, index) => (
-                    <div key=''>
+                    <div key={index}>
                         <Link
                             href={''}
                             onClick={event => {

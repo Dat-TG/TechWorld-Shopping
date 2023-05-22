@@ -61,7 +61,11 @@ function ProductDetail() {
                     <div className='flex flex-row mt-12 items-center'>
                         <div className='text-lg text-gray-500 mr-12'>Số lượng</div>
                         <Button className=' bg-white text-base px-4 '>-</Button>
-                        <Input type='text' className='w-12 text-center text-base px-4' value='1' />
+                        <Input
+                            type='text'
+                            className='w-12 text-center text-base px-4'
+                            defaultValue='1'
+                        />
                         <Button className=' bg-white text-base px-4 mr-6'>+</Button>
                         <div className='text-gray-600'>121212 sản phâm có sẵn</div>
                     </div>

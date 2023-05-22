@@ -24,7 +24,7 @@ function CartItem() {
             </div>
             <div className=' flex flex-row items-center mr-6'>
                 <Button className=' bg-white text-base px-4 '>-</Button>
-                <Input type='text' className='w-12 text-center text-base px-4 ' value='1' />
+                <Input type='text' className='w-12 text-center text-base px-4 ' defaultValue='1' />
                 <Button className=' bg-white text-base px-4 mr-6'>+</Button>
             </div>
             <i className='bi bi-trash  text-xl text-red-500'></i>
