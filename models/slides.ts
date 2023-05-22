@@ -165,3 +165,22 @@ export const listCat=[
         href: '#'
     },
 ];
+
+export const listFilterSuggest=[
+    {
+        icon:'/images/suggest/foryou.jpg',
+        name:'Dành riêng cho bạn'
+    },
+    {
+        icon:'/images/suggest/laptop-gaming.png',
+        name:'Laptop gaming'
+    },
+    {
+        icon:'/images/suggest/cable.png',
+        name:'Phụ kiện giảm sốc'
+    },
+    {
+        icon:'/images/suggest/tablet.png',
+        name:'Tablet giá rẻ'
+    },
+];
