@@ -1,7 +1,7 @@
 'use client';
 import { Carousel } from 'react-responsive-carousel';
-import ProductCard from '../productCard/ProductCard';
 import Button from '../widgets/button/Button';
+import ProductCard from '../product/ProductCard';
 
 export default function PromotionBox({ banner, bg}: { banner: string, bg: string }) {
     return (

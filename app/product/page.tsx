@@ -1,4 +1,3 @@
-import { listProducts } from '../../models/product';
 import { listUsers } from '../../models/user';
 import { Metadata } from 'next';
 

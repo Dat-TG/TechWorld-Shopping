@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import ListProduct from '../../../components/listProduct/ListProduct';
+import ListProduct from '../../../components/product/ListProduct';
 import DropDown from '../../../components/widgets/dropdown/DropDown';
 import SideBarCategory from '../../../components/sideBarCategory/SideBarCategory';
 import Button from '../../../components/widgets/button/Button';

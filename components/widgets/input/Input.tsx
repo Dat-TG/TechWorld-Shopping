@@ -8,8 +8,9 @@ interface InputProps {
     onClick?: () => void;
     type?: string | 'text';
     placeholder?: string;
-    value?: string
-    name?: string
+    value?: string;
+    name?: string;
+    defaultValue?: string;
 }
 
 function Input(props: InputProps) {
@@ -21,10 +22,8 @@ function Input(props: InputProps) {
             placeholder={props.placeholder}
             name={props.name}
             value={props.value}
-        >
-            {props.children}
-            
-        </input>
+            defaultValue={props.defaultValue}
+        />
     );
 }
 
