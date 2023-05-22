@@ -16,7 +16,7 @@ export const metadata = {
 export default function Page() {
     return (
         <>
-        <div className='w-full h-full mb-0 relative group'>
+        <div className='w-full h-full mb-0 group'>
             <BgCarousel slides={mainCarousel}/>
         </div>
         <Carousel slides={promotion}/>

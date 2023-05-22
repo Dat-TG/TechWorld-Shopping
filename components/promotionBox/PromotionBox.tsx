@@ -28,7 +28,7 @@ export default function PromotionBox({ banner, bg}: { banner: string, bg: string
                 </div>
             </Carousel>
             <div className='m-0 p-0 flex justify-center -translate-x-0 translate-y-[-80%]'>
-                <Button className='w-32'>Xem tất cả &gt;</Button>
+                <Button className='w-32 bg-white'>Xem tất cả &gt;</Button>
             </div>
         </div>
     );
