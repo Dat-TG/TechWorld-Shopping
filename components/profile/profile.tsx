@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import EditProfile from '../form/EditProfile';
 import { User } from '../../models/user';
 import ChangePassword from '../form/ChangePassword';
+import Order from '../order/Order';
 
 type Address = {
     name: string;
@@ -123,7 +124,7 @@ export default function Profile() {
                     <p className={index1 === 2 ? 'text-orange-600 font-medium' : ''}>Thông Báo</p>
                 </div>
             </div>
-            <div className='rounded-sm bg-white w-full h-full px-10 py-10'>
+            <div className={(index1===1?'hidden':'')+' rounded-sm bg-white w-full h-full px-10 py-10'}>
                 <div className={index1 === 0 && index2 === 0 ? 'visible' : 'hidden'}>
                     <p className='text-3xl'>Hồ Sơ Của Tôi</p>
                     <p className='text-black-300'>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
@@ -133,16 +134,15 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className={index1 === 0 && index2 === 1 ? 'visible' : 'hidden'}>
-                    <div className='flex justify-between'>
+                    <div className='flex justify-between mb-2'>
                         <p className='text-3xl'>Địa Chỉ Của Tôi</p>
                         <button className='bg-amber-500 text-white py-2 px-2 hover:opacity-50 active:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-300'>
                             + Thêm địa chỉ mới
                         </button>
                     </div>
-                    <hr className='mt-2'></hr>
                     <div>
                         {address.map(({ name, phone, address }, index) => (
-                            <div key={index} className='flex justify-between'>
+                            <div key={index} className='flex justify-between w-full relative'>
                                 <div className='py-4'>
                                     <div className='flex justify-start space-x-2'>
                                         <p>{name}</p>
@@ -187,7 +187,13 @@ export default function Profile() {
                     <hr className='mt-2 mb-4'></hr>
                     <ChangePassword />
                 </div>
+                <div className={index1 === 2 ? 'visible' : 'hidden'}>
+                    <div className='flex justify-center items-center h-96'>
+                        Chưa có thông báo nào
+                    </div>
+                </div>
             </div>
+            {index1===1 && (<Order/>)}
         </div>
     );
 }
