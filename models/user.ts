@@ -31,6 +31,7 @@ export type User = {
     phone: string;
     email?: string;
     password: string;
+    avatar: string;
     role: Role;
     dob?: Date;
     image?: string;

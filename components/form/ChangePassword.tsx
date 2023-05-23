@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
 
-export default function Register() {
+export default function ChangePassword() {
     const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
     function toggleRetypePasswordVisibility() {
         setIsRetypePasswordVisible((prevState) => !prevState);
@@ -13,9 +13,13 @@ export default function Register() {
     function togglePasswordVisibility() {
         setIsPasswordVisible((prevState) => !prevState);
     }
+    const [isOldPasswordVisible, setIsOldPasswordVisible] = useState(false);
+    function toggleOldPasswordVisibility() {
+        setIsOldPasswordVisible((prevState) => !prevState);
+    }
     type Data = { 
-        name: string,
         phone: string,
+        oldpassword: string,
         password: string,
         passwordRetype: string
       }
@@ -28,104 +32,50 @@ export default function Register() {
         mode: 'all',
     });
     const onSubmit = async (data: Data) => {
-        const res = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: data.name,
-                phone: data.phone,
-                password: data.password,
-            }),
-        });
-        console.log(await res.json());
+        console.log(await data);
     };
     return (
-        <>
-            <div className='flex justify-evenly items-center h-screen'>
-                <div className='w-fit flex flex-col justify-center items-center'>
-                    <img
-                        className='w-44 sm:w-48 md:w-72 mb-2'
-                        src='/images/logo.png'
-                        alt='TechWorld'
-                    />
-                    <p className='text-3xl font-sans font-bold'>TechWorld</p>
-                    <br></br>
-                    <p className='text-2xl font-sans font-bold'>
-                        Lựa chọn công nghệ - Lựa chọn tương lai
-                    </p>
-                </div>
-                <div className='flex h-fit flex-col justify-center px-6 py-6 lg:px-8 bg-white border border-gray-200 shadow rounded-md'>
-                    <div className='sm:mx-auto sm:w-80'>
-                        <h2 className='text-center text-2xl font-bold leading-9 tracking-tight text-gray-900'>
-                            Đăng ký tài khoản
-                        </h2>
-                    </div>
-
-                    <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm w-full'>
                         <form
-                            id='FormRegister'
                             className='space-y-6'
                             action='#'
                             method='POST'
                             onSubmit={handleSubmit(onSubmit)}
                         >
                             <div>
-                                <div className='mt-2'>
+                                <div className='mt-2 flex items-center relative'>
                                     <input
-                                        id='name'
-                                        type='text'
-                                        {...register('name', {
-                                            required: true
-                                        })}
-                                        placeholder='Họ tên'
-                                        aria-invalid={errors.name ? 'true' : 'false'}
-                                        required
-                                        className={
-                                            'border border-gray-300 ' +
-                                            (errors.name ? 'border-red-500' : 'border-green-500') +
-                                            ' focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
-                                        }
-                                    />
-                                    {errors.name?.type === 'required' && (
-                                        <p role='alert' className='text-sm text-red-500'>
-                                            Vui lòng nhập họ tên của bạn
-                                        </p>
-                                    )}
-                                </div>
-                            </div>
-                            <div>
-                                <div className='mt-2'>
-                                    <input
-                                        id='phone'
-                                        type='tel'
-                                        {...register('phone', {
+                                        {...register('oldpassword', {
                                             required: true,
-                                            pattern: /(0[3|5|7|8|9])+([0-9]{8})/,
-                                            maxLength: 10
                                         })}
-                                        placeholder='Số điện thoại'
-                                        aria-invalid={errors.phone ? 'true' : 'false'}
+                                        type={isOldPasswordVisible ? 'text' : 'password'}
+                                        aria-invalid={errors.oldpassword ? 'true' : 'false'}
+                                        placeholder='Mật khẩu hiện tại'
                                         required
                                         className={
                                             'border border-gray-300 ' +
-                                            (errors.phone ? 'border-red-500' : 'border-green-500') +
+                                            (errors.oldpassword
+                                                ? 'border-red-500'
+                                                : 'border-green-500') +
                                             ' focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
                                         }
                                     />
-                                    {errors.phone?.type === 'required' && (
-                                        <p role='alert' className='text-sm text-red-500'>
-                                            Vui lòng nhập số điện thoại
-                                        </p>
-                                    )}
-                                    {errors.phone?.type !== 'required' &&
-                                        errors.phone && (
-                                            <p role='alert' className='text-sm text-red-500'>
-                                                Số điện thoại không hợp lệ
-                                            </p>
-                                        )}
+                                    <button
+                                        type='button'
+                                        className='absolute inset-y-0 right-0 flex items-center px-4 text-gray-600'
+                                        onClick={toggleOldPasswordVisibility}
+                                    >
+                                        <i
+                                            className={
+                                                isOldPasswordVisible ? 'bi bi-eye' : 'bi bi-eye-slash'
+                                            }
+                                        ></i>
+                                    </button>
                                 </div>
+                                {errors.oldpassword?.type === 'required' && (
+                                    <p role='alert' className='text-sm text-red-500'>
+                                        Vui lòng nhập mật khẩu
+                                    </p>
+                                )}
                             </div>
 
                             <div>
@@ -138,7 +88,7 @@ export default function Register() {
                                         })}
                                         type={isPasswordVisible ? 'text' : 'password'}
                                         aria-invalid={errors.password ? 'true' : 'false'}
-                                        placeholder='Mật khẩu'
+                                        placeholder='Mật khẩu mới'
                                         required
                                         className={
                                             'border border-gray-300 ' +
@@ -229,23 +179,9 @@ export default function Register() {
                                     type='submit'
                                     className='flex w-full justify-center rounded-md bg-amber-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300'
                                 >
-                                    Đăng ký
+                                    Đổi Mật Khẩu
                                 </button>
                             </div>
                         </form>
-
-                        <p className='mt-10 text-center text-sm text-gray-500'>
-                            Bạn đã có tài khoản?
-                            <Link
-                                href='/auth/login'
-                                className='font-semibold leading-6 text-amber-400 hover:text-amber-300 ms-1'
-                            >
-                                Đăng nhập
-                            </Link>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </>
     );
 }
