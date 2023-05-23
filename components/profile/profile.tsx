@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import EditProfile from '../form/EditProfile';
 import { User } from '../../models/user';
+import ChangePassword from '../form/ChangePassword';
 
 type Address={
     name: string,
@@ -136,8 +137,8 @@ export default function Profile() {
                 <div className={index1 === 0 && index2 === 2 ? 'visible' : 'hidden'}>
                     <p className='text-3xl'>Đổi mật khẩu</p>
                     <p className='text-black-300'>Thiết lập mật khẩu mạnh để bảo vệ tài khoản của bạn</p>
-                    <hr className='mt-2'></hr>
-                    
+                    <hr className='mt-2 mb-4'></hr>
+                    <ChangePassword/>
                 </div>
             </div>
         </div>
