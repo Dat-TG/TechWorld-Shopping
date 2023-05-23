@@ -102,7 +102,8 @@ export default function Register() {
                                         type='tel'
                                         {...register('phone', {
                                             required: true,
-                                            pattern: /((0[3|5|7|8|9])+([0-9]{8}))|(84+[0-9]{9})\b/g,
+                                            pattern: /(0[3|5|7|8|9])+([0-9]{8})/,
+                                            maxLength: 10
                                         })}
                                         placeholder='Số điện thoại'
                                         aria-invalid={errors.phone ? 'true' : 'false'}
@@ -119,7 +120,7 @@ export default function Register() {
                                         </p>
                                     )}
                                     {errors.phone?.type !== 'required' &&
-                                        errors.phone?.type === 'pattern' && (
+                                        errors.phone && (
                                             <p role='alert' className='text-sm text-red-500'>
                                                 Số điện thoại không hợp lệ
                                             </p>
@@ -148,6 +149,7 @@ export default function Register() {
                                         }
                                     />
                                     <button
+                                        type='button'
                                         className='absolute inset-y-0 right-0 flex items-center px-4 text-gray-600'
                                         onClick={togglePasswordVisibility}
                                     >
@@ -196,6 +198,7 @@ export default function Register() {
                                         }
                                     />
                                     <button
+                                        type='button'
                                         className='absolute inset-y-0 right-0 flex items-center px-4 text-gray-600'
                                         onClick={toggleRetypePasswordVisibility}
                                     >
