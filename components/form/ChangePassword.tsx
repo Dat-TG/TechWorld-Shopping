@@ -32,7 +32,7 @@ export default function ChangePassword() {
         mode: 'all',
     });
     const onSubmit = async (data: Data) => {
-        console.log(await data);
+        console.log(data);
     };
     return (
                         <form

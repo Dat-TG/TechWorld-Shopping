@@ -24,6 +24,7 @@ export default function EditProfile({ user }: { user: User }) {
     };
     const [editPhone, setEditPhone] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
+    
     return (
         <div className='flex justify-around'>
             <form
@@ -42,6 +43,7 @@ export default function EditProfile({ user }: { user: User }) {
                                 id='name'
                                 {...register('name', {
                                     required: true,
+                                    value: user.name
                                 })}
                                 type='text'
                                 value={user.name}
@@ -77,6 +79,7 @@ export default function EditProfile({ user }: { user: User }) {
                                     required: true,
                                     pattern: /(0[3|5|7|8|9])+([0-9]{8})/,
                                     maxLength: 10,
+                                    value: user.phone
                                 })}
                                 aria-invalid={errors.phone ? 'true' : 'false'}
                                 required
@@ -126,6 +129,7 @@ export default function EditProfile({ user }: { user: User }) {
                                 {...register('email', {
                                     required: false,
                                     pattern: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+                                    value: user.email
                                 })}
                                 type='email'
                                 aria-invalid={errors.email ? 'true' : 'false'}
