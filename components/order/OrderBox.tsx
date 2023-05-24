@@ -1,4 +1,8 @@
-export default function OrderBox({className}:{className:string}) {
+interface Props {
+    className?: string
+}
+
+export default function OrderBox({className}:Props) {
     return (
         <div className={`bg-white rounded-md w-full px-10 py-5 ${className}`}>
             <div className="flex justify-between">

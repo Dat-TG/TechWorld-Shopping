@@ -5,6 +5,7 @@ import EditProfile from '../form/EditProfile';
 import { User } from '../../models/user';
 import ChangePassword from '../form/ChangePassword';
 import Order from '../order/Order';
+import Noti from '../noti/Noti';
 
 type Address = {
     name: string;
@@ -187,10 +188,12 @@ export default function Profile() {
                     <hr className='mt-2 mb-4'></hr>
                     <ChangePassword />
                 </div>
-                <div className={index1 === 2 ? 'visible' : 'hidden'}>
-                    <div className='flex justify-center items-center h-96'>
-                        Chưa có thông báo nào
-                    </div>
+                <div className={(index1 === 2 ? 'visible' : 'hidden')+' flex flex-col space-y-2'}>
+                    <Noti/>
+                    <Noti/>
+                    <Noti/>
+                    <Noti/>
+                    <Noti/>
                 </div>
             </div>
             {index1===1 && (<Order/>)}
