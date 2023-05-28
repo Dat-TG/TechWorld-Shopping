@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import clientPromise from './mongodb';
+import clientPromise from './prismadb';
 import { toSlug } from '../utils/helper';
 
 export type Category = {

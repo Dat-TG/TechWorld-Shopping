@@ -1,24 +1,36 @@
 'use client';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
+    const session = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (session?.status === 'authenticated') {
+            console.log('authenticated');
+            router.push('/');
+        }
+    }, [session?.status, router]);
+
     const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
     function toggleRetypePasswordVisibility() {
-        setIsRetypePasswordVisible((prevState) => !prevState);
+        setIsRetypePasswordVisible(prevState => !prevState);
     }
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible((prevState) => !prevState);
+        setIsPasswordVisible(prevState => !prevState);
     }
-    type Data = { 
-        name: string,
-        phone: string,
-        password: string,
-        passwordRetype: string
-      }
+    type Data = {
+        name: string;
+        phone: string;
+        password: string;
+        passwordRetype: string;
+    };
     const {
         register,
         handleSubmit,
@@ -26,9 +38,15 @@ export default function Register() {
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
+        defaultValues: {
+            name: '',
+            phone: '',
+            password: '',
+            passwordRetype: '',
+        },
     });
     const onSubmit = async (data: Data) => {
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch('/api/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -38,8 +56,9 @@ export default function Register() {
                 phone: data.phone,
                 password: data.password,
             }),
-        });
-        console.log(await res.json());
+        })
+            .then(() => signIn('credentials', { phone: data.phone, password: data.password }))
+            .catch(() => toast.error('Đã có lỗi xảy ra'));
     };
     return (
         <>
@@ -77,7 +96,7 @@ export default function Register() {
                                         id='name'
                                         type='text'
                                         {...register('name', {
-                                            required: true
+                                            required: true,
                                         })}
                                         placeholder='Họ tên'
                                         aria-invalid={errors.name ? 'true' : 'false'}
@@ -103,7 +122,7 @@ export default function Register() {
                                         {...register('phone', {
                                             required: true,
                                             pattern: /(0[3|5|7|8|9])+([0-9]{8})/,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         })}
                                         placeholder='Số điện thoại'
                                         aria-invalid={errors.phone ? 'true' : 'false'}
@@ -119,12 +138,11 @@ export default function Register() {
                                             Vui lòng nhập số điện thoại
                                         </p>
                                     )}
-                                    {errors.phone?.type !== 'required' &&
-                                        errors.phone && (
-                                            <p role='alert' className='text-sm text-red-500'>
-                                                Số điện thoại không hợp lệ
-                                            </p>
-                                        )}
+                                    {errors.phone?.type !== 'required' && errors.phone && (
+                                        <p role='alert' className='text-sm text-red-500'>
+                                            Số điện thoại không hợp lệ
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
@@ -176,14 +194,14 @@ export default function Register() {
                             <div>
                                 <div className='mt-2 relative'>
                                     <input
-                                    {...register('passwordRetype', {
-                                        required: true,
-                                        validate: (val:string)=>{
-                                            if (watch('password') != val) {
-                                                return 'Mật khẩu không khớp';
-                                              }
-                                        }
-                                    })}
+                                        {...register('passwordRetype', {
+                                            required: true,
+                                            validate: (val: string) => {
+                                                if (watch('password') != val) {
+                                                    return 'Mật khẩu không khớp';
+                                                }
+                                            },
+                                        })}
                                         id='passwordRetype'
                                         type={isRetypePasswordVisible ? 'text' : 'password'}
                                         required

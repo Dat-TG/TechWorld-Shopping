@@ -10,7 +10,7 @@ type Data = {
 
 export default function BgCarousel({ slides }: { slides: Array<Data> }) {
     return (
-        <Carousel showStatus={false} infiniteLoop={true} autoPlay={true}>
+        <Carousel showThumbs={false} showStatus={false} infiniteLoop={true} autoPlay={true}>
             {slides.map(({ url, href }, key) => (
                 <div key={key}>
                     <Link href={href}>

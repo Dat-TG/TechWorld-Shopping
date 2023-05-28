@@ -1,8 +1,12 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { authentication } from '../../../../models/user';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
-export const authOptions: NextAuthOptions = {
+import prisma from '@/models/prismadb';
+import { auth } from '@/models/user';
+
+export const authOptions: AuthOptions = {
+    adapter: PrismaAdapter(prisma),
     providers: [
         CredentialsProvider({
             name: 'credentials',
@@ -11,24 +15,12 @@ export const authOptions: NextAuthOptions = {
                 password: { label: 'password', type: 'password' },
             },
             async authorize(credentials) {
-                const { phone, password } = credentials as {
-                    phone: string;
-                    password: string;
-                };
-                // perform you login logic
-                // find out user from db
-                const user = await authentication(phone, password);
-                if (!user) {
-                    throw new Error('invalid_credentials');
+                if (!credentials?.phone || !credentials?.password) {
+                    throw new Error('Invalid Credentials');
                 }
 
-                // if everything is fine
-                return {
-                    id: user._id?.toString() || '1',
-                    name: user.name,
-                    phone: user.phone,
-                    role: user.role,
-                };
+                const user = await auth(credentials.phone, credentials.password);
+                return user;
             },
         }),
     ],

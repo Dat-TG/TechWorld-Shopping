@@ -4,29 +4,23 @@ import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import '../styles/globals.css';
 import { usePathname } from 'next/navigation';
-import Provider from '../components/provider/Provider';
+import AuthContext from './context/AuthContext';
 import FAB from '../components/widgets/fab/FAB';
+import ToasterContext from './context/ToasterContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
-    const isLogIned = false,
-        isLogIning = pathname == '/auth/login' ? true : false,
-        isRegistering = pathname == '/auth/register' ? true : false;
     return (
         <html lang='vi'>
             <body suppressHydrationWarning={true} className='bg-gray-200'>
-                <Provider>
-                    <Header
-                        isLogIned={isLogIned}
-                        isLogIning={isLogIning}
-                        isRegistering={isRegistering}
-                    />
+                <AuthContext>
+                    <ToasterContext />
+                    <Header />
                     <main className='max-w-screen-xl mx-auto align-middle items-center'>
                         {children}
                     </main>
-                    <FAB/>
+                    <FAB />
                     <Footer />
-                </Provider>
+                </AuthContext>
             </body>
         </html>
     );

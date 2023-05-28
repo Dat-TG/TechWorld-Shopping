@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id                String              @id @default(auto()) @map("_id") @db.ObjectId
+    name              String?
+    email             String?
+    phone             String              @unique
+    password          String
+    role              Role                @default(USER)
+    image             String?
+    address           String?
+    createdAt         DateTime            @default(now())
+    updatedAt         DateTime            @updatedAt
+    verificationToken VerificationToken[]
+    emailVerified     DateTime?
+    phoneVerified     DateTime?
+    cart              Cart?               @relation(fields: [cartId], references: [id])
+    cartId            String?             @unique @db.ObjectId
+    Invoice           Invoice[]
+}
+
+model Product {
+    id          String       @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    description String?
+    price       Float
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+    attachment  Attachment[]
+    category    Category?    @relation(fields: [categoryId], references: [id])
+    categoryId  String?      @db.ObjectId
+    CartItem    CartItem[]
+    Invoice     Invoice[]
+}
+
+model Attachment {
+    id        String         @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    type      AttachmentType
+    path      String
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
+    product   Product?       @relation(fields: [productId], references: [id])
+    productId String?        @db.ObjectId
+}
+
+model Category {
+    id       String     @id @default(auto()) @map("_id") @db.ObjectId
+    name     String
+    children Category[] @relation("CategoryToCategory")
+    parentId String?    @db.ObjectId
+    parent   Category?  @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    Product  Product[]
+}
+
+model Cart {
+    id       String     @id @default(auto()) @map("_id") @db.ObjectId
+    User     User?
+    CartItem CartItem[]
+}
+
+model CartItem {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    quantity  Int
+    Cart      Cart?    @relation(fields: [cartId], references: [id])
+    cartId    String?  @db.ObjectId
+    Product   Product? @relation(fields: [productId], references: [id])
+    productId String?  @db.ObjectId
+}
+
+// an invoice only contains one product
+// if a user wants to buy multiple products, they have to add them to the cart first
+model Invoice {
+    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    quantity     Int
+    status       Status   @default(PENDING)
+    address      String
+    deliveryCost Float
+    createAt     DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    User         User?    @relation(fields: [userId], references: [id])
+    userId       String?  @db.ObjectId
+    Product      Product? @relation(fields: [productId], references: [id])
+    productId    String?  @db.ObjectId
+}
+
+type VerificationToken {
+    token     String
+    type      VerificationTokenType
+    expiredAt DateTime
+}
+
+enum Role {
+    ADMIN
+    USER
+}
+
+enum VerificationTokenType {
+    EMAIL
+    PHONE
+}
+
+enum AttachmentType {
+    IMAGE
+    VIDEO
+}
+
+enum Status {
+    PENDING
+    PROCESSING
+    DELIVERING
+    DELIVERED
+    PAID
+    CANCELLED
+    RETURNED
+}

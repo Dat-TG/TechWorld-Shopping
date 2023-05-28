@@ -1,18 +1,30 @@
 'use client';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+    const session = useSession();
+    const router = useRouter();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible((prevState) => !prevState);
+        setIsPasswordVisible(prevState => !prevState);
     }
-    type Data = { 
-        phone: string,
-        password: string,
-      }
+
+    useEffect(() => {
+        if (session?.status === 'authenticated') {
+            console.log('authenticated');
+            router.push('/');
+        }
+    }, [session?.status, router]);
+
+    type Data = {
+        phone: string;
+        password: string;
+    };
     const {
         register,
         handleSubmit,
@@ -20,14 +32,26 @@ export default function Login() {
         formState: { errors },
     } = useForm<Data>({
         mode: 'onSubmit',
+        defaultValues: {
+            phone: '',
+            password: '',
+        },
     });
     const onSubmit = async (data: Data) => {
         const res = await signIn('credentials', {
             phone: data.phone,
             password: data.password,
-        });
+            redirect: false,
+        }).then(callback => {
+            if (callback?.error) {
+                toast.error('Đăng nhập thất bại');
+            }
 
-        console.log(res);
+            if (callback?.ok && !callback?.error) {
+                toast.success('Đăng nhập thành công');
+                router.push('/');
+            }
+        });
     };
     return (
         <>
@@ -67,7 +91,7 @@ export default function Login() {
                                         {...register('phone', {
                                             required: true,
                                             pattern: /(0[3|5|7|8|9])+([0-9]{8})/,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         })}
                                         placeholder='Số điện thoại'
                                         aria-invalid={errors.phone ? 'true' : 'false'}
@@ -83,12 +107,11 @@ export default function Login() {
                                             Vui lòng nhập số điện thoại
                                         </p>
                                     )}
-                                    {errors.phone?.type !== 'required' &&
-                                        errors.phone && (
-                                            <p role='alert' className='text-sm text-red-500'>
-                                                Số điện thoại không hợp lệ
-                                            </p>
-                                        )}
+                                    {errors.phone?.type !== 'required' && errors.phone && (
+                                        <p role='alert' className='text-sm text-red-500'>
+                                            Số điện thoại không hợp lệ
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
@@ -96,8 +119,8 @@ export default function Login() {
                                 <div className='mt-2 flex items-center relative'>
                                     <input
                                         id='password'
-                                        {...register('password',{
-                                            required: true
+                                        {...register('password', {
+                                            required: true,
                                         })}
                                         type={isPasswordVisible ? 'text' : 'password'}
                                         aria-invalid={errors.password ? 'true' : 'false'}
