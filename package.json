@@ -23,6 +23,7 @@
       "mongodb": "^5.5.0",
       "next": "13.4.2",
       "next-auth": "^4.22.1",
+      "notiflix": "^3.2.6",
       "react": "18.2.0",
       "react-dom": "18.2.0",
       "react-easy-swipe": "^0.0.23",

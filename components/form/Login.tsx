@@ -2,9 +2,13 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { Notify } from 'notiflix';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+    const router=useRouter();
+    const { data: session, status, update } = useSession();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
         setIsPasswordVisible((prevState) => !prevState);
@@ -25,9 +29,22 @@ export default function Login() {
         const res = await signIn('credentials', {
             phone: data.phone,
             password: data.password,
+            redirect: false
         });
-
-        console.log(res);
+        if (res?.error) {
+            Notify.failure('Đăng nhập không thành công. Số điện thoại hoặc mật khẩu không chính xác',{
+                clickToClose: true,
+                closeButton: true,
+                width: '320px'
+            });
+        } else {
+            update({name: data.phone});
+            Notify.success('Đăng nhập thành công.',{
+                clickToClose: true,
+                timeout: 5000
+            });
+            router.push('/');
+        }
     };
     return (
         <>

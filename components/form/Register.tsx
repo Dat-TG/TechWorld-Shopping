@@ -2,9 +2,12 @@
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { Notify } from 'notiflix';
+import { useRouter } from 'next/navigation';
 
 
 export default function Register() {
+    const router=useRouter();
     const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
     function toggleRetypePasswordVisibility() {
         setIsRetypePasswordVisible((prevState) => !prevState);
@@ -39,7 +42,20 @@ export default function Register() {
                 password: data.password,
             }),
         });
-        console.log(await res.json());
+        const result=await res.json();
+        if (result.error) {
+            Notify.failure('Số điện thoại đã được sử dụng.<br> Vui lòng đăng nhập hoặc sử dụng số điện thoại khác', {
+                clickToClose: true,
+                width: '320px',
+                closeButton: true
+            });
+        } else {
+            Notify.success('Đăng ký tài khoản thành công. Vui lòng đăng nhập', {
+                clickToClose: true,
+                closeButton: true
+            });
+            router.replace('/auth/login');
+        }
     };
     return (
         <>

@@ -9,15 +9,13 @@ import FAB from '../components/widgets/fab/FAB';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const isLogIned = false,
-        isLogIning = pathname == '/auth/login' ? true : false,
+    const isLogIning = pathname == '/auth/login' ? true : false,
         isRegistering = pathname == '/auth/register' ? true : false;
     return (
         <html lang='vi'>
             <body suppressHydrationWarning={true} className='bg-gray-200'>
                 <Provider>
                     <Header
-                        isLogIned={isLogIned}
                         isLogIning={isLogIning}
                         isRegistering={isRegistering}
                     />
