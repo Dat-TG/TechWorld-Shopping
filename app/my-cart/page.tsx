@@ -1,7 +1,7 @@
 import React from 'react';
-import MyCart from '../../components/myCart/MyCart';
-import FormCustomer from '../../components/myCart/FormCustomer';
-import CartInformation from '../../components/myCart/CartInformation';
+import MyCart from '.././components/myCart/MyCart';
+import FormCustomer from '.././components/myCart/FormCustomer';
+import CartInformation from '.././components/myCart/CartInformation';
 
 function Page() {
     return (

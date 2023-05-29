@@ -1,12 +1,10 @@
-import Register from '../../../components/form/Register';
+import Register from '../.././components/form/Register';
 
 export const metadata = {
     title: 'Đăng ký tài khoản | TechWorld',
-    icons: '/images/logo.png'
-  };
+    icons: '/images/logo.png',
+};
 
 export default function Page() {
-    return (
-        <Register/>
-    );
+    return <Register />;
 }

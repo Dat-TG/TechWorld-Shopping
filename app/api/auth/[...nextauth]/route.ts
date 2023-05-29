@@ -24,6 +24,15 @@ export const authOptions: AuthOptions = {
             },
         }),
     ],
+    callbacks: {
+        async jwt({ token, user }) {
+            return { ...token, ...user };
+        },
+        async session({ session, token, user }) {
+            session.user = token;
+            return session;
+        },
+    },
     pages: {
         signIn: '/auth/login',
         signOut: '/auth/signout',

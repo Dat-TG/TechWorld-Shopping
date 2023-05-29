@@ -27,7 +27,7 @@ export default function Order() {
                     }
                     onClick={() => {
                         setIndex(0);
-                        router.push('/profile/?tab=1&index=0');
+                        router.push('/user/?tab=1&index=0');
                     }}
                 >
                     Tất cả
@@ -39,7 +39,7 @@ export default function Order() {
                     }
                     onClick={() => {
                         setIndex(1);
-                        router.push('/profile/?tab=1&index=1');
+                        router.push('/user/?tab=1&index=1');
                     }}
                 >
                     Đang chuẩn bị hàng
@@ -51,7 +51,7 @@ export default function Order() {
                     }
                     onClick={() => {
                         setIndex(2);
-                        router.push('/profile/?tab=1&index=2');
+                        router.push('/user/?tab=1&index=2');
                     }}
                 >
                     Đang vận chuyển
@@ -63,7 +63,7 @@ export default function Order() {
                     }
                     onClick={() => {
                         setIndex(3);
-                        router.push('/profile/?tab=1&index=3');
+                        router.push('/user/?tab=1&index=3');
                     }}
                 >
                     Đã giao
@@ -75,7 +75,7 @@ export default function Order() {
                     }
                     onClick={() => {
                         setIndex(4);
-                        router.push('/profile/?tab=1&index=4');
+                        router.push('/user/?tab=1&index=4');
                     }}
                 >
                     Đã hủy

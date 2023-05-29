@@ -1,6 +1,6 @@
 import React from 'react';
-import Breadcrumbs from '../../../components/widgets/breadcumbs/Breadcumbs';
-import ProductDetail from '../../../components/product/ProductDetail';
+import Breadcrumbs from '../.././components/widgets/breadcumbs/Breadcumbs';
+import ProductDetail from '../.././components/product/ProductDetail';
 
 function Page() {
     return (
