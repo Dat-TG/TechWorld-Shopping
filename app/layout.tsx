@@ -1,9 +1,7 @@
-'use client';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Header from '../components/header/Header';
 import Footer from '../components/footer/Footer';
 import '../styles/globals.css';
-import { usePathname } from 'next/navigation';
 import AuthContext from './context/AuthContext';
 import FAB from '../components/widgets/fab/FAB';
 import ToasterContext from './context/ToasterContext';

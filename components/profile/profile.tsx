@@ -18,12 +18,13 @@ export default function Profile() {
     const [index1, setIndex1] = useState(0);
     const [index2, setIndex2] = useState(0);
     const [address, setAddress] = useState<Array<Address>>([]);
-    let user={} as User;
+    let user = {} as User;
     const params = useSearchParams();
-    const tab = params.get('tab'), index = params.get('index');
+    const tab = params.get('tab'),
+        index = params.get('index');
     useEffect(() => {
         setIndex1(tab !== null ? parseInt(tab) : 0);
-        setIndex2(index !== null ? parseInt(index) : 0); 
+        setIndex2(index !== null ? parseInt(index) : 0);
         setAddress([
             {
                 name: 'Lê Công Đắt',
@@ -58,7 +59,7 @@ export default function Profile() {
                     className='flex justify-start items-center cursor-pointer'
                     onClick={() => {
                         setIndex1(0);
-                        router.push(`/profile?tab=0&index=${index2}`);
+                        router.push(`/user?tab=0&index=${index2}`);
                     }}
                 >
                     <i className='bi bi-person text-blue-500 text-2xl me-2'></i>
@@ -76,7 +77,7 @@ export default function Profile() {
                         }
                         onClick={() => {
                             setIndex2(0);
-                            router.push('/profile?tab=0&index=0');
+                            router.push('/user?tab=0&index=0');
                         }}
                     >
                         Hồ Sơ
@@ -87,7 +88,7 @@ export default function Profile() {
                         }
                         onClick={() => {
                             setIndex2(1);
-                            router.push('/profile?tab=0&index=1');
+                            router.push('/user?tab=0&index=1');
                         }}
                     >
                         Địa chỉ
@@ -98,7 +99,7 @@ export default function Profile() {
                         }
                         onClick={() => {
                             setIndex2(2);
-                            router.push('/profile?tab=0&index=2');
+                            router.push('/user?tab=0&index=2');
                         }}
                     >
                         Đổi mật khẩu
@@ -108,7 +109,7 @@ export default function Profile() {
                     className='flex justify-start items-center cursor-pointer'
                     onClick={() => {
                         setIndex1(1);
-                        router.push('/profile?tab=1');
+                        router.push('/user?tab=1');
                     }}
                 >
                     <i className='bi bi-receipt-cutoff text-orange-500 me-2 text-2xl'></i>
@@ -118,14 +119,19 @@ export default function Profile() {
                     className='flex justify-start items-center cursor-pointer'
                     onClick={() => {
                         setIndex1(2);
-                        router.push('/profile?tab=2');
+                        router.push('/user?tab=2');
                     }}
                 >
                     <i className='bi bi-bell text-green-500 me-2 text-2xl'></i>
                     <p className={index1 === 2 ? 'text-orange-600 font-medium' : ''}>Thông Báo</p>
                 </div>
             </div>
-            <div className={(index1===1?'hidden':'')+' rounded-sm bg-white w-full h-full px-10 py-10'}>
+            <div
+                className={
+                    (index1 === 1 ? 'hidden' : '') +
+                    ' rounded-sm bg-white w-full h-full px-10 py-10'
+                }
+            >
                 <div className={index1 === 0 && index2 === 0 ? 'visible' : 'hidden'}>
                     <p className='text-3xl'>Hồ Sơ Của Tôi</p>
                     <p className='text-black-300'>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
@@ -188,15 +194,15 @@ export default function Profile() {
                     <hr className='mt-2 mb-4'></hr>
                     <ChangePassword />
                 </div>
-                <div className={(index1 === 2 ? 'visible' : 'hidden')+' flex flex-col space-y-2'}>
-                    <Noti/>
-                    <Noti/>
-                    <Noti/>
-                    <Noti/>
-                    <Noti/>
+                <div className={(index1 === 2 ? 'visible' : 'hidden') + ' flex flex-col space-y-2'}>
+                    <Noti />
+                    <Noti />
+                    <Noti />
+                    <Noti />
+                    <Noti />
                 </div>
             </div>
-            {index1===1 && (<Order/>)}
+            {index1 === 1 && <Order />}
         </div>
     );
 }
