@@ -1,4 +1,4 @@
-import Profile from '../../components/profile/profile';
+import Profile from '.././components/profile/profile';
 
 export const metadata = {
     title: 'Tài khoản của tôi | TechWorld',
