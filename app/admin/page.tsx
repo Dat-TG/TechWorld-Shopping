@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import AdminLayout from '../AdminLayout';
+import AdminPage from '../components/admin/AdminPage';
 
 export const metadata = {
     title: 'Admin site | TechWorld',
@@ -7,9 +8,9 @@ export const metadata = {
 };
 
 export default function Page() {
-    return <div className='flex justify-center items-center'>Hello admin</div>;
+    return <AdminPage />;
 }
 
-Page.getLayout = (page:ReactNode) => {
+Page.getLayout = (page: ReactNode) => {
     return <AdminLayout>{page}</AdminLayout>;
 };

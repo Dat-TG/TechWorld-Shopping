@@ -1,4 +1,3 @@
-import { listUsers } from '../../models/user';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,6 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-    const data = await listUsers();
-    return <div>{JSON.stringify(data)}</div>;
+    return <div></div>;
 }
