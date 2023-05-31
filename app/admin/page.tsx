@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 export default function Page() {
-    return <div>Hello admin</div>;
+    return <div className='flex justify-center items-center'>Hello admin</div>;
 }
 
 Page.getLayout = (page:ReactNode) => {
