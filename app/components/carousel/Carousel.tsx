@@ -28,7 +28,7 @@ export default function Carousel({ slides }: { slides: Array<Data> }) {
     };
 
     return (
-        <div className='w-full m-0 relative group -translate-x-0 translate-y-[-25%]'>
+        <div className='w-full m-0 relative group -translate-x-0 translate-y-[-5%]'>
             <div className={'flex justify-center '}>
                 <Link href={slides[currentIndex].href} className='w-full mx-2'>
                     <img
