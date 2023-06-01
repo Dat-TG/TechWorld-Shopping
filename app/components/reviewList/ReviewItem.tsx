@@ -4,12 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { ratingList } from '../constrains';
 
-interface OrderItemProp {
-    enableDeleteModel?: boolean;
-    setEnableDeleteModel?: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function ReviewItem(props: OrderItemProp) {
+function ReviewItem() {
     const [updateRating, setUpdateRating] = useState(false);
     const [remove, setRemove] = useState(false);
 
