@@ -4,6 +4,7 @@ import { useState } from 'react';
 import AllProduct from './AllProduct';
 import Trending from './Trending';
 import AddProduct from './AddProduct';
+import DashBoard from './DashBoard';
 
 export default function AdminPage() {
     const [index, setIndex] = useState(0);
@@ -140,16 +141,16 @@ export default function AdminPage() {
                 </div>
             </div>
             <div className='w-4/5 flex items-center flex-col mt-10 mr-10'>
-                <div className={index === 0 ? '' : 'hidden '}>
-                    <div className='w-full'>Hello admin</div>
+                <div className={index === 0 ? 'w-full' : 'hidden '}>
+                    <DashBoard/>
                 </div>
-                <div className={index === 1 && tab === 0 ? '' : 'hidden'}>
+                <div className={index === 1 && tab === 0 ? 'w-full' : 'hidden'}>
                     <AllProduct />
                 </div>
-                <div className={index === 1 && tab === 1 ? '' : 'hidden'}>
+                <div className={index === 1 && tab === 1 ? 'w-full' : 'hidden'}>
                     <Trending />
                 </div>
-                <div className={index === 1 && tab === 2 ? '' : 'hidden'}>
+                <div className={index === 1 && tab === 2 ? 'w-full' : 'hidden'}>
                     <AddProduct />
                 </div>
             </div>

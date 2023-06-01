@@ -85,6 +85,7 @@ export default function FormAddProduct() {
                         {...register('category', {
                             required: true,
                         })}
+                        defaultValue={''}
                     >
                         <option value=''>Chọn một danh mục</option>
                         <option value={['1','Laptop']}>Laptop</option>
@@ -105,8 +106,7 @@ export default function FormAddProduct() {
                         {...register('description', {
                             required: true,
                         })}
-                        style={{width: 300}}
-                        className='resize-vertical px-2 py-2'
+                        className='resize-vertical px-2 py-2 w-full'
                     >
                     </textarea>
                     {errors.description?.type === 'required' && (
