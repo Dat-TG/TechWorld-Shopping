@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import AllProduct from './AllProduct';
+import OrderList from '../orderList/OrderList';
+import OrderDetail from '../orderList/OrderDetail';
 import Trending from './Trending';
 import AddProduct from './AddProduct';
 import DashBoard from './DashBoard';
@@ -12,7 +14,7 @@ export default function AdminPage() {
     const [isProductClicking, setProductClicking] = useState(false);
     return (
         <>
-            <div className='w-1/5 flex justify-start items-center flex-col mt-10 mr-10 min-h-screen'>
+            <div className='w-1/5 flex flex-col justify-start items-center  mr-10 min-h-screen'>
                 <div className='bg-white w-full h-full flex flex-col px-5 py-5 space-y-3 shadow-lg'>
                     <div className='flex items-center space-x-5'>
                         <img className='w-20 h-20' src='/images/logo.png'></img>
@@ -129,6 +131,19 @@ export default function AdminPage() {
                         <i className='bi bi-people'></i>
                         <p className='text-md'>Khách hàng</p>
                     </div>
+                    <div
+                        className={
+                            'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer' +
+                            (index === 5 ? ' bg-gray-100' : '')
+                        }
+                        onClick={() => {
+                            setIndex(5);
+                            setProductClicking(false);
+                        }}
+                    >
+                        <i className='bi bi-people'></i>
+                        <p className='text-md'>Xem chi tiết đơn hàng "Để tạm xóa sau"</p>
+                    </div>
                     <Link
                         href='/'
                         className={
@@ -140,6 +155,7 @@ export default function AdminPage() {
                     </Link>
                 </div>
             </div>
+
             <div className='w-4/5 flex items-center flex-col mt-10 mr-10'>
                 <div className={index === 0 ? 'w-full' : 'hidden '}>
                     <DashBoard/>
@@ -147,6 +163,14 @@ export default function AdminPage() {
                 <div className={index === 1 && tab === 0 ? 'w-full' : 'hidden'}>
                     <AllProduct />
                 </div>
+
+                <div className={index === 2 && tab === 0 ? '' : 'hidden'}>
+                    <OrderList />
+                </div>
+                <div className={index === 5 && tab === 0 ? '' : 'hidden'}>
+                    <OrderDetail />
+                 </div>
+
                 <div className={index === 1 && tab === 1 ? 'w-full' : 'hidden'}>
                     <Trending />
                 </div>
