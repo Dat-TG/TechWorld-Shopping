@@ -2,6 +2,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import AllProduct from './AllProduct';
+import Trending from './Trending';
+import AddProduct from './AddProduct';
+import DashBoard from './DashBoard';
 
 export default function AdminPage() {
     const [index, setIndex] = useState(0);
@@ -52,7 +55,7 @@ export default function AdminPage() {
                     <div className={isProductClicking ? '' : 'hidden ' + 'ms-3'}>
                         <div
                             className={
-                                'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer' +
+                                'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer mb-3 ' +
                                 (tab === 0 ? ' bg-gray-100' : '')
                             }
                             onClick={() => {
@@ -64,7 +67,7 @@ export default function AdminPage() {
                         </div>
                         <div
                             className={
-                                'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer' +
+                                'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer my-3 ' +
                                 (tab === 1 ? ' bg-gray-100' : '')
                             }
                             onClick={() => {
@@ -76,7 +79,7 @@ export default function AdminPage() {
                         </div>
                         <div
                             className={
-                                'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer' +
+                                'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer mt-3 ' +
                                 (tab === 2 ? ' bg-gray-100' : '')
                             }
                             onClick={() => {
@@ -89,7 +92,7 @@ export default function AdminPage() {
                     </div>
                     <div
                         className={
-                            'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer' +
+                            'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer ' +
                             (index === 2 ? ' bg-gray-100' : '')
                         }
                         onClick={() => {
@@ -138,11 +141,17 @@ export default function AdminPage() {
                 </div>
             </div>
             <div className='w-4/5 flex items-center flex-col mt-10 mr-10'>
-                <div className={index === 0 ? '' : 'hidden '}>
-                    <div className='w-full'>Hello admin</div>
+                <div className={index === 0 ? 'w-full' : 'hidden '}>
+                    <DashBoard/>
                 </div>
-                <div className={index === 1 && tab === 0 ? '' : 'hidden'}>
+                <div className={index === 1 && tab === 0 ? 'w-full' : 'hidden'}>
                     <AllProduct />
+                </div>
+                <div className={index === 1 && tab === 1 ? 'w-full' : 'hidden'}>
+                    <Trending />
+                </div>
+                <div className={index === 1 && tab === 2 ? 'w-full' : 'hidden'}>
+                    <AddProduct />
                 </div>
             </div>
         </>
