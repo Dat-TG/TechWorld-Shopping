@@ -158,18 +158,18 @@ export default function AdminPage() {
 
             <div className='w-4/5 flex items-center flex-col mt-10 mr-10'>
                 <div className={index === 0 ? 'w-full' : 'hidden '}>
-                    <DashBoard/>
+                    <DashBoard />
                 </div>
                 <div className={index === 1 && tab === 0 ? 'w-full' : 'hidden'}>
                     <AllProduct />
                 </div>
 
-                <div className={index === 2 && tab === 0 ? '' : 'hidden'}>
+                <div className={index === 2 ? '' : 'hidden'}>
                     <OrderList />
                 </div>
-                <div className={index === 5 && tab === 0 ? '' : 'hidden'}>
+                <div className={index === 5 ? '' : 'hidden'}>
                     <OrderDetail />
-                 </div>
+                </div>
 
                 <div className={index === 1 && tab === 1 ? 'w-full' : 'hidden'}>
                     <Trending />

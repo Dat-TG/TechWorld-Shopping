@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { Notify } from 'notiflix';
 
 export default function Register() {
     const session = useSession();
@@ -58,7 +59,16 @@ export default function Register() {
                 password: data.password,
             }),
         })
-            .then(() => signIn('credentials', { phone: data.phone, password: data.password }))
+            .then(async () => {
+                const res=await signIn('credentials', { phone: data.phone, password: data.password }).then(callback=>{
+                    if (callback?.error) {
+                        Notify.failure('Số điện thoại đã được sử dụng. Vui lòng dùng số điện thoại khác',{
+                            clickToClose: true,
+                            closeButton: true
+                        });
+                    }
+                });
+            })
             .catch(() => toast.error('Đã có lỗi xảy ra'));
     };
     return (

@@ -2,10 +2,11 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import EditProfile from '../form/EditProfile';
-import { User } from '../../models/user';
 import ChangePassword from '../form/ChangePassword';
 import Order from '../order/Order';
 import Noti from '../noti/Noti';
+import { useSession } from 'next-auth/react';
+import { User } from 'next-auth';
 
 type Address = {
     name: string;
@@ -18,7 +19,9 @@ export default function Profile() {
     const [index1, setIndex1] = useState(0);
     const [index2, setIndex2] = useState(0);
     const [address, setAddress] = useState<Array<Address>>([]);
-    let user = {} as User;
+    const session=useSession();
+    console.log(session);
+    const user=session.data?.user;
     const params = useSearchParams();
     const tab = params.get('tab'),
         index = params.get('index');
@@ -43,15 +46,6 @@ export default function Profile() {
             },
         ]);
     }, []);
-    const componentWillMount = () => {
-        user = {
-            name: 'Lê Công Đắt',
-            phone: '0794299810',
-            email: '',
-            avatar: '',
-        } as User;
-    };
-    useState(componentWillMount);
     return (
         <div className='flex justify-around my-20 mx-10'>
             <div className='flex flex-col justify-center items-start me-20 w-60 h-full space-y-5'>
