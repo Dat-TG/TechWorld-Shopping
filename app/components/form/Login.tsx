@@ -44,6 +44,7 @@ export default function Login() {
             password: data.password,
             redirect: false,
         }).then(callback => {
+            setLogining(false);
             if (callback?.error) {
                 Notify.failure(
                     'Đăng nhập không thành công. Số điện thoại hoặc mật khẩu không chính xác',

@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
 import prisma from './prismadb';
+import { Notify } from 'notiflix';
+import { NextResponse } from 'next/server';
 
 // export enum Role {
 //     ADMIN = 'admin',
@@ -81,5 +83,17 @@ export async function auth(phone: string, password: string) {
         throw new Error('Invalid Credentials');
     }
 
+    return user;
+}
+
+export async function getUserByPhone(phone: string) {
+    const user = await prisma.user.findFirst({
+        where: {
+            phone: phone
+        }
+    });
+    if (!user) {
+        throw new Error('User does not exist');
+    }
     return user;
 }
