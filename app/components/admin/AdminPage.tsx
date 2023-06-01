@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import AllProduct from './AllProduct';
+import Trending from './Trending';
 
 export default function AdminPage() {
     const [index, setIndex] = useState(0);
@@ -143,6 +144,9 @@ export default function AdminPage() {
                 </div>
                 <div className={index === 1 && tab === 0 ? '' : 'hidden'}>
                     <AllProduct />
+                </div>
+                <div className={index === 1 && tab === 1 ? '' : 'hidden'}>
+                    <Trending />
                 </div>
             </div>
         </>
