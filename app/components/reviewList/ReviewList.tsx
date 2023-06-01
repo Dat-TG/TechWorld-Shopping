@@ -1,22 +1,20 @@
 'use client';
 
-import React, { useState } from 'react';
-import OrderItem from './OrderItem';
-import DeleteOrderModel from './DeleteOrderModel';
+import React from 'react';
+import ReviewItem from './ReviewItem';
 
-function OrderList() {
-    const [enableDeleteModel, setEnableDeleteModel] = useState(false);
+function ReviewList() {
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
             <div className='flex items-center justify-between'>
                 <div>
                     <div className='flex items-center gap-x-3'>
                         <h2 className='text-lg font-medium text-gray-800 dark:text-white'>
-                            Quản lý đơn hàng
+                            Quản lý đánh giá
                         </h2>
 
                         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
-                            240 đơn đặt hàng
+                            Tổng 1001 đánh giá
                         </span>
                     </div>
                 </div>
@@ -29,17 +27,20 @@ function OrderList() {
                     </button>
 
                     <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Chưa duyệt
+                        1 sao
                     </button>
 
                     <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đang vận chuyển
+                        2 sao
                     </button>
                     <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đã giao
+                        3 sao
                     </button>
                     <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đã hủy
+                        4 sao
+                    </button>
+                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
+                        5 sao
                     </button>
                 </div>
 
@@ -81,7 +82,7 @@ function OrderList() {
                                             className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
                                             <button className='flex items-center gap-x-3 focus:outline-none'>
-                                                <span>OrderID</span>
+                                                <span>ProductID</span>
                                             </button>
                                         </th>
 
@@ -89,83 +90,106 @@ function OrderList() {
                                             scope='col'
                                             className='px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
-                                            Trạng thái
+                                            Đánh giá
                                         </th>
 
                                         <th
                                             scope='col'
                                             className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
-                                            Ngày đặt đơn
+                                            Ngày đánh giá
                                         </th>
-
                                         <th
                                             scope='col'
                                             className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
-                                            Tổng cộng
+                                            Người đánh giá
                                         </th>
-
                                         <th
                                             scope='col'
                                             className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
-                                            Người đặt đơn hàng
+                                            Nội dung
                                         </th>
-                                        <th
-                                            scope='col'
-                                            className='px-4 py-3.5 text-sm font-normal text-center rtl:text-right text-gray-500 dark:text-gray-400'
-                                        >
-                                            SĐT
-                                        </th>
+
                                         <th scope='col' className='relative py-3.5 px-4'>
                                             <span className='sr-only'>Edit</span>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
+                                    <ReviewItem />
+                                    <ReviewItem />
+                                    <ReviewItem />
+                                    <ReviewItem />
+                                    <ReviewItem />
+                                    <ReviewItem />
+                                    <ReviewItem />
+                                    <ReviewItem />
+                                    <ReviewItem />
                                 </tbody>
                             </table>
-                            <DeleteOrderModel
-                                enableDeleteModel={enableDeleteModel}
-                                setEnableDeleteModel={setEnableDeleteModel}
-                            />
+                            <div className={`hidden  z-10`}>
+                                <div className='fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity'></div>
+
+                                <div className='fixed inset-0 z-10 overflow-y-auto'>
+                                    <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
+                                        <div className='relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg'>
+                                            <div className='bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
+                                                <div className='sm:flex sm:items-start'>
+                                                    <div className='mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10'>
+                                                        <svg
+                                                            className='h-6 w-6 text-red-600'
+                                                            fill='none'
+                                                            viewBox='0 0 24 24'
+                                                            strokeWidth='1.5'
+                                                            stroke='currentColor'
+                                                            aria-hidden='true'
+                                                        >
+                                                            <path
+                                                                strokeLinecap='round'
+                                                                strokeLinejoin='round'
+                                                                d='M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z'
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                    <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
+                                                        <h3
+                                                            className='text-base font-semibold leading-6 text-gray-900'
+                                                            id='modal-title'
+                                                        >
+                                                            Xác nhận xóa đơn hàng #101
+                                                        </h3>
+                                                        <div className='mt-2'>
+                                                            <p className='text-sm text-gray-500'>
+                                                                Tất cả dữ liệu liên quan tới đơn
+                                                                hàng #101 sẽ bị xóa và không thể
+                                                                hoàn tác
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6'>
+                                                <button
+                                                    type='button'
+                                                    // onClick={() => setEnableDeleteModel(false)}
+                                                    className='inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto'
+                                                >
+                                                    Chắc chắn
+                                                </button>
+                                                <button
+                                                    type='button'
+                                                    // onClick={() => setEnableDeleteModel(false)}
+                                                    className='mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto'
+                                                >
+                                                    Suy nghĩ thêm
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,4 +251,4 @@ function OrderList() {
     );
 }
 
-export default OrderList;
+export default ReviewList;

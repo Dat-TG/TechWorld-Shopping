@@ -2,10 +2,15 @@
 
 import React from 'react';
 
-function DeleteOrderModel() {
+interface OrderModelProps {
+    enableDeleteModel: boolean;
+    setEnableDeleteModel: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function DeleteOrderModel({ enableDeleteModel, setEnableDeleteModel }: OrderModelProps) {
     return (
-        <div className='relative z-10'>
-            <div className='fixed inset-0 bg-gray-500 bg-opacity-5 transition-opacity'></div>
+        <div className={`${enableDeleteModel ? 'relative' : 'hidden'}  z-10`}>
+            <div className='fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity'></div>
 
             <div className='fixed inset-0 z-10 overflow-y-auto'>
                 <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
@@ -47,12 +52,14 @@ function DeleteOrderModel() {
                         <div className='bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6'>
                             <button
                                 type='button'
+                                onClick={() => setEnableDeleteModel(false)}
                                 className='inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto'
                             >
                                 Chắc chắn
                             </button>
                             <button
                                 type='button'
+                                onClick={() => setEnableDeleteModel(false)}
                                 className='mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto'
                             >
                                 Suy nghĩ thêm
