@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import { useState } from 'react';
 import AllProduct from './AllProduct';
@@ -7,6 +8,8 @@ import OrderDetail from '../orderList/OrderDetail';
 import Trending from './Trending';
 import AddProduct from './AddProduct';
 import DashBoard from './DashBoard';
+import ReviewList from '../reviewList/ReviewList';
+import UserList from '../userList/UserList';
 
 export default function AdminPage() {
     const [index, setIndex] = useState(0);
@@ -156,26 +159,30 @@ export default function AdminPage() {
                 </div>
             </div>
 
-            <div className='w-4/5 flex items-center flex-col mt-10 mr-10'>
+            <div className='w-4/5 flex flex-col mt-10 mr-10'>
                 <div className={index === 0 ? 'w-full' : 'hidden '}>
                     <DashBoard />
                 </div>
                 <div className={index === 1 && tab === 0 ? 'w-full' : 'hidden'}>
                     <AllProduct />
                 </div>
-
-                <div className={index === 2 ? '' : 'hidden'}>
-                    <OrderList />
-                </div>
-                <div className={index === 5 ? '' : 'hidden'}>
-                    <OrderDetail />
-                </div>
-
                 <div className={index === 1 && tab === 1 ? 'w-full' : 'hidden'}>
                     <Trending />
                 </div>
                 <div className={index === 1 && tab === 2 ? 'w-full' : 'hidden'}>
                     <AddProduct />
+                </div>
+                <div className={index === 2 ? '' : 'hidden'}>
+                    <OrderList />
+                </div>
+                <div className={index === 3 ? '' : 'hidden'}>
+                    <ReviewList />
+                </div>
+                <div className={index === 3 ? '' : 'hidden'}>
+                    <UserList />
+                </div>
+                <div className={index === 5 ? '' : 'hidden'}>
+                    <OrderDetail />
                 </div>
             </div>
         </>

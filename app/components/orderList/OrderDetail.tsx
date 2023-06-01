@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import Input from '../widgets/input/Input';
 import { statusOrder } from '../constrains';
 import CartItem from '../myCart/CartItem';
+import Button from '../widgets/button/Button';
 
 function OrderDetail() {
     const [updateStatus, setUpdateStatus] = useState(false);
 
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
-            <div className='flex items-center justify-between mb-8'>
+            <div className='flex flex-row  items-center justify-between mb-8'>
                 <div className='flex items-center gap-x-3'>
                     <button>
                         <i className='bi bi-arrow-left text-lg'></i>
@@ -19,6 +20,12 @@ function OrderDetail() {
                     <h2 className='text-lg font-medium text-gray-800 dark:text-white'>
                         Đơn hàng #102
                     </h2>
+                </div>
+                <div className='flex flex-row'>
+                    <Button className='w-20 bg-green-700 text-white px-6 hover:bg-green-800 mr-6'>
+                        Save
+                    </Button>
+                    <Button className='w-20 bg-red-700 text-white hover:bg-red-800'>Delete</Button>
                 </div>
             </div>
             <div className='w-full flex bg-white px-6 pb-8 pt-6 rounded-md flex-col mb-6'>
