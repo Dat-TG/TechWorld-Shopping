@@ -1,14 +1,25 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { statusOrder } from '../constrains';
 
-function OrderItem() {
-    const statusOrder = ['Pending', 'Processing', 'Refunded', 'Completed', 'Canceled'];
+interface OrderItemProp {
+    enableDeleteModel?: boolean;
+    setEnableDeleteModel?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function OrderItem(props: OrderItemProp) {
     const [updateStatus, setUpdateStatus] = useState(false);
     const [settings, setSettings] = useState(false);
+
+    useEffect(() => {
+        setUpdateStatus(false);
+        setSettings(false);
+    }, []);
+
     return (
-        <tr className='hover:bg-slate-200'>
+        <tr className='hover:bg-slate-100'>
             <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
                 <div>
                     <h2 className='font-medium text-gray-800 dark:text-white '>#101</h2>
@@ -51,9 +62,7 @@ function OrderItem() {
                     <div className='font-medium pl-2 '>admin</div>
                 </div>
             </td>
-            <td className='px-4 py-4 text-sm text-center whitespace-nowrap'>
-                0123456789
-            </td>
+            <td className='px-4 py-4 text-sm text-center whitespace-nowrap'>0123456789</td>
 
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
                 <button
@@ -84,13 +93,18 @@ function OrderItem() {
                         settings ? 'absolute' : 'hidden'
                     } bg-white z-10 w-28 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                 >
-                    <div className='p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'>
-                        Xem chi tiết
-                    </div>
-                    <div className='p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'>
+                    <div className='p-2 pl-4 hover:bg-yellow-200 cursor-pointer border-b'>
                         Chỉnh sửa
                     </div>
-                    <div className='p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'>Xóa</div>
+                    <button
+                        onClick={() => {
+                            if (props.setEnableDeleteModel != null)
+                                props.setEnableDeleteModel(!props.enableDeleteModel);
+                        }}
+                        className='block w-full text-left p-2 pl-4 hover:bg-red-200 cursor-pointer border-b'
+                    >
+                        Xóa
+                    </button>
                 </div>
             </td>
         </tr>

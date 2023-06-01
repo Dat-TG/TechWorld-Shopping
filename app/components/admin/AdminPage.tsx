@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import AllProduct from './AllProduct';
 import OrderList from '../orderList/OrderList';
+import OrderDetail from '../orderList/OrderDetail';
 
 export default function AdminPage() {
     const [index, setIndex] = useState(0);
@@ -127,6 +128,19 @@ export default function AdminPage() {
                         <i className='bi bi-people'></i>
                         <p className='text-md'>Khách hàng</p>
                     </div>
+                    <div
+                        className={
+                            'hover:bg-gray-100 rounded-xl flex py-3 px-3 space-x-3 cursor-pointer' +
+                            (index === 5 ? ' bg-gray-100' : '')
+                        }
+                        onClick={() => {
+                            setIndex(5);
+                            setProductClicking(false);
+                        }}
+                    >
+                        <i className='bi bi-people'></i>
+                        <p className='text-md'>Xem chi tiết đơn hàng "Để tạm xóa sau"</p>
+                    </div>
                     <Link
                         href='/'
                         className={
@@ -148,6 +162,9 @@ export default function AdminPage() {
                 <div className={index === 2 && tab === 0 ? '' : 'hidden'}>
                     <OrderList />
                 </div>
+                <div className={index === 5 && tab === 0 ? '' : 'hidden'}>
+                    <OrderDetail />
+                 </div>
             </div>
         </>
     );

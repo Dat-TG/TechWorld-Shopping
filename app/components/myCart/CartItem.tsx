@@ -1,12 +1,21 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 import Input from '../widgets/input/Input';
 import Button from '../widgets/button/Button';
 
-function CartItem() {
+interface CartItemProps {
+    enableCheckbox?: boolean;
+}
+
+function CartItem(props: CartItemProps) {
     return (
-        <div className='flex flex-row bg-white rounded-sm px-4 py-4 items-center text-base '>
-            <Input type='checkbox' className=' scale-125 mr-4' />
+        <div className='flex flex-row bg-white rounded-sm px-4 py-4 items-center justify-between text-base w-full'>
+            <Input
+                type='checkbox'
+                className={`${!props.enableCheckbox && 'hidden'} scale-125 mr-4`}
+            />
             <Image
                 src='/images/ava-plus-la-y68-190722-051129-600x600.jpeg'
                 width={100}
@@ -31,5 +40,9 @@ function CartItem() {
         </div>
     );
 }
+
+CartItem.defaultProps = {
+    enableCheckbox: true,
+};
 
 export default CartItem;

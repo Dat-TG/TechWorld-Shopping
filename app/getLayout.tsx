@@ -7,7 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const pathName = usePathname();
     console.log('pathname: ', pathName);
     // eslint-disable-next-line react/no-children-prop
-    return pathName == '/admin' ? (
+    return pathName.includes('/admin') ? (
         // eslint-disable-next-line react/no-children-prop
         <AdminLayout children={children} />
     ) : (
