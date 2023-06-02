@@ -1,6 +1,26 @@
 import { useForm } from 'react-hook-form';
 
-export default function FormAddProduct() {
+interface Props {
+    ProductId?: string;
+    name?: string;
+    price?: number;
+    categoryId?: string;
+    category?: string;
+    description?: string;
+    showing?: boolean;
+    setShowing?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function FormAddProduct({
+    ProductId,
+    name,
+    price,
+    categoryId,
+    category,
+    description,
+    showing,
+    setShowing,
+}: Props) {
     type Data = {
         name: string;
         price: number;
@@ -16,11 +36,11 @@ export default function FormAddProduct() {
     } = useForm<Data>({
         mode: 'all',
         defaultValues: {
-            name: '',
-            price: undefined,
-            category: '',
-            categoryId: '',
-            description: '',
+            name: name,
+            price: price,
+            category: [categoryId, category].join(),
+            categoryId: categoryId,
+            description: description,
         },
     });
     const onSubmit = async (data: Data) => {
@@ -118,9 +138,23 @@ export default function FormAddProduct() {
             <button
                 type='submit'
                 className='bg-blue-500 rounded-md text-white hover:bg-blue-700 px-2 py-2'
+                onClick={() => {
+                    // Luu thay doi san pham
+                    if (setShowing) setShowing(false);
+                }}
             >
-                Thêm sản phẩm
+                {name ? 'Lưu' : 'Thêm sản phẩm'}
             </button>
+            {name && (
+                <button
+                    className='bg-white rounded-md text-black hover:bg-gray-100 px-2 py-2 ms-5 outline outline-1 outline-gray-500'
+                    onClick={() => {
+                        if (setShowing) setShowing(false);
+                    }}
+                >
+                    Hủy
+                </button>
+            )}
         </form>
     );
 }

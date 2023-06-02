@@ -34,7 +34,9 @@ export default function AllProduct() {
             </div>
             <div className='grid grid-cols-4 gap-10'>
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
@@ -45,7 +47,9 @@ export default function AllProduct() {
                     star={4.5}
                 />
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
@@ -56,7 +60,9 @@ export default function AllProduct() {
                     star={4.5}
                 />
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
@@ -67,7 +73,9 @@ export default function AllProduct() {
                     star={4.5}
                 />
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
@@ -78,7 +86,9 @@ export default function AllProduct() {
                     star={4.5}
                 />
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
@@ -89,7 +99,9 @@ export default function AllProduct() {
                     star={4.5}
                 />
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
@@ -100,7 +112,9 @@ export default function AllProduct() {
                     star={4.5}
                 />
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
@@ -111,7 +125,9 @@ export default function AllProduct() {
                     star={4.5}
                 />
                 <ProductCardAdmin
+                    id='001'
                     category='Laptop'
+                    categoryId='1'
                     className='w-full h-fit px-2 py-2 text-sm'
                     img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
                     left={100}
