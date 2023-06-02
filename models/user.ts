@@ -89,8 +89,8 @@ export async function auth(phone: string, password: string) {
 export async function getUserByPhone(phone: string) {
     const user = await prisma.user.findFirst({
         where: {
-            phone: phone
-        }
+            phone: phone,
+        },
     });
     if (!user) {
         throw new Error('User does not exist');

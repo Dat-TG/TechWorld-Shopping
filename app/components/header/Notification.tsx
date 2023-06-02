@@ -40,7 +40,12 @@ export default function Notification() {
                     <hr></hr>
                     <div className='flex justify-center items-center mt-2'>
                         <Link href='/user?tab=2'>
-                            <button className='text-sm hover:text-amber-500'>Xem tất cả</button>
+                            <button
+                                className='text-sm hover:text-amber-500'
+                                onClick={() => handleMouseOutNoti()}
+                            >
+                                Xem tất cả
+                            </button>
                         </Link>
                     </div>
                 </div>

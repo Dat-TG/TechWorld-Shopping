@@ -20,12 +20,12 @@ export default function FormAddProduct() {
             price: undefined,
             category: '',
             categoryId: '',
-            description: ''
-        }
+            description: '',
+        },
     });
     const onSubmit = async (data: Data) => {
-        data.categoryId=data.category[0];
-        data.category=data.category.substring(2, data.category.length);
+        data.categoryId = data.category[0];
+        data.category = data.category.substring(2, data.category.length);
         console.log(data);
     };
     return (
@@ -88,13 +88,13 @@ export default function FormAddProduct() {
                         defaultValue={''}
                     >
                         <option value=''>Chọn một danh mục</option>
-                        <option value={['1','Laptop']}>Laptop</option>
-                        <option value={['2','Điện thoại']}>Điện thoại</option>
-                        <option value={['3','Phụ kiện']}>Phụ kiện</option>
+                        <option value={['1', 'Laptop']}>Laptop</option>
+                        <option value={['2', 'Điện thoại']}>Điện thoại</option>
+                        <option value={['3', 'Phụ kiện']}>Phụ kiện</option>
                     </select>
                     {errors.category?.type === 'required' && (
                         <p role='alert' className='text-sm text-red-500'>
-                            Vui lòng chọn danh sản phẩm
+                            Vui lòng chọn danh mục sản phẩm
                         </p>
                     )}
                 </div>
@@ -107,8 +107,7 @@ export default function FormAddProduct() {
                             required: true,
                         })}
                         className='resize-vertical px-2 py-2 w-full'
-                    >
-                    </textarea>
+                    ></textarea>
                     {errors.description?.type === 'required' && (
                         <p role='alert' className='text-sm text-red-500'>
                             Vui lòng nhập mô tả sản phẩm
@@ -116,7 +115,12 @@ export default function FormAddProduct() {
                     )}
                 </div>
             </div>
-            <button type='submit' className='bg-blue-500 rounded-md text-white hover:bg-blue-700 px-2 py-2'>Thêm sản phẩm</button>
+            <button
+                type='submit'
+                className='bg-blue-500 rounded-md text-white hover:bg-blue-700 px-2 py-2'
+            >
+                Thêm sản phẩm
+            </button>
         </form>
     );
 }

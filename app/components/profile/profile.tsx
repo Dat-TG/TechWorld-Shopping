@@ -19,9 +19,9 @@ export default function Profile() {
     const [index1, setIndex1] = useState(0);
     const [index2, setIndex2] = useState(0);
     const [address, setAddress] = useState<Array<Address>>([]);
-    const session=useSession();
+    const session = useSession();
+    const user = session.data?.user || {};
     console.log(session);
-    const user=session.data?.user;
     const params = useSearchParams();
     const tab = params.get('tab'),
         index = params.get('index');

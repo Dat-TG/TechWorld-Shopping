@@ -3,7 +3,12 @@ import MyCart from '.././components/myCart/MyCart';
 import FormCustomer from '.././components/myCart/FormCustomer';
 import CartInformation from '.././components/myCart/CartInformation';
 
-function Page() {
+export const metadata = {
+    title: 'Giỏ hàng của tôi | TechWorld',
+    icons: '/images/logo.png',
+};
+
+export default function Page() {
     return (
         <div className='flex flex-row my-4'>
             <div className='block'>
@@ -21,5 +26,3 @@ function Page() {
         </div>
     );
 }
-
-export default Page;
