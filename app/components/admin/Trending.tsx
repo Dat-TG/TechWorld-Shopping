@@ -1,19 +1,13 @@
-'use client';
-import { useEffect, useState } from 'react';
 import ProductCardAdmin from './ProductCardAdmin';
 import CategoryCard from './CategoryCard';
+import Time from './Time';
 
 export default function Trending() {
-    const [time, setTime] = useState('');
-    useEffect(() => {
-        const x = new Date();
-        setTime(x.toLocaleString());
-    });
     return (
         <div className='space-y-5 flex flex-col justify-start mb-5'>
             <div className='bg-white font-bold text-lg w-full px-5 py-2 flex justify-between rounded-lg'>
                 <div>Xu hướng mua sắm</div>
-                <div className='font-normal'>{time}</div>
+                <Time />
             </div>
             <div className='bg-white font-semibold text-lg w-full px-5 py-2 rounded-lg'>
                 Top ngành hàng bán chạy

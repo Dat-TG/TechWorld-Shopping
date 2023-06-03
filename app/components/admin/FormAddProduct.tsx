@@ -1,3 +1,5 @@
+import { Brand, Category } from '@prisma/client';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface Props {
@@ -9,22 +11,40 @@ interface Props {
     description?: string;
     showing?: boolean;
     setShowing?: React.Dispatch<React.SetStateAction<boolean>>;
+    submit?: (data: any) => void;
 }
 
 export default function FormAddProduct({
     ProductId,
     name,
     price,
-    categoryId,
     category,
     description,
     showing,
     setShowing,
+    submit,
 }: Props) {
+    const [brands, setBrands] = useState<Brand[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
+    useEffect(() => {
+        const fetchBrand = async () => {
+            const res = await fetch('http://localhost:3000/api/brand');
+            const data = await res.json();
+            setBrands(data);
+        };
+        const fetchCategory = async () => {
+            const res = await fetch('http://localhost:3000/api/category');
+            const data = await res.json();
+            setCategories(data);
+        };
+        fetchBrand();
+        fetchCategory();
+    }, []);
+
     type Data = {
         name: string;
         price: number;
-        categoryId: string;
+        brand: string;
         category: string;
         description: string;
     };
@@ -35,18 +55,10 @@ export default function FormAddProduct({
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
-        defaultValues: {
-            name: name,
-            price: price,
-            category: [categoryId, category].join(),
-            categoryId: categoryId,
-            description: description,
-        },
     });
     const onSubmit = async (data: Data) => {
-        data.categoryId = data.category[0];
-        data.category = data.category.substring(2, data.category.length);
-        console.log(data);
+        if (setShowing) setShowing(false);
+        if (submit) submit(data);
     };
     return (
         <form className='w-full space-y-5' onSubmit={handleSubmit(onSubmit)}>
@@ -108,11 +120,36 @@ export default function FormAddProduct({
                         defaultValue={''}
                     >
                         <option value=''>Chọn một danh mục</option>
-                        <option value={['1', 'Laptop']}>Laptop</option>
-                        <option value={['2', 'Điện thoại']}>Điện thoại</option>
-                        <option value={['3', 'Phụ kiện']}>Phụ kiện</option>
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
                     </select>
                     {errors.category?.type === 'required' && (
+                        <p role='alert' className='text-sm text-red-500'>
+                            Vui lòng chọn danh mục sản phẩm
+                        </p>
+                    )}
+                </div>
+            </div>
+            <div>
+                <label>Thương hiệu</label>
+                <div className='mt-2'>
+                    <select
+                        {...register('brand', {
+                            required: true,
+                        })}
+                        defaultValue={''}
+                    >
+                        <option value=''>Thương hiệu</option>
+                        {brands.map(brand => (
+                            <option key={brand.id} value={brand.id}>
+                                {brand.name}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.brand?.type === 'required' && (
                         <p role='alert' className='text-sm text-red-500'>
                             Vui lòng chọn danh mục sản phẩm
                         </p>
@@ -138,10 +175,6 @@ export default function FormAddProduct({
             <button
                 type='submit'
                 className='bg-blue-500 rounded-md text-white hover:bg-blue-700 px-2 py-2'
-                onClick={() => {
-                    // Luu thay doi san pham
-                    if (setShowing) setShowing(false);
-                }}
             >
                 {name ? 'Lưu' : 'Thêm sản phẩm'}
             </button>

@@ -1,31 +1,30 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import ProductCardAdmin from './ProductCardAdmin';
+import Time from './Time';
 
 export default function AllProduct() {
-    const [time, setTime] = useState('');
-    useEffect(() => {
-        const x = new Date();
-        setTime(x.toLocaleString());
-    });
     return (
         <div className='space-y-5 flex flex-col justify-start my-5'>
             <div className='bg-white font-bold text-lg w-full px-5 py-2 flex justify-between rounded-lg'>
                 <div>Tất cả sản phẩm</div>
-                <div className='font-normal'>{time}</div>
+                <Time />
             </div>
             <div className='flex justify-end space-x-5'>
-                <select className='w-fit rounded-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-                    <option selected>Phân loại</option>
+                <select
+                    defaultValue={'DEFAULT'}
+                    className='w-fit rounded-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                >
+                    <option value='DEFAULT'>Phân loại</option>
                     <option value='US'>Tất cả</option>
                     <option value='CA'>Điện thoại</option>
                     <option value='FR'>Laptop</option>
                     <option value='DE'>Tai nghe</option>
                 </select>
 
-                <select className='w-fit rounded-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'>
-                    <option selected>Sắp xếp theo</option>
+                <select
+                    defaultValue={'DEFAULT'}
+                    className='w-fit rounded-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                >
+                    <option value='DEFAULT'>Sắp xếp theo</option>
                     <option value='US'>Bán chạy</option>
                     <option value='CA'>Giá: Cao đến thấp</option>
                     <option value='FR'>Giá: Thấp đến cao</option>

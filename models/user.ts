@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt';
 import prisma from './prismadb';
-import { Notify } from 'notiflix';
-import { NextResponse } from 'next/server';
 
 // export enum Role {
 //     ADMIN = 'admin',

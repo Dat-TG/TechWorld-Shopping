@@ -9,13 +9,10 @@ interface CartItemProps {
     enableCheckbox?: boolean;
 }
 
-function CartItem(props: CartItemProps) {
+function CartItem({ enableCheckbox = true }: CartItemProps) {
     return (
         <div className='flex flex-row bg-white rounded-sm px-4 py-4 items-center justify-between text-base w-full'>
-            <Input
-                type='checkbox'
-                className={`${!props.enableCheckbox && 'hidden'} scale-125 mr-4`}
-            />
+            <Input type='checkbox' className={`${!enableCheckbox && 'hidden'} scale-125 mr-4`} />
             <Image
                 src='/images/ava-plus-la-y68-190722-051129-600x600.jpeg'
                 width={100}
@@ -40,9 +37,5 @@ function CartItem(props: CartItemProps) {
         </div>
     );
 }
-
-CartItem.defaultProps = {
-    enableCheckbox: true,
-};
 
 export default CartItem;

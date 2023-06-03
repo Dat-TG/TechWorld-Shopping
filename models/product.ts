@@ -1,48 +1,32 @@
-import { ObjectId } from 'mongodb';
-import clientPromise from './prismadb';
-import { toSlug } from '../utils/helper';
+import { toSlug } from '@/utils/helper';
+import prisma from './prismadb';
+import { AttachmentInput } from './attachment';
 
-export enum AttachmentType {
-    IMAGE = 'image',
-    VIDEO = 'video',
-}
-
-export type Attachment = {
-    _id: ObjectId;
-    name: string;
-    type: AttachmentType;
-    path: string;
-    createdAt: Date;
-    updatedAt: Date;
-};
-
-export type Product = {
-    _id: ObjectId;
-    name: string;
-    slug: string;
-    desciption?: string;
-    price: number;
-    attachments?: Attachment[];
-    categories?: ObjectId[];
-    createdAt: Date;
-    updatedAt: Date;
-};
-
-export async function listProducts(): Promise<Product[]> {
-    const mongoClient = await clientPromise;
-    const products = (await mongoClient.db().collection('product').find({}).toArray()) as Product[];
+export async function listProducts() {
+    const products = await prisma.product.findMany();
     return products;
 }
 
-export async function createProduct(name: string, price: number): Promise<Product> {
-    const mongoClient = await clientPromise;
-    const product = await mongoClient
-        .db()
-        .collection('product')
-        .insertOne({
-            name,
+export async function addProduct(
+    name: string,
+    price: number,
+    description: string,
+    brandId: string,
+    categoryId: string,
+    attachments: AttachmentInput[],
+) {
+    const newProducts = await prisma.product.create({
+        data: {
+            name: name,
             slug: toSlug(name),
-            price,
-        });
-    return product as unknown as Product;
+            price: price,
+            description: description,
+            brandId: brandId,
+            categoryId: categoryId,
+            attachments: {
+                create: attachments,
+            },
+        },
+    });
+    return newProducts;
 }

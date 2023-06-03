@@ -32,13 +32,16 @@ model User {
 model Product {
     id          String       @id @default(auto()) @map("_id") @db.ObjectId
     name        String
+    slug        String       @unique
     description String?
     price       Float
     createdAt   DateTime     @default(now())
     updatedAt   DateTime     @updatedAt
-    attachment  Attachment[]
+    attachments Attachment[]
     category    Category?    @relation(fields: [categoryId], references: [id])
     categoryId  String?      @db.ObjectId
+    brand       Brand?       @relation(fields: [brandId], references: [id])
+    brandId     String?      @db.ObjectId
     CartItem    CartItem[]
     Invoice     Invoice[]
 }
@@ -55,12 +58,10 @@ model Attachment {
 }
 
 model Category {
-    id       String     @id @default(auto()) @map("_id") @db.ObjectId
-    name     String
-    children Category[] @relation("CategoryToCategory")
-    parentId String?    @db.ObjectId
-    parent   Category?  @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    Product  Product[]
+    id      String    @id @default(auto()) @map("_id") @db.ObjectId
+    name    String
+    slug    String    @unique
+    Product Product[]
 }
 
 model Cart {
@@ -92,6 +93,13 @@ model Invoice {
     userId       String?  @db.ObjectId
     Product      Product? @relation(fields: [productId], references: [id])
     productId    String?  @db.ObjectId
+}
+
+model Brand {
+    id      String    @id @default(auto()) @map("_id") @db.ObjectId
+    name    String
+    slug    String    @unique
+    Product Product[]
 }
 
 type VerificationToken {
