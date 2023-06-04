@@ -11,7 +11,7 @@ export async function GET(
 ) {
     try {
         const { id } = params;
-        const product = getProductById(id);
+        const product = await getProductById(id);
         return NextResponse.json(product);
     } catch (error: any) {
         console.error(error, 'Error fetching product');

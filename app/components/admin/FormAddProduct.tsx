@@ -1,7 +1,7 @@
 'use client';
 import { ProductSelect } from '@/models/product';
 import { Brand, Category } from '@prisma/client';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from './Time';
 
@@ -28,6 +28,12 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
         };
         fetchBrand();
         fetchCategory();
+    }, []);
+
+    useEffect(() => {
+        setImageSources(imageSources => [
+            ...(product?.attachments?.map(attachment => attachment.path) ?? []),
+        ]);
     }, []);
 
     type Data = {
@@ -128,49 +134,57 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                         </div>
                         <div>
                             <label>Danh mục</label>
-                            <div className='mt-2'>
-                                <select
-                                    {...register('category', {
-                                        required: true,
-                                    })}
-                                    defaultValue={product?.category?.id}
-                                >
-                                    <option value=''>Chọn một danh mục</option>
-                                    {categories.map(category => (
-                                        <option key={category.id} value={category.id}>
-                                            {category.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.category?.type === 'required' && (
-                                    <p role='alert' className='text-sm text-red-500'>
-                                        Vui lòng chọn danh mục sản phẩm
-                                    </p>
-                                )}
-                            </div>
+                            {categories.length ? (
+                                <div className='mt-2'>
+                                    <select
+                                        {...register('category', {
+                                            required: true,
+                                        })}
+                                        value={product?.category?.id}
+                                    >
+                                        <option value=''>Chọn một danh mục</option>
+                                        {categories.map(category => (
+                                            <option key={category.id} value={category.id}>
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.category?.type === 'required' && (
+                                        <p role='alert' className='text-sm text-red-500'>
+                                            Vui lòng chọn danh mục sản phẩm
+                                        </p>
+                                    )}
+                                </div>
+                            ) : (
+                                <p>loading...</p>
+                            )}
                         </div>
                         <div>
                             <label>Thương hiệu</label>
-                            <div className='mt-2'>
-                                <select
-                                    {...register('brand', {
-                                        required: true,
-                                    })}
-                                    defaultValue={product?.brand?.id}
-                                >
-                                    <option value=''>Thương hiệu</option>
-                                    {brands.map(brand => (
-                                        <option key={brand.id} value={brand.id}>
-                                            {brand.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.brand?.type === 'required' && (
-                                    <p role='alert' className='text-sm text-red-500'>
-                                        Vui lòng chọn thương hiệu sản phẩm
-                                    </p>
-                                )}
-                            </div>
+                            {brands.length ? (
+                                <div className='mt-2'>
+                                    <select
+                                        {...register('brand', {
+                                            required: true,
+                                        })}
+                                        value={product?.brand?.id}
+                                    >
+                                        <option value=''>Thương hiệu</option>
+                                        {brands.map(brand => (
+                                            <option key={brand.id} value={brand.id}>
+                                                {brand.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.brand?.type === 'required' && (
+                                        <p role='alert' className='text-sm text-red-500'>
+                                            Vui lòng chọn thương hiệu sản phẩm
+                                        </p>
+                                    )}
+                                </div>
+                            ) : (
+                                <p>loading...</p>
+                            )}
                         </div>
                         <div>
                             <label>Mô tả sản phẩm</label>
@@ -196,12 +210,7 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                             {product ? 'Lưu' : 'Thêm sản phẩm'}
                         </button>
                         {product && (
-                            <button
-                                className='bg-white rounded-md text-black hover:bg-gray-100 px-2 py-2 ms-5 outline outline-1 outline-gray-500'
-                                onClick={() => {
-                                    if (setShowing) setShowing(false);
-                                }}
-                            >
+                            <button className='bg-white rounded-md text-black hover:bg-gray-100 px-2 py-2 ms-5 outline outline-1 outline-gray-500'>
                                 Hủy
                             </button>
                         )}

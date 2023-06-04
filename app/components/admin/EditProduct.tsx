@@ -1,42 +1,51 @@
 'use client';
-import { AttachmentType } from '@prisma/client';
+import { AttachmentType, Product } from '@prisma/client';
 import FormAddProduct from './FormAddProduct';
 import { AttachmentInput } from '@/models/attachment';
 import { useEffect, useState } from 'react';
+import { ProductSelect } from '@/models/product';
+
+function useProduct(url: string) {
+    const [product, setProduct] = useState(null);
+    useEffect(() => {
+        let ignore = false;
+        fetch(url)
+            .then(response => response.json())
+            .then(json => {
+                if (!ignore) {
+                    setProduct(json);
+                }
+            });
+        return () => {
+            ignore = true;
+        };
+    }, [url]);
+    return product;
+}
 
 export default function EditProduct({ params }: { params: { id: string } }) {
-    const [product, setProduct] = useState<any>(null);
-    useEffect(() => {
-        const res = fetch(`http://localhost:3000/api/product/${params.id}`)
-            .then(res => res.json())
-            .then(res => setProduct(res))
-            .catch(err => console.log(err));
-    }, [product]);
+    const product = useProduct(`http://localhost:3000/api/product/${params.id}`);
 
     const onSumbit = async (product: any, images: string[]) => {
-        console.log(product);
-        console.log(images);
         // try {
-        //     const requests = images.map((image: string) => {
-        //         const formData = new FormData();
-        //         formData.append('file', image);
-        //         formData.append('upload_preset', 'cvp46avx');
-
-        //         return fetch('https://api.cloudinary.com/v1_1/dgwf1woqx/image/upload', {
-        //             method: 'POST',
-        //             body: formData,
+        //     const requests = images
+        //         .filter(image => !image.startsWith('http'))
+        //         .map((image: string) => {
+        //             const formData = new FormData();
+        //             formData.append('file', image);
+        //             formData.append('upload_preset', 'cvp46avx');
+        //             return fetch('https://api.cloudinary.com/v1_1/dgwf1woqx/image/upload', {
+        //                 method: 'POST',
+        //                 body: formData,
+        //             });
         //         });
-        //     });
         //     const responses = await Promise.all(requests);
         //     const errors = responses.filter(response => !response.ok);
-
         //     if (errors.length > 0) {
         //         throw errors.map(response => Error(response.statusText));
         //     }
-
         //     const json = responses.map(response => response.json());
         //     const data = await Promise.all(json);
-
         //     const attachments = data.map((asset: any) => {
         //         return { name: asset.asset_id, path: asset.secure_url, type: AttachmentType.IMAGE };
         //     }) as AttachmentInput[];
@@ -60,5 +69,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
         //     console.log(errors);
         // }
     };
-    return <FormAddProduct submit={onSumbit} product={product} />;
+    return (
+        <>{product ? <FormAddProduct submit={onSumbit} product={product} /> : <div>loading</div>}</>
+    );
 }
