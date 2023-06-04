@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import prisma from './prismadb';
+import prisma from '../libs/prismadb';
 
 // export enum Role {
 //     ADMIN = 'admin',

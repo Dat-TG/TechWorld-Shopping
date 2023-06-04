@@ -1,5 +1,5 @@
 import { Attachment, AttachmentType } from '@prisma/client';
-import prisma from './prismadb';
+import prisma from '../libs/prismadb';
 
 export type AttachmentInput = {
     name: string;

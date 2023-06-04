@@ -1,7 +1,15 @@
+import { listProducts } from '@/models/product';
 import ProductCardAdmin from './ProductCardAdmin';
 import Time from './Time';
 
-export default function AllProduct() {
+async function getProducts() {
+    const products = await listProducts();
+    return products;
+}
+
+export default async function AllProduct() {
+    const products = await getProducts();
+
     return (
         <div className='space-y-5 flex flex-col justify-start my-5'>
             <div className='bg-white font-bold text-lg w-full px-5 py-2 flex justify-between rounded-lg'>
@@ -11,7 +19,7 @@ export default function AllProduct() {
             <div className='flex justify-end space-x-5'>
                 <select
                     defaultValue={'DEFAULT'}
-                    className='w-fit rounded-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className='w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 >
                     <option value='DEFAULT'>Phân loại</option>
                     <option value='US'>Tất cả</option>
@@ -22,7 +30,7 @@ export default function AllProduct() {
 
                 <select
                     defaultValue={'DEFAULT'}
-                    className='w-fit rounded-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                    className='w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 >
                     <option value='DEFAULT'>Sắp xếp theo</option>
                     <option value='US'>Bán chạy</option>
@@ -32,110 +40,13 @@ export default function AllProduct() {
                 </select>
             </div>
             <div className='grid grid-cols-4 gap-10'>
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
-                <ProductCardAdmin
-                    id='001'
-                    category='Laptop'
-                    categoryId='1'
-                    className='w-full h-fit px-2 py-2 text-sm'
-                    img='https://cdn.tgdd.vn/Products/Images/44/231244/apple-macbook-air-2020-mgn63saa-280323-125150.jpg'
-                    left={100}
-                    price={22990000}
-                    salePrice={18490000}
-                    name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
-                    sold={12}
-                    star={4.5}
-                />
+                {products.map(product => (
+                    <ProductCardAdmin
+                        key={product.id}
+                        product={product}
+                        className='w-full h-fit px-2 py-2 text-sm'
+                    />
+                ))}
             </div>
 
             <div className='flex flex-col items-center'>

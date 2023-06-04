@@ -1,9 +1,36 @@
 import { toSlug } from '@/utils/helper';
-import prisma from './prismadb';
+import prisma from '../libs/prismadb';
 import { AttachmentInput } from './attachment';
+import { Attachment, Brand, Category, Product } from '@prisma/client';
+
+export type ProductSelect = Product & {
+    category: Category | null;
+    brand: Brand | null;
+    attachments: Attachment[];
+};
+
+export async function getProductById(id: string) {
+    const product = await prisma.product.findFirst({
+        where: {
+            id: id,
+        },
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+        },
+    });
+    return product;
+}
 
 export async function listProducts() {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+        },
+    });
     return products;
 }
 
