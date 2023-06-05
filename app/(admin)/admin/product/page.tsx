@@ -8,6 +8,7 @@ export const metadata = {
 export default function Page() {
     return (
         <div className='w-full'>
+            {/* @ts-expect-error Server Component */}
             <AllProduct />
         </div>
     );

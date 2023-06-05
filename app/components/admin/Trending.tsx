@@ -51,7 +51,7 @@ export default function Trending() {
             </div>
 
             <div className='grid grid-cols-5 gap-10'>
-                <ProductCardAdmin
+                {/* <ProductCardAdmin
                     id='001'
                     category='Laptop'
                     className='w-full h-fit px-2 py-2 text-sm'
@@ -95,7 +95,7 @@ export default function Trending() {
                     name='Laptop Apple MacBook Air M1 2020 8GB 7-core GPU (MGN63SA/A) '
                     sold={12}
                     star={4.5}
-                />
+                /> */}
             </div>
         </div>
     );

@@ -1,9 +1,9 @@
+/* eslint-disable camelcase */
 'use client';
-import { AttachmentType, Product } from '@prisma/client';
+import { AttachmentType } from '@prisma/client';
 import FormAddProduct from './FormAddProduct';
 import { AttachmentInput } from '@/models/attachment';
 import { useEffect, useState } from 'react';
-import { ProductSelect } from '@/models/product';
 import { useRouter } from 'next/navigation';
 
 function useProduct(url: string) {
@@ -11,8 +11,8 @@ function useProduct(url: string) {
     useEffect(() => {
         let ignore = false;
         fetch(url)
-            .then(response => response.json())
-            .then(json => {
+            .then((response) => response.json())
+            .then((json) => {
                 if (!ignore) {
                     setProduct(json);
                 }
@@ -32,7 +32,7 @@ export default function EditProduct({ params }: { params: { id: string } }) {
         try {
             const requests = newAttachments.map((attachment: AttachmentInput) => {
                 if (attachment.name !== '') {
-                    return new Promise<any>((resolve, reject) => {
+                    return new Promise<any>((resolve) => {
                         resolve({
                             ok: true,
                             json: () => {
@@ -53,11 +53,11 @@ export default function EditProduct({ params }: { params: { id: string } }) {
                 });
             });
             const responses = await Promise.all(requests);
-            const errors = responses.filter(response => !response.ok);
+            const errors = responses.filter((response) => !response.ok);
             if (errors.length > 0) {
-                throw errors.map(response => Error(response.statusText));
+                throw errors.map((response) => Error(response.statusText));
             }
-            const json = responses.map(response => response.json());
+            const json = responses.map((response) => response.json());
             const data = await Promise.all(json);
             const attachments = data.map((asset: any) => {
                 return { name: asset.asset_id, path: asset.secure_url, type: AttachmentType.IMAGE };
