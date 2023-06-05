@@ -1,9 +1,17 @@
-import { createProduct } from '@/models/product';
+import { updateProduct } from '@/models/product';
 import { NextResponse } from 'next/server';
 
-export async function POST(request: Request) {
+export async function POST(
+    request: Request,
+    {
+        params,
+    }: {
+        params: { id: string };
+    },
+) {
     const { name, price, description, brandId, categoryId, attachments } = await request.json();
     try {
+        const { id } = params;
         if (!name || !price || !description || !brandId || !categoryId || !attachments) {
             return new NextResponse(
                 'Missing name, price, description, brandId, categoryId or attachments',
@@ -11,7 +19,8 @@ export async function POST(request: Request) {
             );
         }
 
-        const product = await createProduct(
+        const product = await updateProduct(
+            id,
             name,
             price,
             description,
@@ -21,7 +30,7 @@ export async function POST(request: Request) {
         );
         return NextResponse.json(product);
     } catch (error: any) {
-        console.error(error, 'Error creating products');
+        console.error(error, 'Error updating products');
         return new NextResponse('Internal Server Error', { status: 500 });
     }
 }

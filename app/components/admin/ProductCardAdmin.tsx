@@ -16,7 +16,13 @@ export default function ProductCardAdmin({ className, product }: Props) {
                 className
             }
         >
-            <img src={product.attachments[0].path} className='w-1/2 h-fit self-center'></img>
+            <img
+                src={
+                    product.attachments[0]?.path ??
+                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+                }
+                className='w-1/2 h-fit self-center'
+            ></img>
 
             <p className='font-semibold text-center text-md'>{product.name}</p>
             <div>

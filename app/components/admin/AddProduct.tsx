@@ -2,13 +2,15 @@
 import { AttachmentType } from '@prisma/client';
 import FormAddProduct from './FormAddProduct';
 import { AttachmentInput } from '@/models/attachment';
+import { useRouter } from 'next/navigation';
 
 export default function AddProduct() {
-    const onSumbit = async (product: any, images: string[]) => {
+    const router = useRouter();
+    const onSumbit = async (product: any, newAttachments: AttachmentInput[]) => {
         try {
-            const requests = images.map((image: string) => {
+            const requests = newAttachments.map((attachment: AttachmentInput) => {
                 const formData = new FormData();
-                formData.append('file', image);
+                formData.append('file', attachment.path);
                 formData.append('upload_preset', 'cvp46avx');
 
                 return fetch('https://api.cloudinary.com/v1_1/dgwf1woqx/image/upload', {
@@ -43,8 +45,9 @@ export default function AddProduct() {
                     attachments,
                 }),
             });
-            const resJson = await res.json();
-            console.log(resJson);
+            if (res.ok) {
+                router.push('/admin/product');
+            }
         } catch (errors) {
             console.log(errors);
         }

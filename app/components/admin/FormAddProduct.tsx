@@ -1,20 +1,21 @@
 'use client';
 import { ProductSelect } from '@/models/product';
-import { Brand, Category } from '@prisma/client';
+import { AttachmentType, Brand, Category } from '@prisma/client';
 import { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from './Time';
+import { AttachmentInput } from '@/models/attachment';
 
 interface Props {
     product?: ProductSelect;
     setShowing?: React.Dispatch<React.SetStateAction<boolean>>;
-    submit?: (data: any, imageSources: string[]) => void;
+    submit?: (data: any, attachments: AttachmentInput[]) => void;
 }
 
 export default function FormAddProduct({ product, setShowing, submit }: Props) {
     const [brands, setBrands] = useState<Brand[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
-    const [imageSources, setImageSources] = useState<string[]>([]);
+    const [attachments, setAttachments] = useState<AttachmentInput[]>([]);
     useEffect(() => {
         const fetchBrand = async () => {
             const res = await fetch('http://localhost:3000/api/brand');
@@ -31,9 +32,16 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
     }, []);
 
     useEffect(() => {
-        setImageSources(imageSources => [
-            ...(product?.attachments?.map(attachment => attachment.path) ?? []),
-        ]);
+        const atm = product?.attachments?.map(
+            attachment =>
+                ({
+                    name: attachment.name,
+                    path: attachment.path,
+                    type: attachment.type,
+                } as AttachmentInput),
+        );
+
+        setAttachments(attachments => [...(atm ?? [])]);
     }, []);
 
     type Data = {
@@ -59,9 +67,13 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
             const reader = new FileReader();
 
             reader.onload = function (onLoadEvent) {
-                setImageSources(imageSources => [
-                    ...imageSources,
-                    JSON.parse(JSON.stringify(onLoadEvent.target?.result)),
+                setAttachments(attachments => [
+                    ...attachments,
+                    {
+                        name: '',
+                        path: JSON.parse(JSON.stringify(onLoadEvent.target?.result)),
+                        type: AttachmentType.IMAGE,
+                    } as AttachmentInput,
                 ]);
             };
 
@@ -71,7 +83,7 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
 
     const onSubmit = async (data: Data) => {
         if (setShowing) setShowing(false);
-        if (submit) submit(data, imageSources);
+        if (submit) submit(data, attachments);
     };
     return (
         <form className='w-full space-y-5' onSubmit={handleSubmit(onSubmit)}>
@@ -220,16 +232,16 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                         <p>
                             <input type='file' name='files[]' multiple onChange={handleOnChange} />
                         </p>
-                        {imageSources.map((imageSource, index) => (
+                        {attachments.map((attachment, index) => (
                             <p key={index}>
-                                <button
+                                <div
                                     onClick={() =>
-                                        setImageSources(imageSources.filter((_, i) => i !== index))
+                                        setAttachments(attachments.filter((_, i) => i !== index))
                                     }
                                 >
                                     X
-                                </button>
-                                <img src={imageSource} />
+                                </div>
+                                <img src={attachment.path} />
                             </p>
                         ))}
                     </div>

@@ -7,6 +7,18 @@ interface Props {
     setShowing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function DeleteProductModal({ ProductId, className, showing, setShowing }: Props) {
+    const deleteProduct = async (id: string) => {
+        try {
+            const res = await fetch(`http://localhost:3000/api/product/${id}/remove`, {
+                method: 'POST',
+            });
+            if (res.ok) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <div className={className + (showing ? ' relative' : ' hidden') + ' z-10 '}>
             <div className='fixed inset-0 bg-gray-500 bg-opacity-50 transition-opacity'></div>
@@ -50,6 +62,7 @@ export default function DeleteProductModal({ ProductId, className, showing, setS
                             <button
                                 type='button'
                                 onClick={() => {
+                                    deleteProduct(ProductId);
                                     // delete product
                                     setShowing(false);
                                 }}
