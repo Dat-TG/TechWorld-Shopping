@@ -1,4 +1,4 @@
-import ReviewList from '@/app/components/reviewList/ReviewList';
+import ReviewList from '@/app/components/admin/review/ReviewList';
 
 export const metadata = {
     title: 'Admin site | TechWorld',

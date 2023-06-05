@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { statusOrder } from '../constrains';
+import { statusOrder } from '../../constrains';
 import Link from 'next/link';
 
 interface OrderItemProp {

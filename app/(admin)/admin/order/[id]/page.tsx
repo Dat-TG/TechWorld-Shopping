@@ -1,10 +1,8 @@
-import OrderDetail from '@/app/components/orderList/OrderDetail';
+import OrderDetail from '@/app/components/admin/order/OrderDetail';
 import React from 'react';
 
 function Page() {
-    return (
-        <OrderDetail />
-    );
+    return <OrderDetail />;
 }
 
 export default Page;

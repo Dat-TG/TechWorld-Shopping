@@ -40,7 +40,7 @@ export default async function AllProduct() {
                 </select>
             </div>
             <div className='grid grid-cols-4 gap-10'>
-                {products.map(product => (
+                {products.map((product) => (
                     <ProductCardAdmin
                         key={product.id}
                         product={product}

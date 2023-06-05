@@ -1,7 +1,7 @@
 'use client';
 import { ProductSelect } from '@/models/product';
 import { AttachmentType, Brand, Category } from '@prisma/client';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from './Time';
 import { AttachmentInput } from '@/models/attachment';

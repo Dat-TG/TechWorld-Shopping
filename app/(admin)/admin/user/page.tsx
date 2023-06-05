@@ -1,4 +1,4 @@
-import UserList from '@/app/components/userList/UserList';
+import UserList from '@/app/components/admin/user/UserList';
 
 export const metadata = {
     title: 'Admin site | TechWorld',

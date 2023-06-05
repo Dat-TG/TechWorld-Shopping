@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import DeleteOrderModel from '../orderList/DeleteOrderModel';
+import DeleteOrderModel from '../order/DeleteOrderModel';
 import UserItem from './UserItem';
 
 function UserList() {
@@ -22,8 +22,8 @@ function UserList() {
                 </div>
             </div>
 
-            <div className='mt-6 flex items-center justify-end '>
-                <div className='relative flex items-center mt-4 md:mt-0'>
+            <div className='mt-6 flex w-full'>
+                <div className='flex items-center w-full mt-4 md:mt-0'>
                     <span className='absolute'>
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -44,7 +44,7 @@ function UserList() {
                     <input
                         type='text'
                         placeholder='Search'
-                        className='block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
+                        className='block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
                     />
                 </div>
             </div>

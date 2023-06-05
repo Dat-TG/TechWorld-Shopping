@@ -1,4 +1,4 @@
-import OrderList from '@/app/components/orderList/OrderList';
+import OrderList from '@/app/components/admin/order/OrderList';
 
 export const metadata = {
     title: 'Admin site | TechWorld',
