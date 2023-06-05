@@ -9,6 +9,7 @@ interface Props {
 }
 export default function ProductCardAdmin({ className, product }: Props) {
     const [showingDeleteModal, setShowingDeleteModal] = useState(false);
+    if (product == null) return <div></div>;
     return (
         <div
             className={

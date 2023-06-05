@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { statusOrder } from '../constrains';
+import Link from 'next/link';
 
 interface OrderItemProp {
     enableDeleteModel?: boolean;
@@ -93,9 +94,12 @@ function OrderItem(props: OrderItemProp) {
                         settings ? 'absolute' : 'hidden'
                     } bg-white z-10 w-28 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                 >
-                    <div className='p-2 pl-4 hover:bg-yellow-200 cursor-pointer border-b'>
+                    <Link
+                        href={`/admin/order/${101}`}
+                        className='block w-full text-left p-2 pl-4 hover:bg-yellow-200 cursor-pointer border-b'
+                    >
                         Chỉnh sửa
-                    </div>
+                    </Link>
                     <button
                         onClick={() => {
                             if (props.setEnableDeleteModel != null)
