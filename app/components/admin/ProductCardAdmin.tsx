@@ -41,15 +41,15 @@ export default function ProductCardAdmin({ className, product }: Props) {
 
             <div>
                 <span className='font-semibold'>Giá sale: </span>
-                <span>TODO</span>
+                <span>{product.price * (1 - product.sale)}</span>
             </div>
             <div>
                 <span className='font-semibold'>Đã bán: </span>
-                <span>TODO</span>
+                <span>{product.sold}</span>
             </div>
             <div>
                 <span className='font-semibold'>Còn lại: </span>
-                <span>TODO</span>
+                <span>{product.quantity}</span>
             </div>
             <div>
                 <span className='font-semibold'>Đánh giá: </span>

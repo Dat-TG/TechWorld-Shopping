@@ -9,7 +9,16 @@ export type ProductSelect = Product & {
     attachments: Attachment[];
 };
 
-export async function getProductById(id: string) {
+export class ProductNotFound extends Error {
+    constructor(msg: string) {
+        super(msg);
+
+        // Set the prototype explicitly.
+        Object.setPrototypeOf(this, ProductNotFound.prototype);
+    }
+}
+
+export async function getProduct(id?: string) {
     const product = await prisma.product.findFirst({
         where: {
             id: id,
@@ -23,8 +32,16 @@ export async function getProductById(id: string) {
     return product;
 }
 
-export async function listProducts() {
+export async function listProducts(categorySlug?: string, brandSlug?: string) {
     const products = await prisma.product.findMany({
+        where: {
+            category: {
+                slug: categorySlug != null ? categorySlug : undefined,
+            },
+            brand: {
+                slug: brandSlug != null ? brandSlug : undefined,
+            },
+        },
         include: {
             attachments: true,
             brand: true,
@@ -38,9 +55,11 @@ export async function createProduct(
     name: string,
     price: number,
     description: string,
+    quantity: number,
     brandId: string,
     categoryId: string,
     attachments: AttachmentInput[],
+    sale?: number,
 ) {
     const newProducts = await prisma.product.create({
         data: {
@@ -48,11 +67,21 @@ export async function createProduct(
             slug: toSlug(name),
             price: price,
             description: description,
-            brandId: brandId,
-            categoryId: categoryId,
+            quantity: quantity,
+            brand: {
+                connect: {
+                    id: brandId,
+                },
+            },
+            category: {
+                connect: {
+                    id: categoryId,
+                },
+            },
             attachments: {
                 create: attachments,
             },
+            sale: sale,
         },
     });
     return newProducts;
@@ -63,9 +92,11 @@ export async function updateProduct(
     name: string,
     price: number,
     description: string,
+    quantity: number,
     brandId: string,
     categoryId: string,
     attachments: AttachmentInput[],
+    sale?: number,
 ) {
     const oldProduct = await prisma.product.findUnique({
         where: {
@@ -77,17 +108,17 @@ export async function updateProduct(
     });
 
     if (!oldProduct) {
-        throw new Error('Product not found');
+        throw new ProductNotFound('Product not found');
     }
 
-    const attachmentsToAdd = attachments.filter((attachment) => {
-        return !oldProduct.attachments.some((oldAttachment) => {
+    const attachmentsToAdd = attachments.filter(attachment => {
+        return !oldProduct.attachments.some(oldAttachment => {
             return oldAttachment.name === attachment.name;
         });
     });
 
-    const attachmentsToRemove = oldProduct.attachments.filter((oldAttachment) => {
-        return !attachments.some((attachment) => {
+    const attachmentsToRemove = oldProduct.attachments.filter(oldAttachment => {
+        return !attachments.some(attachment => {
             return oldAttachment.name === attachment.name;
         });
     });
@@ -101,16 +132,18 @@ export async function updateProduct(
             slug: toSlug(name),
             price: price,
             description: description,
+            quantity: quantity,
             brandId: brandId,
             categoryId: categoryId,
             attachments: {
                 create: attachmentsToAdd,
-                deleteMany: attachmentsToRemove.map((attachment) => {
+                deleteMany: attachmentsToRemove.map(attachment => {
                     return {
                         id: attachment.id,
                     };
                 }),
             },
+            sale: sale,
         },
     });
 
@@ -118,15 +151,10 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string) {
-    try {
-        await prisma.product.delete({
-            where: {
-                id: id,
-            },
-        });
-        return { status: 'ok', message: 'Product deleted successfully' };
-    } catch (error: any) {
-        console.error(error, 'Error deleting product');
-        throw new Error('Error deleting product');
-    }
+    const product = await prisma.product.delete({
+        where: {
+            id: id,
+        },
+    });
+    return product;
 }

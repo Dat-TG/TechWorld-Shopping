@@ -7,8 +7,8 @@ interface Props {
 export default function DeleteProductModal({ ProductId, className, showing, setShowing }: Props) {
     const deleteProduct = async (id: string) => {
         try {
-            const res = await fetch(`http://localhost:3000/api/product/${id}/remove`, {
-                method: 'POST',
+            const res = await fetch(`/api/product/${id}`, {
+                method: 'DELETE',
             });
             if (res.ok) {
                 window.location.reload();
@@ -60,8 +60,8 @@ export default function DeleteProductModal({ ProductId, className, showing, setS
                             <button
                                 type='button'
                                 onClick={() => {
-                                    deleteProduct(ProductId);
                                     // delete product
+                                    deleteProduct(ProductId);
                                     setShowing(false);
                                 }}
                                 className='inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto'

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from './Time';
 import { AttachmentInput } from '@/models/attachment';
+import Link from 'next/link';
 
 interface Props {
     product?: ProductSelect;
@@ -222,9 +223,12 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                             {product ? 'Lưu' : 'Thêm sản phẩm'}
                         </button>
                         {product && (
-                            <button className='bg-white rounded-md text-black hover:bg-gray-100 px-2 py-2 ms-5 outline outline-1 outline-gray-500'>
+                            <Link
+                                href='/admin/product'
+                                className='bg-white rounded-md text-black hover:bg-gray-100 px-2 py-2 ms-5 outline outline-1 outline-gray-500'
+                            >
                                 Hủy
-                            </button>
+                            </Link>
                         )}
                     </div>
 

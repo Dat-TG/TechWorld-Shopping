@@ -14,9 +14,10 @@ function useProduct(url: string) {
             .then(response => response.json())
             .then(json => {
                 if (!ignore) {
-                    setProduct(json);
+                    setProduct(json.data);
                 }
-            });
+            })
+            .catch(console.log);
         return () => {
             ignore = true;
         };
@@ -63,8 +64,8 @@ export default function EditProduct({ params }: { params: { id: string } }) {
                 return { name: asset.asset_id, path: asset.secure_url, type: AttachmentType.IMAGE };
             }) as AttachmentInput[];
             console.log(attachments);
-            const res = await fetch(`http://localhost:3000/api/product/${params.id}/edit`, {
-                method: 'POST',
+            const res = await fetch(`/api/product/${params.id}`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -75,6 +76,8 @@ export default function EditProduct({ params }: { params: { id: string } }) {
                     brandId: newProduct.brand,
                     description: newProduct.description,
                     attachments,
+                    quantity: 10, // TODO: add this
+                    // sale: 0, // can be undefined
                 }),
             });
             if (res.ok) {

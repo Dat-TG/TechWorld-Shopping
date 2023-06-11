@@ -36,7 +36,7 @@ model Product {
     slug        String       @unique
     description String?
     price       Float
-    sale        Float?
+    sale        Float        @default(0) // discount 0% by default
     quantity    Int          @default(0)
     sold        Int          @default(0)
     createdAt   DateTime     @default(now())
@@ -48,7 +48,7 @@ model Product {
     brandId     String?      @db.ObjectId
     CartItem    CartItem[]
     Invoice     Invoice[]
-    Review      Review[]
+    Reviews     Review[]
 }
 
 model Attachment {
