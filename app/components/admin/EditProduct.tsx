@@ -11,8 +11,8 @@ function useProduct(url: string) {
     useEffect(() => {
         let ignore = false;
         fetch(url)
-            .then((response) => response.json())
-            .then((json) => {
+            .then(response => response.json())
+            .then(json => {
                 if (!ignore) {
                     setProduct(json);
                 }
@@ -26,13 +26,13 @@ function useProduct(url: string) {
 
 export default function EditProduct({ params }: { params: { id: string } }) {
     const router = useRouter();
-    const product = useProduct(`http://localhost:3000/api/product/${params.id}`);
+    const product = useProduct(`/api/product/${params.id}`);
 
     const onSumbit = async (newProduct: any, newAttachments: AttachmentInput[]) => {
         try {
             const requests = newAttachments.map((attachment: AttachmentInput) => {
                 if (attachment.name !== '') {
-                    return new Promise<any>((resolve) => {
+                    return new Promise<any>(resolve => {
                         resolve({
                             ok: true,
                             json: () => {
@@ -53,11 +53,11 @@ export default function EditProduct({ params }: { params: { id: string } }) {
                 });
             });
             const responses = await Promise.all(requests);
-            const errors = responses.filter((response) => !response.ok);
+            const errors = responses.filter(response => !response.ok);
             if (errors.length > 0) {
-                throw errors.map((response) => Error(response.statusText));
+                throw errors.map(response => Error(response.statusText));
             }
-            const json = responses.map((response) => response.json());
+            const json = responses.map(response => response.json());
             const data = await Promise.all(json);
             const attachments = data.map((asset: any) => {
                 return { name: asset.asset_id, path: asset.secure_url, type: AttachmentType.IMAGE };

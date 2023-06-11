@@ -18,13 +18,13 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
     const [attachments, setAttachments] = useState<AttachmentInput[]>([]);
     useEffect(() => {
         const fetchBrand = async () => {
-            const res = await fetch('http://localhost:3000/api/brand');
-            const data = await res.json();
+            const res = await fetch('/api/brand');
+            const { data } = await res.json();
             setBrands(data);
         };
         const fetchCategory = async () => {
-            const res = await fetch('http://localhost:3000/api/category');
-            const data = await res.json();
+            const res = await fetch('/api/category');
+            const { data } = await res.json();
             setCategories(data);
         };
         fetchBrand();

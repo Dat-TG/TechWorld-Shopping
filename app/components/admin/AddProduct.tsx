@@ -20,19 +20,19 @@ export default function AddProduct() {
                 });
             });
             const responses = await Promise.all(requests);
-            const errors = responses.filter((response) => !response.ok);
+            const errors = responses.filter(response => !response.ok);
 
             if (errors.length > 0) {
-                throw errors.map((response) => Error(response.statusText));
+                throw errors.map(response => Error(response.statusText));
             }
 
-            const json = responses.map((response) => response.json());
+            const json = responses.map(response => response.json());
             const data = await Promise.all(json);
 
             const attachments = data.map((asset: any) => {
                 return { name: asset.asset_id, path: asset.secure_url, type: AttachmentType.IMAGE };
             }) as AttachmentInput[];
-            const res = await fetch('http://localhost:3000/api/product', {
+            const res = await fetch('/api/product', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

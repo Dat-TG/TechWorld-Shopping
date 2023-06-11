@@ -32,9 +32,10 @@ export function toSlug(str: string) {
 }
 
 export function convertBreadcrumb(s: string) {
-    return s
-        .replace(/-/g, ' ')
-        .replace(/oe/g, 'ö')
-        .replace(/ae/g, 'ä')
-        .replace(/ue/g, 'ü');
+    return s.replace(/-/g, ' ').replace(/oe/g, 'ö').replace(/ae/g, 'ä').replace(/ue/g, 'ü');
+}
+
+export function getErrorMessage(error: unknown) {
+    if (error instanceof Error) return error.message;
+    return String(error);
 }

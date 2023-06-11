@@ -1,12 +1,19 @@
 import { listBrands } from '@/models/brand';
+import { getErrorMessage } from '@/utils/helper';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
     try {
         const brands = await listBrands();
-        return NextResponse.json(brands);
+        return NextResponse.json({ message: 'success', data: brands });
     } catch (error: any) {
-        console.error(error, 'Error fetching brands');
-        return new NextResponse('Internal Server Error', { status: 500 });
+        console.log('Error geting all brands', getErrorMessage(error));
+
+        return NextResponse.json(
+            { message: `Internal Server Error: ${getErrorMessage(error)}` },
+            {
+                status: 500,
+            },
+        );
     }
 }

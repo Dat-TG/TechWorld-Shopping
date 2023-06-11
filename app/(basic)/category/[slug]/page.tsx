@@ -1,6 +1,3 @@
-'use client';
-
-import React from 'react';
 import ListProduct from '@/app/components/product/ListProduct';
 import DropDown from '@/app/components/widgets/dropdown/DropDown';
 import SideBarCategory from '@/app/components/sideBarCategory/SideBarCategory';

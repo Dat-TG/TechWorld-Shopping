@@ -27,6 +27,7 @@ model User {
     cart              Cart?               @relation(fields: [cartId], references: [id])
     cartId            String?             @unique @db.ObjectId
     Invoice           Invoice[]
+    Review            Review[]
 }
 
 model Product {
@@ -35,6 +36,9 @@ model Product {
     slug        String       @unique
     description String?
     price       Float
+    sale        Float?
+    quantity    Int          @default(0)
+    sold        Int          @default(0)
     createdAt   DateTime     @default(now())
     updatedAt   DateTime     @updatedAt
     attachments Attachment[]
@@ -44,6 +48,7 @@ model Product {
     brandId     String?      @db.ObjectId
     CartItem    CartItem[]
     Invoice     Invoice[]
+    Review      Review[]
 }
 
 model Attachment {
@@ -100,6 +105,18 @@ model Brand {
     name    String
     slug    String    @unique
     Product Product[]
+}
+
+model Review {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    rating    Int
+    comment   String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    User      User?    @relation(fields: [userId], references: [id])
+    userId    String?  @db.ObjectId
+    Product   Product? @relation(fields: [productId], references: [id])
+    productId String?  @db.ObjectId
 }
 
 type VerificationToken {
