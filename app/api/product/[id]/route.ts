@@ -111,7 +111,7 @@ export async function PATCH(
             }
         }
 
-        if (error instanceof ProductNotFound) {
+        if (error === ProductNotFound) {
             return NextResponse.json({ message: getErrorMessage(error) }, { status: 400 });
         }
 

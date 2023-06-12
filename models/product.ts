@@ -9,14 +9,8 @@ export type FullProduct = Product & {
     attachments: Attachment[];
 };
 
-export class ProductNotFound extends Error {
-    constructor(msg: string) {
-        super(msg);
-
-        // Set the prototype explicitly.
-        Object.setPrototypeOf(this, ProductNotFound.prototype);
-    }
-}
+export const ProductNotFound = new Error('Product not found');
+export const NotEnoughQuantity = new Error('Not enough quantity');
 
 export async function getProduct(id?: string) {
     const product = await prisma.product.findFirst({
@@ -108,7 +102,7 @@ export async function updateProduct(
     });
 
     if (!oldProduct) {
-        throw new ProductNotFound('Product not found');
+        throw ProductNotFound;
     }
 
     const attachmentsToAdd = attachments.filter(attachment => {

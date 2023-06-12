@@ -4,6 +4,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 import prisma from '@/libs/prismadb';
 import { auth } from '@/models/user';
+import { JWT } from 'next-auth/jwt';
 
 export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
@@ -26,10 +27,23 @@ export const authOptions: AuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }) {
-            return { ...token, ...user };
+            return {
+                user: {
+                    id: token.id,
+                    name: token.name,
+                    phone: token.phone,
+                    email: token.email,
+                    role: token.role,
+                    cartId: token.cartId,
+                },
+                iat: token.iat,
+                exp: token.exp,
+            } as JWT;
         },
         async session({ session, token, user }) {
-            session.user = token;
+            session.user = token.user;
+            session.iat = token.iat;
+            session.exp = token.exp;
             return session;
         },
     },
