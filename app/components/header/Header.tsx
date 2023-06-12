@@ -67,7 +67,7 @@ export default function Header() {
                 <ul className='flex flex-col p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
                     <li>
                         <Link
-                            href='/category/1234'
+                            href='/category/dien-thoai'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-phone' style={{ fontSize: 20 }}></i> Điện thoại
@@ -75,7 +75,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
-                            href='#'
+                            href='/category/laptop'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-laptop' style={{ fontSize: 20 }}></i> Laptop
@@ -83,7 +83,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
-                            href='#'
+                            href='/category/tablet'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-tablet' style={{ fontSize: 20 }}></i> Tablet
@@ -94,7 +94,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
-                            href='#'
+                            href='/category/smartwatch'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-smartwatch' style={{ fontSize: 20 }}></i> Smartwatch
@@ -102,7 +102,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
-                            href='#'
+                            href='/category/dong-ho'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-watch' style={{ fontSize: 20 }}></i> Đồng hồ
@@ -119,7 +119,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
-                            href='#'
+                            href='/category/pc'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-pc-display' style={{ fontSize: 20 }}></i> PC
@@ -127,7 +127,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
-                            href='#'
+                            href='/category/may-in'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-printer' style={{ fontSize: 20 }}></i> Máy in
@@ -135,7 +135,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link
-                            href='#'
+                            href='/category/dien-gia-dung'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
                             <i className='bi bi-fan' style={{ fontSize: 20 }}></i> Điện gia dụng
