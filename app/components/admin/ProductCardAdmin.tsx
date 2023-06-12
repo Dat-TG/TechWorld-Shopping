@@ -1,11 +1,11 @@
 'use client';
 import { useState } from 'react';
 import DeleteProductModal from './DeleteProductModal';
-import { ProductSelect } from '@/models/product';
+import { FullProduct } from '@/models/product';
 
 interface Props {
     className?: string;
-    product: ProductSelect;
+    product: FullProduct;
 }
 export default function ProductCardAdmin({ className, product }: Props) {
     const [showingDeleteModal, setShowingDeleteModal] = useState(false);

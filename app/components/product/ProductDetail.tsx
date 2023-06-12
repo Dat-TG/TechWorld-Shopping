@@ -142,7 +142,7 @@ function ProductDetail() {
                 <h2 className='font-medium uppercase text-lg tracking-wider mb-6 text-gray-500'>
                     Các sản phẩm cùng thể loại
                 </h2>
-                <ListProduct />
+                <ListProduct products={[]} />
             </div>
         </>
     );

@@ -3,7 +3,7 @@ import prisma from '../libs/prismadb';
 import { AttachmentInput } from './attachment';
 import { Attachment, Brand, Category, Product } from '@prisma/client';
 
-export type ProductSelect = Product & {
+export type FullProduct = Product & {
     category: Category | null;
     brand: Brand | null;
     attachments: Attachment[];

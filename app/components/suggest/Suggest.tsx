@@ -40,25 +40,25 @@ export default function Suggest({ filter }: { filter: Array<Filter> }) {
             </div>
             {/* TODO: Render product theo index */}
             <div className={curindex == 0 ? 'visible' : 'hidden'}>
-                <ListProduct />
+                <ListProduct products={[]} />
                 <div className='m-0 p-0 flex justify-center'>
                     <Button className='w-32 bg-white'>Xem thêm &gt;</Button>
                 </div>
             </div>
             <div className={curindex == 1 ? 'visible' : 'hidden'}>
-                <ListProduct />
+                <ListProduct products={[]} />
                 <div className='m-0 p-0 flex justify-center'>
                     <Button className='w-32 bg-white'>Xem thêm &gt;</Button>
                 </div>
             </div>
             <div className={curindex == 2 ? 'visible' : 'hidden'}>
-                <ListProduct />
+                <ListProduct products={[]} />
                 <div className='m-0 p-0 flex justify-center'>
                     <Button className='w-32 bg-white'>Xem thêm &gt;</Button>
                 </div>
             </div>
             <div className={curindex == 3 ? 'visible' : 'hidden'}>
-                <ListProduct />
+                <ListProduct products={[]} />
                 <div className='m-0 p-0 flex justify-center'>
                     <Button className='w-32 bg-white'>Xem thêm &gt;</Button>
                 </div>

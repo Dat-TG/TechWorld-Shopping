@@ -2,8 +2,16 @@ import ListProduct from '@/app/components/product/ListProduct';
 import DropDown from '@/app/components/widgets/dropdown/DropDown';
 import SideBarCategory from '@/app/components/sideBarCategory/SideBarCategory';
 import Button from '@/app/components/widgets/button/Button';
+import { listProducts } from '@/models/product';
 
-function Page() {
+async function getProducts(slug: string) {
+    const products = await listProducts(slug);
+    return products;
+}
+
+async function Page({ params }: { params: { slug: string } }) {
+    const products = await getProducts(params.slug);
+
     return (
         <div className='flex flex-row mt-4'>
             <SideBarCategory />
@@ -27,7 +35,7 @@ function Page() {
                         </Button>
                     </div>
                 </div>
-                <ListProduct />
+                <ListProduct products={products} />
             </div>
         </div>
     );
