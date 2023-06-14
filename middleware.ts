@@ -3,13 +3,17 @@ import { NextResponse } from 'next/server';
 
 export default withAuth(
     function middleware(req) {
-        if (req.nextUrl.pathname.startsWith('/api') && req.nextauth.token?.role !== 'ADMIN') {
+        console.log('middleware token', req.nextauth.token);
+        if (req.nextUrl.pathname.startsWith('/api') && req.nextauth.token?.user.role !== 'ADMIN') {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
-        if (req.nextUrl.pathname.startsWith('/admin') && req.nextauth.token?.role !== 'ADMIN') {
+        if (
+            req.nextUrl.pathname.startsWith('/admin') &&
+            req.nextauth.token?.user.role !== 'ADMIN'
+        ) {
             return NextResponse.rewrite(new URL('/', req.url));
         }
-        if (req.nextUrl.pathname.startsWith('/user') && !req.nextauth.token?.role) {
+        if (req.nextUrl.pathname.startsWith('/user') && !req.nextauth.token?.user.role) {
             return NextResponse.rewrite(new URL('/auth/login', req.url));
         }
     },

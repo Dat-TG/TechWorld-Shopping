@@ -1,22 +1,23 @@
 import { JWT } from 'next-auth/jwt';
-export interface User {
-    id: string;
-    name?: string | null | undefined;
-    role?: string;
-    phone?: string;
-    email?: string;
-    cartId?: string;
-}
 
-declare module 'next-auth/jwt' {
-    interface JWT {
+declare module 'next-auth' {
+    interface User {
+        id: string;
+        name: string | null;
+        role: string;
+        phone: string;
+        email: string | null;
+        cartId: string | null;
+    }
+    interface Session {
         user: User;
         iat: number;
         exp: number;
     }
 }
-declare module 'next-auth' {
-    interface Session {
+
+declare module 'next-auth/jwt' {
+    interface JWT {
         user: User;
         iat: number;
         exp: number;

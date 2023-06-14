@@ -21,26 +21,44 @@ export const authOptions: AuthOptions = {
                 }
 
                 const user = await auth(credentials.phone, credentials.password);
-                return user;
+
+                if (!user) {
+                    throw new Error('Invalid Credentials');
+                }
+                return {
+                    id: user.id,
+                    name: user.name,
+                    phone: user.phone,
+                    email: user.email,
+                    role: user.role,
+                    cartId: user.cartId,
+                };
             },
         }),
     ],
     callbacks: {
         async jwt({ token, user }) {
-            return {
-                user: {
-                    id: token.id,
-                    name: token.name,
-                    phone: token.phone,
-                    email: token.email,
-                    role: token.role,
-                    cartId: token.cartId,
-                },
-                iat: token.iat,
-                exp: token.exp,
-            } as JWT;
+            console.log('jwt token', token);
+            console.log('jwt user', user);
+            if (user) {
+                return {
+                    ...token,
+                    user: {
+                        id: user.id,
+                        name: user.name,
+                        phone: user.phone,
+                        email: user.email,
+                        role: user.role,
+                        cartId: user.cartId,
+                    },
+                };
+            }
+            return token;
         },
         async session({ session, token, user }) {
+            console.log('session session', session);
+            console.log('session token', token);
+            console.log('session user', user);
             session.user = token.user;
             session.iat = token.iat;
             session.exp = token.exp;
