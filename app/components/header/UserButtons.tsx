@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 export default function UserButtons() {
     const session = useSession();
-    console.log('UserButtons session', session);
     return (
         <>
             {session?.status !== 'authenticated' ? (

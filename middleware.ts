@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 
 export default withAuth(
     function middleware(req) {
-        console.log('middleware token', req.nextauth.token);
         if (req.nextUrl.pathname.startsWith('/api') && req.nextauth.token?.user.role !== 'ADMIN') {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
