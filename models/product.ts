@@ -45,6 +45,15 @@ export async function listProducts(categorySlug?: string, brandSlug?: string) {
     return products;
 }
 
+export async function getCategoryBySlug(categorySlug: string) {
+    const category = await prisma.category.findUnique({
+        where: {
+            slug: categorySlug,
+        },
+    });
+    return category;
+}
+
 export async function createProduct(
     name: string,
     price: number,
