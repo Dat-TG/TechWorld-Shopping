@@ -18,42 +18,52 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
         if (numberOfCategories >= categories.length) setSeeMore(false);
     }, [numberOfCategories]);
     return (
-        <div className='flex flex-col items-start justify-start  w-52 mr-4'>
+        <div className='flex flex-col items-start justify-start w-52 mr-4'>
             {/* Category */}
             <div className='flex flex-row items-center mb-2 justify-center text-md font-bold '>
                 <i className='bi bi-list-task mr-2 text-lg py-4'></i>
-                <Link href='#' className=''>
-                    Tất cả danh mục
-                </Link>
+                <span>Tất cả danh mục</span>
             </div>
             <hr className='w-full bg-amber-500' />
             {categories.slice(0, numberOfCategories).map((category: Category) => (
-                <Link
+                <a
                     key={category.id}
                     href={`/category/${category.slug}`}
                     className='flex flex-row items-center my-2 text-sm ml-4 relative'
                 >
-                    <div className={styles.triangle_right} />
-                    <p className='ml-4 font-medium text-sm text-amber-500 hover:text-amber-700 hover:cursor-pointer'>
+                    <div
+                        className={
+                            styles.triangle_right +
+                            (category.slug === pathname.split('/')[2] ? '' : 'hidden')
+                        }
+                    />
+                    <p
+                        className={
+                            'ml-4 font-medium text-sm hover:text-amber-700 hover:cursor-pointer ' +
+                            (category.slug === pathname.split('/')[2]
+                                ? 'text-amber-500'
+                                : 'text-black')
+                        }
+                    >
                         {category.name}
                     </p>
-                </Link>
+                </a>
             ))}
-            <div className='w-full flex justify-center'>
+            <div className='w-full flex justify-center mt-2'>
                 <p
                     className={
-                        'text-center cursor-pointer mr-4 hover:text-amber-500 ' +
+                        'text-center text-sm cursor-pointer mr-4 hover:text-amber-500 ' +
                         (seeMore ? '' : ' hidden')
                     }
                     onClick={() => {
                         setNumberOfCategories(Math.min(numberOfCategories + 10, categories.length));
                     }}
                 >
-                    Xem thêm
+                    Xem thêm <i className='bi bi-chevron-down text-xs'></i>
                 </p>
                 <p
                     className={
-                        'text-center cursor-pointer hover:text-amber-500' +
+                        'text-center text-sm cursor-pointer hover:text-amber-500' +
                         (numberOfCategories > 10 ? '' : ' hidden')
                     }
                     onClick={() => {
@@ -62,7 +72,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                         );
                     }}
                 >
-                    Thu gọn
+                    Thu gọn <i className='bi bi-chevron-up text-xs'></i>
                 </p>
             </div>
 
