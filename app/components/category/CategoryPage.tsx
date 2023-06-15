@@ -59,6 +59,14 @@ export default function CategoryPage({
                 router.push(pathname + '?filter=4');
                 break;
             case 5:
+                setProductsFilter(
+                    [...products].filter(function (a: FullProduct) {
+                        const price = a.price * (1 - a.sale);
+                        const min = parseInt(params.get('min') || '0'),
+                            max = parseInt(params.get('max') || '0');
+                        return price >= min && price <= max;
+                    }),
+                );
                 break;
 
             default:
