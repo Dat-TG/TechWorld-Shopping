@@ -54,6 +54,9 @@ export default function ProductCard({ product }: Props) {
                                     currency: 'VND',
                                 }).format(Math.round(product.price * (1 - product.sale)))}
                             </div>
+                            <div className='text-sm'>
+                            Đã bán {product.sold}
+                            </div>
                             <div className='flex flex-row  w-28 items-center justify-between text-sm mt-2'>
                                 <i className='bi bi-star-fill text-amber-500'></i>
                                 <i className='bi bi-star-fill text-amber-500'></i>

@@ -22,11 +22,18 @@ export default function CategoryPage({
                 setProductsFilter(products);
                 break;
             case 1:
-                setProductsFilter([...products].sort(function(a:FullProduct, b:FullProduct){
-                    return (a.updatedAt<b.updatedAt)?1:-1;
-                }));
+                setProductsFilter(
+                    [...products].sort(function (a: FullProduct, b: FullProduct) {
+                        return a.updatedAt < b.updatedAt ? 1 : -1;
+                    }),
+                );
                 break;
             case 2:
+                setProductsFilter(
+                    [...products].sort(function (a: FullProduct, b: FullProduct) {
+                        return a.sold < b.sold ? 1 : -1;
+                    }),
+                );
                 break;
             case 3:
                 break;
@@ -55,18 +62,19 @@ export default function CategoryPage({
                     <div className='flex flex-row items-center'>
                         <div className='text-sm mr-4'>Sắp xếp theo </div>
                         <Button
-                            className={'px-6 mr-4 '+(filter===1?'bg-amber-100':'bg-white')}
+                            className={'px-6 mr-4 ' + (filter === 1 ? 'bg-amber-100' : 'bg-white')}
                             onClick={() => {
-                                if (filter!==1) setFilter(1);
+                                if (filter !== 1) setFilter(1);
                                 else setFilter(0);
                             }}
                         >
                             Mới nhất
                         </Button>
                         <Button
-                            className='px-6 mr-4  bg-white'
+                            className={'px-6 mr-4  ' + (filter === 2 ? 'bg-amber-100' : 'bg-white')}
                             onClick={() => {
-                                setFilter(2);
+                                if (filter !== 2) setFilter(2);
+                                else setFilter(0);
                             }}
                         >
                             Bán chạy nhất
