@@ -17,34 +17,46 @@ export default function ProductCard({ product }: Props) {
             >
                 <div className='max-w-md mx-auto'>
                     <div className='bg-white shadow-md border px-1 py-1 border-gray-200 rounded-lg max-w-xs'>
+                    <div className='h-52 flex flex-col justify-center'>
                         <Image
-                            className='rounded-t-lg mx-auto my-3 '
+                            className='rounded-t-lg mx-auto my-3'
                             src={
                                 product.attachments[0]?.path ??
                                 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
                             }
-                            alt=''
+                            alt={product.name}
                             width={200}
                             height={200}
                         />
+                       </div>
                         <div className='p-5'>
                             <div>
-                                <h5 className='text-gray-900 font-bold text-base tracking-tight mb-2'>
+                                <h5
+                                    className={
+                                        'text-gray-900 font-bold text-base tracking-tight mb-2 line-clamp-2 h-12'
+                                    }
+                                >
                                     {product.name}
+                                    <br></br>
                                 </h5>
                             </div>
-                            {product.sale != 0 && (
-                                <div className='font-light'>
-                                    <span className='font-normal line-through text-sm'>
-                                        {CurrencyFormatter.format(product.price)}
-                                    </span>
-                                    <span className='text-amber-500 font-bold text-md ml-2'>
-                                        -{product.sale * 100}%
-                                    </span>
-                                </div>
-                            )}
+                            <div className='font-light'>
+                                <span className='font-normal line-through text-sm'>
+                                    {Intl.NumberFormat('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND',
+                                    }).format(product.price)}
+                                </span>{' '}
+                                -{product.sale * 100}%
+                            </div>
                             <div className='text-amber-500 font-bold text-md'>
-                                {CurrencyFormatter.format(product.price * (1 - product.sale))}
+                                {Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND',
+                                }).format(Math.round(product.price * (1 - product.sale)))}
+                            </div>
+                            <div className='text-sm'>
+                            Đã bán {product.sold}
                             </div>
                             <div className='flex flex-row  w-28 items-center justify-between text-sm mt-2'>
                                 <i className='bi bi-star-fill text-amber-500'></i>

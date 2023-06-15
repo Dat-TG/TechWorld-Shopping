@@ -1,18 +1,22 @@
+'use client';
 import Link from 'next/link';
 import styles from './sideBarCategory.module.css';
 import Button from '../widgets/button/Button';
 import Input from '../widgets/input/Input';
-import { listCategories } from '@/models/category';
 import { Category } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-async function getAllCategories() {
-    const categories = await listCategories();
-    return categories;
-}
-
-async function SideBarCategory() {
-    const categories = await getAllCategories();
-
+function SideBarCategory({ categories }: { categories: Category[] }) {
+    const [numberOfCategories, setNumberOfCategories] = useState(Math.min(10, categories.length));
+    const [seeMore, setSeeMore] = useState(numberOfCategories < categories.length ? true : false);
+    const [min, setMin] = useState(0);
+    const [max, setMax] = useState(0);
+    const params = useSearchParams();
+    const pathname = usePathname();
+    useEffect(() => {
+        if (numberOfCategories >= categories.length) setSeeMore(false);
+    }, [numberOfCategories]);
     return (
         <div className='flex flex-col items-start justify-start  w-52 mr-4'>
             {/* Category */}
@@ -23,7 +27,7 @@ async function SideBarCategory() {
                 </Link>
             </div>
             <hr className='w-full bg-amber-500' />
-            {categories.map((category: Category) => (
+            {categories.slice(0, numberOfCategories).map((category: Category) => (
                 <Link
                     key={category.id}
                     href={`/category/${category.slug}`}
@@ -35,6 +39,32 @@ async function SideBarCategory() {
                     </p>
                 </Link>
             ))}
+            <div className='w-full flex justify-center'>
+                <p
+                    className={
+                        'text-center cursor-pointer mr-4 hover:text-amber-500 ' +
+                        (seeMore ? '' : ' hidden')
+                    }
+                    onClick={() => {
+                        setNumberOfCategories(Math.min(numberOfCategories + 10, categories.length));
+                    }}
+                >
+                    Xem thêm
+                </p>
+                <p
+                    className={
+                        'text-center cursor-pointer hover:text-amber-500' +
+                        (numberOfCategories > 10 ? '' : ' hidden')
+                    }
+                    onClick={() => {
+                        setNumberOfCategories(
+                            Math.max(numberOfCategories - 10, Math.min(10, categories.length)),
+                        );
+                    }}
+                >
+                    Thu gọn
+                </p>
+            </div>
 
             <hr className='w-full bg-amber-500 mt-4' />
 
@@ -47,13 +77,40 @@ async function SideBarCategory() {
             {/* Search price */}
             <div className='font-light text-base mb-4'>Khoảng giá</div>
             <div className='flex flex-row items-center justify-between w-full'>
-                <Input type='text' className='border-black flex-2 w-20' placeholder='₫ TỪ' />
+                <input
+                    type='number'
+                    className='border-black flex-2 w-20 px-2 py-2 rounded-sm text-sm'
+                    placeholder='₫ TỪ'
+                    min={0}
+                    defaultValue={parseInt(params.get('min') || '0')}
+                    onChange={event => {
+                        setMin(parseInt(event.target.value));
+                    }}
+                />
                 <hr className='flex-1 h-0.5 bg-slate-300 mx-2' />
-                <Input type='text' className='border-black flex-2 w-20' placeholder='₫ ĐẾN' />
+                <input
+                    type='number'
+                    className='border-black flex-2 w-20 px-2 py-2 rounded-sm text-sm'
+                    placeholder='₫ ĐẾN'
+                    min={0}
+                    defaultValue={parseInt(params.get('max') || '0')}
+                    onChange={event => {
+                        setMax(parseInt(event.target.value));
+                    }}
+                />
             </div>
-            <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
-                Áp dụng
-            </Button>
+            <div className='w-full flex justify-between'>
+                <a href={pathname + '?filter=5&min=' + min + '&max=' + max}>
+                    <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
+                        Áp dụng
+                    </Button>
+                </a>
+                <a href={pathname}>
+                    <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
+                        Xóa bộ lọc
+                    </Button>
+                </a>
+            </div>
 
             <hr className='w-full bg-amber-500 mt-4' />
             {/* Status */}
