@@ -19,7 +19,7 @@ export default function CategoryPage({
     const router = useRouter();
     const pathname = usePathname();
     const [filter, setFilter] = useState(parseInt(params.get('filter') || '0'));
-    const [page, setPage] = useState(parseInt(params.get('page')||'1'));
+    const [page, setPage] = useState(parseInt(params.get('page') || '1'));
     const [productsFilter, setProductsFilter] = useState(products);
     const numberOfProductsPerPage = 5;
     const [totalPage, setTotalPage] = useState(
@@ -163,7 +163,7 @@ export default function CategoryPage({
                                                           params.get('max')
                                                         : '') +
                                                     '&page=' +
-                                                    page,
+                                                    event.currentTarget.value,
                                             );
                                         }
                                     }}
@@ -186,7 +186,7 @@ export default function CategoryPage({
                                               params.get('max')
                                             : '') +
                                         '&page=' +
-                                        (page-1),
+                                        (page - 1),
                                 );
                                 setPage(page - 1);
                             }}
@@ -208,7 +208,7 @@ export default function CategoryPage({
                                               params.get('max')
                                             : '') +
                                         '&page=' +
-                                        (page+1),
+                                        (page + 1),
                                 );
                                 setPage(page + 1);
                             }}
