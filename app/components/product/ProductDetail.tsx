@@ -1,31 +1,50 @@
+'use client';
+
 import Image from 'next/image';
 import React from 'react';
 import Button from '../widgets/button/Button';
-import Input from '../widgets/input/Input';
 import Review from './Review';
 import ListProduct from './ListProduct';
 import { FullProduct } from '@/models/product';
 import { CurrencyFormatter } from '@/utils/formatter';
+import InputQuantity from '../widgets/inputQuantity/InputQuantity';
+import CarouselThumbnail from './CarouselThumbnail';
 
 interface Props {
     product: FullProduct;
+    similarProducts: Array<FullProduct>;
 }
 
-function ProductDetail({ product }: Props) {
+function ProductDetail({ product, similarProducts }: Props) {
+    const [quantity, setQuantity] = React.useState<number>(1);
+    const [imgSelect, setImgSelect] = React.useState<number>(0);
+
     return (
         <>
             <div className='p-4 bg-slate-50 flex flex-row'>
-                <div className='inline-block'>
-                    <Image
-                        src={
-                            product.attachments[0]?.path ??
-                            'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                        }
-                        alt='Image'
-                        width={500}
-                        height={500}
-                        className='mr-4'
-                    />
+                <div className='flex flex-col'>
+                    <div style={{ height: '450px' }} className='mb-4'>
+                        <Image
+                            src={
+                                product?.attachments[imgSelect]?.path ??
+                                'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+                            }
+                            alt='Image'
+                            className='mr-4 rounded-md'
+                            width={400}
+                            height={400}
+                            quality={100}
+                            style={{ width: '450px', height: '450px', objectFit: 'contain' }}
+                        />
+                    </div>
+
+                    <div className='flex flex-row items-center justify-center mb-4'>
+                        <CarouselThumbnail
+                            attachments={product.attachments}
+                            imgSelect={imgSelect}
+                            setImgSelect={setImgSelect}
+                        />
+                    </div>
                 </div>
 
                 <div className='flex-1 ml-8'>
@@ -76,22 +95,25 @@ function ProductDetail({ product }: Props) {
                             </div>
                         )}
                     </div>
-                    {product.quantity != 0 ? (
-                        <>
-                            <div className='flex flex-row mt-12 items-center'>
-                                <div className='text-lg text-gray-500 mr-12'>Số lượng</div>
-                                <Button className=' bg-white text-base px-4 '>-</Button>
-                                <Input
-                                    type='text'
-                                    className='w-12 text-center text-base px-4'
-                                    defaultValue='1'
-                                />
-                                <Button className=' bg-white text-base px-4 mr-6'>+</Button>
-                                <div className='text-gray-600'>
-                                    {product.quantity} sản phẩm có sẵn
-                                </div>
-                            </div>
-                            <div className='flex flex-row items-center mt-12'>
+
+                    <div className='flex flex-row mt-12 items-center'>
+                        <InputQuantity
+                            quantity={quantity}
+                            setQuantity={setQuantity}
+                            max={product.quantity}
+                        />
+                        <div className='text-gray-600'>{product.quantity} sản phẩm có sẵn</div>
+                    </div>
+                    <div className='flex flex-row items-center mt-12'>
+                        {product.quantity == 0 ? (
+                            <Button
+                                disable
+                                className='border-amber-600 px-4 py-3 font-normal mr-8 w-full text-amber-800 bg-amber-100'
+                            >
+                                <div className='text-xl'>Sản phẩm đã hết hàng</div>
+                            </Button>
+                        ) : (
+                            <>
                                 <Button className='border-amber-600 px-4 py-3 font-normal mr-8 flex flex-row items-center text-amber-800 bg-amber-100 hover:bg-amber-50'>
                                     <i className='bi bi-cart-plus text-xl pr-2'></i>
                                     <div className='text-xl'>Thêm Vào Giỏ Hàng</div>
@@ -99,11 +121,9 @@ function ProductDetail({ product }: Props) {
                                 <Button className='border-amber-600 px-4 py-3 mr-8 flex flex-row items-center text-white bg-amber-600 hover:bg-amber-500'>
                                     <div className='text-xl'>Mua Ngay</div>
                                 </Button>
-                            </div>
-                        </>
-                    ) : (
-                        <div>Hết hàng</div>
-                    )}
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -112,12 +132,7 @@ function ProductDetail({ product }: Props) {
                 <div className='w-full mb-5 bg-gray-100 uppercase text-xl tracking-wider font-medium px-2 py-4 '>
                     Mô tả sản phẩm
                 </div>
-                <ul className='px-6 pb-6'>
-                    <li>❄️mã này hàng lên bao nhiêu vẫn không đủ cấp í </li>
-                    <li>❄️Năm nay xưởng vẫn lên mẫu phục vụ mọi người nhé.</li>
-                    <li>❄️Diện team, mặc đôi ưng xỉu đó ạ</li>
-                    <li>❄️Freesize: Phom 38-65kg mặc đẹp nha!</li>
-                </ul>
+                <ul className='px-6 pb-6'>{product.description}</ul>
             </div>
 
             {/* Review */}
@@ -135,7 +150,7 @@ function ProductDetail({ product }: Props) {
                             <i className='bi bi-star-fill'></i>
                             <i className='bi bi-star-fill'></i>
                             <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
+                            <i className='bi bi-star'></i>
                         </div>
                     </div>
                     <div className='ml-8 '>
@@ -168,7 +183,7 @@ function ProductDetail({ product }: Props) {
                 <h2 className='font-medium uppercase text-lg tracking-wider mb-6 text-gray-500'>
                     Các sản phẩm cùng thể loại
                 </h2>
-                <ListProduct products={[]} />
+                <ListProduct products={similarProducts} />
             </div>
         </>
     );

@@ -1,12 +1,7 @@
-import ListProduct from '@/app/components/product/ListProduct';
-import DropDown from '@/app/components/widgets/dropdown/DropDown';
-import SideBarCategory from '@/app/components/sideBarCategory/SideBarCategory';
-import Button from '@/app/components/widgets/button/Button';
 import { listProducts } from '@/models/product';
-import { Metadata, ResolvingMetadata } from 'next';
-import { listCategories } from '@/models/category';
+import { Metadata } from 'next';
+import { getCategoryBySlug, listCategories } from '@/models/category';
 import CategoryPage from '@/app/components/category/CategoryPage';
-import { getCategoryBySlug } from '@/models/category';
 
 async function getProducts(slug: string) {
     const products = await listProducts(slug);
@@ -29,10 +24,7 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata(
-    { params, searchParams }: Props,
-    parent?: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const slug = params.slug;
     const category = await getCategoryBySlug(slug);
     return {

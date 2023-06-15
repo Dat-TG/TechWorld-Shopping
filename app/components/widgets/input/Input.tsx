@@ -9,15 +9,21 @@ interface InputProps {
     type?: string | 'text';
     placeholder?: string;
     value?: string;
-    id?: string,
+    id?: string;
     name?: string;
     defaultValue?: string;
+    onChange?: (e: any) => void;
+    max?: number;
+    min?: number;
+    disable?: boolean;
 }
 
 function Input(props: InputProps) {
     return (
         <input
-            className={`px-2 py-2 text-sm bg-white border border-solid border-transparent rounded shadow-md  ${props.className}`}
+            className={`px-2 py-2 text-sm  ${
+                props.disable ? 'bg-gray-100' : 'bg-white'
+            } border border-solid border-transparent rounded shadow-md ${props.className}`}
             onClick={props.onClick}
             type={props.type}
             placeholder={props.placeholder}
@@ -25,6 +31,10 @@ function Input(props: InputProps) {
             value={props.value}
             defaultValue={props.defaultValue}
             id={props.id}
+            onChange={props.onChange}
+            max={props.max}
+            min={props.min}
+            disabled={props.disable}
         />
     );
 }
