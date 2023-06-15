@@ -32,6 +32,7 @@ export const authOptions: AuthOptions = {
                     email: user.email,
                     role: user.role,
                     cartId: user.cartId,
+                    image: user.image
                 };
             },
         }),
@@ -48,6 +49,7 @@ export const authOptions: AuthOptions = {
                         email: user.email,
                         role: user.role,
                         cartId: user.cartId,
+                        image: user.image
                     },
                 };
             }

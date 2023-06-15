@@ -6,7 +6,6 @@ import ChangePassword from '../form/ChangePassword';
 import Order from '../order/Order';
 import Noti from '../noti/Noti';
 import { useSession } from 'next-auth/react';
-import { User } from 'next-auth';
 
 type Address = {
     name: string;
@@ -16,18 +15,17 @@ type Address = {
 
 export default function Profile() {
     const router = useRouter();
-    const [index1, setIndex1] = useState(0);
-    const [index2, setIndex2] = useState(0);
     const [address, setAddress] = useState<Array<Address>>([]);
     const session = useSession();
     const user = session.data?.user || {};
-    console.log(session);
     const params = useSearchParams();
-    const tab = params.get('tab'),
-        index = params.get('index');
+    const [tab, setTab] = useState(params.get('tab') || '0');
+    const [index, setIndex] = useState(params.get('index') || '0');
     useEffect(() => {
-        setIndex1(tab !== null ? parseInt(tab) : 0);
-        setIndex2(index !== null ? parseInt(index) : 0);
+        setTab(params.get('tab') || '0');
+        setIndex(params.get('index') || '0');
+    }, [params]);
+    useEffect(() => {
         setAddress([
             {
                 name: 'Lê Công Đắt',
@@ -52,8 +50,8 @@ export default function Profile() {
                 <div
                     className='flex justify-start items-center cursor-pointer'
                     onClick={() => {
-                        setIndex1(0);
-                        router.push(`/user?tab=0&index=${index2}`);
+                        setTab('0');
+                        router.push(`/user?tab=0&index=${index}`);
                     }}
                 >
                     <i className='bi bi-person text-blue-500 text-2xl me-2'></i>
@@ -61,16 +59,16 @@ export default function Profile() {
                 </div>
                 <div
                     className={
-                        (index1 === 0 ? 'visibility' : 'hidden') +
+                        (tab === '0' ? 'visibility' : 'hidden') +
                         ' flex flex-col justify-center items-start ms-10 space-y-4'
                     }
                 >
                     <p
                         className={
-                            (index2 === 0 ? 'text-orange-600 font-medium' : '') + ' cursor-pointer'
+                            (index === '0' ? 'text-orange-600 font-medium' : '') + ' cursor-pointer'
                         }
                         onClick={() => {
-                            setIndex2(0);
+                            setIndex('0');
                             router.push('/user?tab=0&index=0');
                         }}
                     >
@@ -78,10 +76,10 @@ export default function Profile() {
                     </p>
                     <p
                         className={
-                            (index2 === 1 ? 'text-orange-600 font-medium' : '') + ' cursor-pointer'
+                            (index === '1' ? 'text-orange-600 font-medium' : '') + ' cursor-pointer'
                         }
                         onClick={() => {
-                            setIndex2(1);
+                            setIndex('1');
                             router.push('/user?tab=0&index=1');
                         }}
                     >
@@ -89,10 +87,10 @@ export default function Profile() {
                     </p>
                     <p
                         className={
-                            (index2 === 2 ? 'text-orange-600 font-medium' : '') + ' cursor-pointer'
+                            (index === '2' ? 'text-orange-600 font-medium' : '') + ' cursor-pointer'
                         }
                         onClick={() => {
-                            setIndex2(2);
+                            setIndex('2');
                             router.push('/user?tab=0&index=2');
                         }}
                     >
@@ -102,31 +100,30 @@ export default function Profile() {
                 <div
                     className='flex justify-start items-center cursor-pointer'
                     onClick={() => {
-                        setIndex1(1);
+                        setTab('1');
                         router.push('/user?tab=1');
                     }}
                 >
                     <i className='bi bi-receipt-cutoff text-orange-500 me-2 text-2xl'></i>
-                    <p className={index1 === 1 ? 'text-orange-600 font-medium' : ''}>Đơn Mua</p>
+                    <p className={tab === '1' ? 'text-orange-600 font-medium' : ''}>Đơn Mua</p>
                 </div>
                 <div
                     className='flex justify-start items-center cursor-pointer'
                     onClick={() => {
-                        setIndex1(2);
+                        setTab('2');
                         router.push('/user?tab=2');
                     }}
                 >
                     <i className='bi bi-bell text-green-500 me-2 text-2xl'></i>
-                    <p className={index1 === 2 ? 'text-orange-600 font-medium' : ''}>Thông Báo</p>
+                    <p className={tab === '2' ? 'text-orange-600 font-medium' : ''}>Thông Báo</p>
                 </div>
             </div>
             <div
                 className={
-                    (index1 === 1 ? 'hidden' : '') +
-                    ' rounded-sm bg-white w-full h-full px-10 py-10'
+                    (tab === '1' ? 'hidden' : '') + ' rounded-sm bg-white w-full h-full px-10 py-10'
                 }
             >
-                <div className={index1 === 0 && index2 === 0 ? 'visible' : 'hidden'}>
+                <div className={tab === '0' && index === '0' ? 'visible' : 'hidden'}>
                     <p className='text-3xl'>Hồ Sơ Của Tôi</p>
                     <p className='text-black-300'>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                     <hr className='mt-2'></hr>
@@ -134,7 +131,7 @@ export default function Profile() {
                         <EditProfile user={user} />
                     </div>
                 </div>
-                <div className={index1 === 0 && index2 === 1 ? 'visible' : 'hidden'}>
+                <div className={tab === '0' && index === '1' ? 'visible' : 'hidden'}>
                     <div className='flex justify-between mb-2'>
                         <p className='text-3xl'>Địa Chỉ Của Tôi</p>
                         <button className='bg-amber-500 text-white py-2 px-2 hover:opacity-50 active:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-300'>
@@ -180,7 +177,7 @@ export default function Profile() {
                         ))}
                     </div>
                 </div>
-                <div className={index1 === 0 && index2 === 2 ? 'visible' : 'hidden'}>
+                <div className={tab === '0' && index === '2' ? 'visible' : 'hidden'}>
                     <p className='text-3xl'>Đổi mật khẩu</p>
                     <p className='text-black-300'>
                         Thiết lập mật khẩu mạnh để bảo vệ tài khoản của bạn
@@ -188,7 +185,7 @@ export default function Profile() {
                     <hr className='mt-2 mb-4'></hr>
                     <ChangePassword />
                 </div>
-                <div className={(index1 === 2 ? 'visible' : 'hidden') + ' flex flex-col space-y-2'}>
+                <div className={(tab === '2' ? 'visible' : 'hidden') + ' flex flex-col space-y-2'}>
                     <Noti />
                     <Noti />
                     <Noti />
@@ -196,7 +193,7 @@ export default function Profile() {
                     <Noti />
                 </div>
             </div>
-            {index1 === 1 && <Order />}
+            {tab === '1' && <Order />}
         </div>
     );
 }

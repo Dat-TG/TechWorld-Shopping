@@ -16,10 +16,10 @@ export default function ProductCard({ product }: Props) {
                 className='block hover:-translate-y-0.5 ease-out transition duration-30'
             >
                 <div className='max-w-md mx-auto'>
-                    <div className='bg-white shadow-md border px-1 py-1 border-gray-200 rounded-lg max-w-xs'>
-                    <div className='h-52 flex flex-col justify-center w-48'>
+                    <div className='bg-white shadow-md border border-gray-200 rounded-lg max-w-xs'>
+                    <div className={'h-52 flex flex-col w-full '+(product.attachments[0]?.path?'justify-between':'justify-center')}>
                         <Image
-                            className='rounded-t-lg mx-auto my-3'
+                            className='rounded-t-lg'
                             src={
                                 product.attachments[0]?.path ??
                                 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
