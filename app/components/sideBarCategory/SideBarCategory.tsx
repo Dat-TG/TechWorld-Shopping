@@ -99,11 +99,18 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     }}
                 />
             </div>
-            <a href={pathname + '?filter=5&min=' + min + '&max=' + max}>
-                <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
-                    Áp dụng
-                </Button>
-            </a>
+            <div className='w-full flex justify-between'>
+                <a href={pathname + '?filter=5&min=' + min + '&max=' + max}>
+                    <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
+                        Áp dụng
+                    </Button>
+                </a>
+                <a href={pathname}>
+                    <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
+                        Xóa bộ lọc
+                    </Button>
+                </a>
+            </div>
 
             <hr className='w-full bg-amber-500 mt-4' />
             {/* Status */}
