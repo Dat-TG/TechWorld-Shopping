@@ -15,7 +15,7 @@ export default function CartHover() {
     return (
         <>
             <Link
-                href='/my-cart'
+                href='/cart'
                 className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                 aria-current='page'
                 onMouseOver={handleMouseOver}
@@ -58,7 +58,7 @@ export default function CartHover() {
                     <div className='flex justify-between px-2 w-full items-center'>
                         <p className='text-xs text-gray-500'>3 sản phẩm khác trong giỏ hàng</p>
                         <button className='bg-amber-500 hover:bg-amber-700 text-white text-sm px-2 py-1 rounded-sm'>
-                            <Link href={'/my-cart'} onClick={() => handleMouseOut()}>
+                            <Link href={'/cart'} onClick={() => handleMouseOut()}>
                                 Xem giỏ hàng
                             </Link>
                         </button>
