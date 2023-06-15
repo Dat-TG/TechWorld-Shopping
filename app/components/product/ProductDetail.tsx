@@ -4,14 +4,23 @@ import Button from '../widgets/button/Button';
 import Input from '../widgets/input/Input';
 import Review from './Review';
 import ListProduct from './ListProduct';
+import { FullProduct } from '@/models/product';
+import { CurrencyFormatter } from '@/utils/formatter';
 
-function ProductDetail() {
+interface Props {
+    product: FullProduct;
+}
+
+function ProductDetail({ product }: Props) {
     return (
         <>
             <div className='p-4 bg-slate-50 flex flex-row'>
                 <div className='inline-block'>
                     <Image
-                        src={'/images/ava-plus-la-y68-190722-051129-600x600.jpeg'}
+                        src={
+                            product.attachments[0]?.path ??
+                            'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+                        }
                         alt='Image'
                         width={500}
                         height={500}
@@ -20,9 +29,7 @@ function ProductDetail() {
                 </div>
 
                 <div className='flex-1 ml-8'>
-                    <h2 className='font-semibold text-2xl tracking-wider '>
-                        Pin sạc dự phòng 7.500 mAh AVA+ LA Y68
-                    </h2>
+                    <h2 className='font-semibold text-2xl tracking-wider '>{product.name}</h2>
                     <div className='flex flex-row text-lg my-2'>
                         <span className='text-amber-600 font-bold text-base mr-2 border-amber-600 border-b'>
                             4.5
@@ -47,37 +54,56 @@ function ProductDetail() {
                             |
                         </span>
                         <p className='font-normal text-lg text-gray-500'>
-                            <span className='text-black font-semibold text-xl mr-2'>22k</span>
+                            <span className='text-black font-semibold text-xl mr-2'>
+                                {product.sold}
+                            </span>
                             Đã bán
                         </p>
                     </div>
                     <div className='p-6 flex flex-row bg-gray-100 items-center'>
-                        <div className='line-through text-gray-500 text-lg mr-6'>₫75.000</div>
-                        <div className='text-amber-600 text-3xl font-semibold mr-6'>₫40.000</div>
-                        <div className='inline-block bg-amber-500 text-white text-sm rounded-sm uppercase font-bold text-center px-1 py-0'>
-                            47% giảm
+                        {product.sale != 0 && (
+                            <div className='line-through text-gray-500 text-lg mr-6'>
+                                {CurrencyFormatter.format(product.price)}
+                            </div>
+                        )}
+                        <div className='text-amber-600 text-3xl font-semibold mr-6'>
+                            {CurrencyFormatter.format(product.price * (1 - product.sale))}
                         </div>
+
+                        {product.sale != 0 && (
+                            <div className='inline-block bg-amber-500 text-white text-sm rounded-sm uppercase font-bold text-center px-1 py-0'>
+                                {product.sale * 100}% giảm
+                            </div>
+                        )}
                     </div>
-                    <div className='flex flex-row mt-12 items-center'>
-                        <div className='text-lg text-gray-500 mr-12'>Số lượng</div>
-                        <Button className=' bg-white text-base px-4 '>-</Button>
-                        <Input
-                            type='text'
-                            className='w-12 text-center text-base px-4'
-                            defaultValue='1'
-                        />
-                        <Button className=' bg-white text-base px-4 mr-6'>+</Button>
-                        <div className='text-gray-600'>121212 sản phâm có sẵn</div>
-                    </div>
-                    <div className='flex flex-row items-center mt-12'>
-                        <Button className='border-amber-600 px-4 py-3 font-normal mr-8 flex flex-row items-center text-amber-800 bg-amber-100 hover:bg-amber-50'>
-                            <i className='bi bi-cart-plus text-xl pr-2'></i>
-                            <div className='text-xl'>Thêm Vào Giỏ Hàng</div>
-                        </Button>
-                        <Button className='border-amber-600 px-4 py-3 mr-8 flex flex-row items-center text-white bg-amber-600 hover:bg-amber-500'>
-                            <div className='text-xl'>Mua Ngay</div>
-                        </Button>
-                    </div>
+                    {product.quantity != 0 ? (
+                        <>
+                            <div className='flex flex-row mt-12 items-center'>
+                                <div className='text-lg text-gray-500 mr-12'>Số lượng</div>
+                                <Button className=' bg-white text-base px-4 '>-</Button>
+                                <Input
+                                    type='text'
+                                    className='w-12 text-center text-base px-4'
+                                    defaultValue='1'
+                                />
+                                <Button className=' bg-white text-base px-4 mr-6'>+</Button>
+                                <div className='text-gray-600'>
+                                    {product.quantity} sản phẩm có sẵn
+                                </div>
+                            </div>
+                            <div className='flex flex-row items-center mt-12'>
+                                <Button className='border-amber-600 px-4 py-3 font-normal mr-8 flex flex-row items-center text-amber-800 bg-amber-100 hover:bg-amber-50'>
+                                    <i className='bi bi-cart-plus text-xl pr-2'></i>
+                                    <div className='text-xl'>Thêm Vào Giỏ Hàng</div>
+                                </Button>
+                                <Button className='border-amber-600 px-4 py-3 mr-8 flex flex-row items-center text-white bg-amber-600 hover:bg-amber-500'>
+                                    <div className='text-xl'>Mua Ngay</div>
+                                </Button>
+                            </div>
+                        </>
+                    ) : (
+                        <div>Hết hàng</div>
+                    )}
                 </div>
             </div>
 

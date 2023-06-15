@@ -2,8 +2,9 @@ import ListProduct from '@/app/components/product/ListProduct';
 import DropDown from '@/app/components/widgets/dropdown/DropDown';
 import SideBarCategory from '@/app/components/sideBarCategory/SideBarCategory';
 import Button from '@/app/components/widgets/button/Button';
-import { getCategoryBySlug, listProducts } from '@/models/product';
+import { listProducts } from '@/models/product';
 import { Metadata, ResolvingMetadata } from 'next';
+import { getCategoryBySlug } from '@/models/category';
 
 async function getProducts(slug: string) {
     const products = await listProducts(slug);
@@ -51,14 +52,8 @@ export async function generateMetadata(
     { params, searchParams }: Props,
     parent?: ResolvingMetadata,
 ): Promise<Metadata> {
-    // read route params
-    const id = params.slug;
-
-    // fetch data
-    const category = await getCategoryBySlug(id);
-
-    // optionally access and extend (rather than replace) parent metadata
-
+    const slug = params.slug;
+    const category = await getCategoryBySlug(slug);
     return {
         title: category?.name + ' | TechWorld',
         icons: '/images/logo.png',

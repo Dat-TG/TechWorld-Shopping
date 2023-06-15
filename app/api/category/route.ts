@@ -8,7 +8,7 @@ export async function GET(request: Request) {
         const categories = await listCategories();
         return NextResponse.json({ message: 'success', data: categories });
     } catch (error: any) {
-        console.log('Error geting all categories', getErrorMessage(error));
+        console.log('Error getting all categories', getErrorMessage(error));
 
         return NextResponse.json(
             { message: `Internal Server Error: ${getErrorMessage(error)}` },

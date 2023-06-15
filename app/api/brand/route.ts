@@ -7,7 +7,7 @@ export async function GET(request: Request) {
         const brands = await listBrands();
         return NextResponse.json({ message: 'success', data: brands });
     } catch (error: any) {
-        console.log('Error geting all brands', getErrorMessage(error));
+        console.log('Error getting all brands', getErrorMessage(error));
 
         return NextResponse.json(
             { message: `Internal Server Error: ${getErrorMessage(error)}` },

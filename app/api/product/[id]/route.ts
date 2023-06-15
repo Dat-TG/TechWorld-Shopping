@@ -23,7 +23,7 @@ export async function GET(
         }
         return NextResponse.json({ message: 'success', data: product });
     } catch (error: any) {
-        console.log('Error geting product', getErrorMessage(error));
+        console.log('Error getting product', getErrorMessage(error));
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {

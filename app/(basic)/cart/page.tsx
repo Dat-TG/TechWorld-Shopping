@@ -1,4 +1,3 @@
-import React from 'react';
 import MyCart from '@/app/components/myCart/MyCart';
 import FormCustomer from '@/app/components/myCart/FormCustomer';
 import CartInformation from '@/app/components/myCart/CartInformation';

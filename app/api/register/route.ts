@@ -1,4 +1,4 @@
-import { addUser as createUser } from '@/models/user';
+import { createUser } from '@/models/user';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';

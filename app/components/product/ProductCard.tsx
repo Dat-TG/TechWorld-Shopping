@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../widgets/button/Button';
 import { FullProduct } from '@/models/product';
+import { CurrencyFormatter } from '@/utils/formatter';
 
 interface Props {
     product: FullProduct;
@@ -32,11 +33,19 @@ export default function ProductCard({ product }: Props) {
                                     {product.name}
                                 </h5>
                             </div>
-                            <div className='font-light'>
-                                <span className='font-normal line-through text-sm'>170000₫</span>{' '}
-                                -20%
+                            {product.sale != 0 && (
+                                <div className='font-light'>
+                                    <span className='font-normal line-through text-sm'>
+                                        {CurrencyFormatter.format(product.price)}
+                                    </span>
+                                    <span className='text-amber-500 font-bold text-md ml-2'>
+                                        -{product.sale * 100}%
+                                    </span>
+                                </div>
+                            )}
+                            <div className='text-amber-500 font-bold text-md'>
+                                {CurrencyFormatter.format(product.price * (1 - product.sale))}
                             </div>
-                            <div className='text-amber-500 font-bold text-md'>135.000₫</div>
                             <div className='flex flex-row  w-28 items-center justify-between text-sm mt-2'>
                                 <i className='bi bi-star-fill text-amber-500'></i>
                                 <i className='bi bi-star-fill text-amber-500'></i>

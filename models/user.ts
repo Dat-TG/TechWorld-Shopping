@@ -1,8 +1,19 @@
 import bcrypt from 'bcrypt';
 import prisma from '../libs/prismadb';
 import { NotEnoughQuantity, ProductNotFound } from './product';
+import { Attachment, CartItem, Category, Product } from '@prisma/client';
 
-export async function addUser(name: string, phone: string, password: string) {
+export type FullCartItem = CartItem & {
+    Product: Product & {
+        attachments: Attachment[];
+        category: Category | null;
+    };
+};
+
+export const UserNotFound = new Error('User does not exist');
+export const InvalidCredentials = new Error('Invalid Credentials');
+
+export async function createUser(name: string, phone: string, password: string) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
         data: {
@@ -25,12 +36,12 @@ export async function auth(phone: string, password: string) {
     });
 
     if (!user || !user?.password) {
-        throw new Error('Invalid Credentials');
+        throw InvalidCredentials;
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-        throw new Error('Invalid Credentials');
+        throw InvalidCredentials;
     }
 
     return user;
@@ -43,9 +54,39 @@ export async function getUserByPhone(phone: string) {
         },
     });
     if (!user) {
-        throw new Error('User does not exist');
+        throw UserNotFound;
     }
     return user;
+}
+
+export async function getCart(userId: string) {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+        include: {
+            cart: {
+                include: {
+                    CartItem: {
+                        include: {
+                            Product: {
+                                include: {
+                                    attachments: true,
+                                    category: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    if (!user) {
+        throw UserNotFound;
+    }
+
+    return user.cart;
 }
 
 export async function addProductToCart(userId: string, productId: string, quantity: number) {
