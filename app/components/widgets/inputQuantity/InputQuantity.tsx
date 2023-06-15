@@ -21,7 +21,7 @@ function InputQuantity(props: InputQuantityProps) {
         if (props.quantity > 0) props.setQuantity(props.quantity - 1);
     }
 
-    function changeQuantity(e: any) {
+    function changeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
         const quantity = parseInt(e.target.value);
 
         if (isNaN(quantity)) return;

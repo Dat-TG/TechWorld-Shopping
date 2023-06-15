@@ -119,14 +119,14 @@ export async function updateProduct(
         throw ProductNotFound;
     }
 
-    const attachmentsToAdd = attachments.filter(attachment => {
-        return !oldProduct.attachments.some(oldAttachment => {
+    const attachmentsToAdd = attachments.filter((attachment) => {
+        return !oldProduct.attachments.some((oldAttachment) => {
             return oldAttachment.name === attachment.name;
         });
     });
 
-    const attachmentsToRemove = oldProduct.attachments.filter(oldAttachment => {
-        return !attachments.some(attachment => {
+    const attachmentsToRemove = oldProduct.attachments.filter((oldAttachment) => {
+        return !attachments.some((attachment) => {
             return oldAttachment.name === attachment.name;
         });
     });
@@ -145,7 +145,7 @@ export async function updateProduct(
             categoryId: categoryId,
             attachments: {
                 create: attachmentsToAdd,
-                deleteMany: attachmentsToRemove.map(attachment => {
+                deleteMany: attachmentsToRemove.map((attachment) => {
                     return {
                         id: attachment.id,
                     };

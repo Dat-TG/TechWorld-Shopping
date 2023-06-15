@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { convertBreadcrumb } from '@/utils/helper';
 import { FullProduct } from '@/models/product';
