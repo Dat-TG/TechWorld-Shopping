@@ -4,18 +4,24 @@ import SideBarCategory from '@/app/components/sideBarCategory/SideBarCategory';
 import Button from '@/app/components/widgets/button/Button';
 import { getCategoryBySlug, listProducts } from '@/models/product';
 import { Metadata, ResolvingMetadata } from 'next';
+import { listCategories } from '@/models/category';
 
 async function getProducts(slug: string) {
     const products = await listProducts(slug);
     return products;
 }
 
+async function getAllCategories() {
+    const categories = await listCategories();
+    return categories;
+}
+
 async function Page({ params }: { params: { slug: string } }) {
     const products = await getProducts(params.slug);
-
+    const categories = await getAllCategories();
     return (
         <div className='flex flex-row mt-4'>
-            <SideBarCategory />
+            <SideBarCategory categories={categories}/>
             <div>
                 <div className='flex flex-row items-center px-4 py-2 bg-gray-100 my-2 rounded-md w-full justify-between'>
                     <div className='flex flex-row items-center'>

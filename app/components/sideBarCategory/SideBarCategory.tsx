@@ -1,18 +1,17 @@
+'use client';
 import Link from 'next/link';
 import styles from './sideBarCategory.module.css';
 import Button from '../widgets/button/Button';
 import Input from '../widgets/input/Input';
-import { listCategories } from '@/models/category';
 import { Category } from '@prisma/client';
+import { useEffect, useState } from 'react';
 
-async function getAllCategories() {
-    const categories = await listCategories();
-    return categories;
-}
-
-async function SideBarCategory() {
-    const categories = await getAllCategories();
-
+function SideBarCategory({ categories }: { categories: Category[] }) {
+    const [numberOfCategories, setNumberOfCategories] = useState(Math.min(10, categories.length));
+    const [seeMore, setSeeMore] = useState(numberOfCategories < categories.length ? true : false);
+    useEffect(() => {
+        if (numberOfCategories >= categories.length) setSeeMore(false);
+    }, [numberOfCategories]);
     return (
         <div className='flex flex-col items-start justify-start  w-52 mr-4'>
             {/* Category */}
@@ -23,7 +22,7 @@ async function SideBarCategory() {
                 </Link>
             </div>
             <hr className='w-full bg-amber-500' />
-            {categories.map((category: Category) => (
+            {categories.slice(0, numberOfCategories).map((category: Category) => (
                 <Link
                     key={category.id}
                     href={`/category/${category.slug}`}
@@ -35,6 +34,26 @@ async function SideBarCategory() {
                     </p>
                 </Link>
             ))}
+            <div className='w-full flex justify-center'>
+            <p
+                className={'text-center cursor-pointer mr-4 hover:text-amber-500 ' + (seeMore ? '' : ' hidden')}
+                onClick={() => {
+                    setNumberOfCategories(Math.min(numberOfCategories + 10, categories.length));
+                }}
+            >
+                Xem thêm
+            </p>
+            <p
+                className={'text-center cursor-pointer hover:text-amber-500' + (numberOfCategories>10 ? '' : ' hidden')}
+                onClick={() => {
+                    setNumberOfCategories(
+                        Math.max(numberOfCategories - 10, Math.min(10, categories.length)),
+                    );
+                }}
+            >
+                Thu gọn
+            </p>
+            </div>
 
             <hr className='w-full bg-amber-500 mt-4' />
 
