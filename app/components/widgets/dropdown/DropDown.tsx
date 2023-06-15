@@ -1,15 +1,30 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface DropDown {
     name: string;
-    options: Array<string>;
+    options: Array<{ title: string; link: string }>;
 }
 
 export default function DropDown(dropdown: DropDown) {
+    const params = useSearchParams();
+    const router = useRouter();
+    const filter = params.get('filter');
     const [hidden, setHidden] = useState(true);
-
+    const [choose, setChoose] = useState(
+        filter === '3' ? 'Cao tới thấp' : filter === '4' ? 'Thấp tới cao' : dropdown.name,
+    );
+    useEffect(() => {
+        if (filter === '3') {
+            setChoose('Cao tới thấp');
+        } else if (filter === '4') {
+            setChoose('Thấp tới cao');
+        } else {
+            setChoose(dropdown.name);
+        }
+    }, [filter]);
     return (
         <div
             className={'relative inline-block text-left'}
@@ -19,12 +34,15 @@ export default function DropDown(dropdown: DropDown) {
             <div>
                 <button
                     type='button'
-                    className='inline-flex w-40 justify-between items-center px-4 py-2 text-sm font-medium bg-white border border-solid border-transparent rounded shadow-md'
+                    className={
+                        'inline-flex w-40 justify-between items-center px-4 py-2 text-sm font-medium border border-solid border-transparent rounded shadow-md' +
+                        (filter === '3' || filter === '4' ? ' bg-amber-100' : ' bg-white')
+                    }
                     id='menu-button'
                     aria-expanded='true'
                     aria-haspopup='true'
                 >
-                    {dropdown.name}
+                    {choose}
                     <svg
                         className='-mr-1 h-5 w-5 text-gray-400'
                         viewBox='0 0 20 20'
@@ -50,17 +68,15 @@ export default function DropDown(dropdown: DropDown) {
                 tabIndex={-1}
             >
                 <div className='py-1' role='none'>
-                    {dropdown.options.map((option: string) => (
-                        <Link
-                            key={option}
-                            href='#'
+                    {dropdown.options.map((option: { title: string; link: string }) => (
+                        <a
+                            href={option.link}
+                            key={option.link}
                             className='text-gray-700 block px-4 py-2 text-sm hover:text-amber-700 hover:font-medium'
                             role='menuitem'
-                            tabIndex={-1}
-                            id='menu-item-0'
                         >
-                            {option}
-                        </Link>
+                            {option.title}
+                        </a>
                     ))}
                 </div>
             </div>

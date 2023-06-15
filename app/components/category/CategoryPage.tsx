@@ -6,6 +6,7 @@ import Button from '../widgets/button/Button';
 import DropDown from '../widgets/dropdown/DropDown';
 import { FullProduct } from '@/models/product';
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function CategoryPage({
     categories,
@@ -14,12 +15,16 @@ export default function CategoryPage({
     categories: Category[];
     products: FullProduct[];
 }) {
-    const [filter, setFilter] = useState(0);
+    const params = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+    const [filter, setFilter] = useState(parseInt(params.get('filter') || '0'));
     const [productsFilter, setProductsFilter] = useState(products);
     useEffect(() => {
         switch (filter) {
             case 0:
                 setProductsFilter(products);
+                router.push(pathname + '?filter=0');
                 break;
             case 1:
                 setProductsFilter(
@@ -27,6 +32,7 @@ export default function CategoryPage({
                         return a.updatedAt < b.updatedAt ? 1 : -1;
                     }),
                 );
+                router.push(pathname + '?filter=1');
                 break;
             case 2:
                 setProductsFilter(
@@ -34,10 +40,23 @@ export default function CategoryPage({
                         return a.sold < b.sold ? 1 : -1;
                     }),
                 );
+                router.push(pathname + '?filter=2');
                 break;
             case 3:
+                setProductsFilter(
+                    [...products].sort(function (a: FullProduct, b: FullProduct) {
+                        return a.price * (1 - a.sale) < b.price * (1 - b.sale) ? 1 : -1;
+                    }),
+                );
+                router.push(pathname + '?filter=3');
                 break;
             case 4:
+                setProductsFilter(
+                    [...products].sort(function (a: FullProduct, b: FullProduct) {
+                        return a.price * (1 - a.sale) < b.price * (1 - b.sale) ? -1 : 1;
+                    }),
+                );
+                router.push(pathname + '?filter=4');
                 break;
             case 5:
                 break;
@@ -79,7 +98,13 @@ export default function CategoryPage({
                         >
                             Bán chạy nhất
                         </Button>
-                        <DropDown name='Giá' options={['Cao tới thấp', 'Thấp tới cao']} />
+                        <DropDown
+                            name='Giá'
+                            options={[
+                                { title: 'Cao tới thấp', link: pathname + '?filter=3' },
+                                { title: 'Thấp tới cao', link: pathname + '?filter=4' },
+                            ]}
+                        />
                     </div>
                     <div className='flex flex-row items-center'>
                         <div className='text-sm mr-4 border-spacing-1'>
