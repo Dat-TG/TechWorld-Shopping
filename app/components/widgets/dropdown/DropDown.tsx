@@ -36,7 +36,7 @@ export default function DropDown(dropdown: DropDown) {
                     type='button'
                     className={
                         'inline-flex w-40 justify-between items-center px-4 py-2 text-sm font-medium border border-solid border-transparent rounded shadow-md' +
-                        (filter === '3' || filter === '4' ? ' bg-amber-100' : ' bg-white')
+                        (filter === '3' || filter === '4' ? ' bg-amber-700 text-white' : ' bg-white')
                     }
                     id='menu-button'
                     aria-expanded='true'

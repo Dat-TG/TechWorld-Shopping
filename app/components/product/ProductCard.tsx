@@ -17,7 +17,7 @@ export default function ProductCard({ product }: Props) {
             >
                 <div className='max-w-md mx-auto'>
                     <div className='bg-white shadow-md border px-1 py-1 border-gray-200 rounded-lg max-w-xs'>
-                    <div className='h-52 flex flex-col justify-center'>
+                    <div className='h-52 flex flex-col justify-center w-48'>
                         <Image
                             className='rounded-t-lg mx-auto my-3'
                             src={
@@ -66,9 +66,6 @@ export default function ProductCard({ product }: Props) {
                                 <i className='bi bi-star-fill text-amber-500'></i>
                                 <div className='text-md font-normal'>512</div>
                             </div>
-                            <Button className='w-full mt-4 text-white bg-amber-600 hover:bg-amber-700 font-medium rounded-lg py-2'>
-                                Thêm vào giỏ hàng
-                            </Button>
                         </div>
                     </div>
                 </div>

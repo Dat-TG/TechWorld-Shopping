@@ -109,13 +109,15 @@ export default function CategoryPage({
     }, [page, productsFilter]);
     return (
         <div className='flex flex-row mt-4'>
-            <SideBarCategory categories={categories} />
-            <div>
+            <div className='w-1/6'>
+                <SideBarCategory categories={categories} />
+            </div>
+            <div className='w-5/6'>
                 <div className='flex flex-row items-center px-4 py-2 bg-gray-100 my-2 rounded-md w-full justify-between'>
                     <div className='flex flex-row items-center'>
                         <div className='text-sm mr-4'>Sắp xếp theo </div>
                         <Button
-                            className={'px-6 mr-4 ' + (filter === 1 ? 'bg-amber-100' : 'bg-white')}
+                            className={'px-6 mr-4 ' + (filter === 1 ? 'bg-amber-700 text-white' : 'bg-white')}
                             onClick={() => {
                                 setPage(1);
                                 if (filter !== 1) setFilter(1);
@@ -125,7 +127,7 @@ export default function CategoryPage({
                             Mới nhất
                         </Button>
                         <Button
-                            className={'px-6 mr-4  ' + (filter === 2 ? 'bg-amber-100' : 'bg-white')}
+                            className={'px-6 mr-4  ' + (filter === 2 ? 'bg-amber-700 text-white' : 'bg-white')}
                             onClick={() => {
                                 setPage(1);
                                 if (filter !== 2) setFilter(2);
