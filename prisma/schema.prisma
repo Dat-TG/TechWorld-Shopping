@@ -24,8 +24,8 @@ model User {
     verificationToken VerificationToken[]
     emailVerified     DateTime?
     phoneVerified     DateTime?
-    cart              Cart?               @relation(fields: [cartId], references: [id])
-    cartId            String?             @unique @db.ObjectId
+    cart              Cart                @relation(fields: [cartId], references: [id])
+    cartId            String              @unique @db.ObjectId
     Invoice           Invoice[]
     Review            Review[]
 }
@@ -76,12 +76,12 @@ model Cart {
 }
 
 model CartItem {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId
     quantity  Int
-    Cart      Cart?    @relation(fields: [cartId], references: [id])
-    cartId    String?  @db.ObjectId
-    Product   Product? @relation(fields: [productId], references: [id])
-    productId String?  @db.ObjectId
+    Cart      Cart?   @relation(fields: [cartId], references: [id])
+    cartId    String? @db.ObjectId
+    Product   Product @relation(fields: [productId], references: [id])
+    productId String  @db.ObjectId
 }
 
 // an invoice only contains one product

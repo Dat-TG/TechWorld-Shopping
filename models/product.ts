@@ -12,10 +12,24 @@ export type FullProduct = Product & {
 export const ProductNotFound = new Error('Product not found');
 export const NotEnoughQuantity = new Error('Not enough quantity');
 
-export async function getProduct(id?: string) {
+export async function getProduct(id: string) {
     const product = await prisma.product.findFirst({
         where: {
             id: id,
+        },
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+        },
+    });
+    return product;
+}
+
+export async function getProductBySlug(slug: string) {
+    const product = await prisma.product.findFirst({
+        where: {
+            slug: slug,
         },
         include: {
             attachments: true,
@@ -43,15 +57,6 @@ export async function listProducts(categorySlug?: string, brandSlug?: string) {
         },
     });
     return products;
-}
-
-export async function getCategoryBySlug(categorySlug: string) {
-    const category = await prisma.category.findUnique({
-        where: {
-            slug: categorySlug,
-        },
-    });
-    return category;
 }
 
 export async function createProduct(

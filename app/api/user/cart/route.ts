@@ -3,14 +3,47 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { addProductToCart } from '@/models/user';
+import { addProductToCart, getCart } from '@/models/user';
 import { NotEnoughQuantity, ProductNotFound } from '@/models/product';
 
+/**
+ * GET /api/user/cart
+ * Get all products in cart of current user
+ */
+export async function GET(request: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session || !session.user) {
+            return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
+        }
+
+        const products = await getCart(session.user.id);
+
+        return NextResponse.json({
+            message: 'success',
+            data: products,
+        });
+    } catch (error: any) {
+        console.log('Error getting cart of user', getErrorMessage(error));
+
+        return NextResponse.json(
+            { message: `Internal Server Error: ${getErrorMessage(error)}` },
+            {
+                status: 500,
+            },
+        );
+    }
+}
+
+/**
+ * POST /api/user/cart
+ * Add product to cart of current user
+ */
 export async function POST(request: Request) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session) {
-            return NextResponse.json({ error: 'Not logged in' }, { status: 401 });
+        if (!session || !session.user) {
+            return NextResponse.json({ message: 'Not logged in' }, { status: 401 });
         }
 
         const { productId, quantity } = await request.json();

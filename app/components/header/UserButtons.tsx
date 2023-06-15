@@ -1,13 +1,13 @@
-'use client';
-
-import { signOut, useSession } from 'next-auth/react';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth';
 import Link from 'next/link';
+import Logout from './Logout';
 
-export default function UserButtons() {
-    const session = useSession();
+export default async function UserButtons() {
+    const session = await getServerSession(authOptions);
     return (
         <>
-            {session?.status !== 'authenticated' ? (
+            {!session ? (
                 <>
                     <li>
                         <Link
@@ -33,16 +33,11 @@ export default function UserButtons() {
                             href='/user'
                             className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                         >
-                            Chào, {session?.data?.user?.name}
+                            Chào, {session.user.name}
                         </Link>
                     </li>
                     <li>
-                        <button
-                            onClick={() => signOut()}
-                            className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
-                        >
-                            Đăng xuất
-                        </button>
+                        <Logout />
                     </li>
                 </>
             )}

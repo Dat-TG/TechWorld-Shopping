@@ -39,23 +39,23 @@ export default function Login() {
         },
     });
     const onSubmit = async (data: Data) => {
-        const res = await signIn('credentials', {
-            phone: data.phone,
-            password: data.password,
-            redirect: false,
-        }).then(callback => {
-            setLogining(false);
-            if (callback?.error) {
-                Notify.failure(
-                    'Đăng nhập không thành công. Số điện thoại hoặc mật khẩu không chính xác',
-                );
-            }
+        try {
+            const res = await signIn('credentials', {
+                phone: data.phone,
+                password: data.password,
+                redirect: false,
+            });
 
-            if (callback?.ok && !callback?.error) {
+            if (res?.error) {
+                Notify.failure('Đăng nhập thất bại');
+            } else {
                 Notify.success('Đăng nhập thành công');
-                router.push('/');
+                router.refresh();
             }
-        });
+        } catch (err) {
+            Notify.failure('Đăng nhập thất bại');
+        }
+        setLogining(false);
     };
     return (
         <>

@@ -48,28 +48,35 @@ export default function Register() {
         },
     });
     const onSubmit = async (data: Data) => {
-        const res = await fetch('/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: data.name,
-                phone: data.phone,
-                password: data.password,
-            }),
-        })
-            .then(async () => {
-                const res=await signIn('credentials', { phone: data.phone, password: data.password }).then(callback=>{
-                    if (callback?.error) {
-                        Notify.failure('Số điện thoại đã được sử dụng. Vui lòng dùng số điện thoại khác',{
-                            clickToClose: true,
-                            closeButton: true
-                        });
-                    }
+        try {
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: data.name,
+                    phone: data.phone,
+                    password: data.password,
+                }),
+            });
+            const json = await res.json();
+            if (json.message === 'success') {
+                toast.success('Đăng ký thành công');
+                await signIn('credentials', {
+                    redirect: false,
+                    phone: data.phone,
+                    password: data.password,
                 });
-            })
-            .catch(() => toast.error('Đã có lỗi xảy ra'));
+                router.refresh();
+            } else {
+                toast.error(json.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('Đăng ký thất bại');
+        }
+        setRegistering(false);
     };
     return (
         <>

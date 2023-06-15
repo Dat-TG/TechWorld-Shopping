@@ -15,6 +15,15 @@ export async function getCategory(id: string) {
     return category;
 }
 
+export async function getCategoryBySlug(slug: string) {
+    const category = await prisma.category.findUnique({
+        where: {
+            slug: slug,
+        },
+    });
+    return category;
+}
+
 export async function createCategory(name: string) {
     const newCategory = await prisma.category.create({
         data: {

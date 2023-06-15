@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Button from '../widgets/button/Button';
 import { FullProduct } from '@/models/product';
+import { CurrencyFormatter } from '@/utils/formatter';
 
 interface Props {
     product: FullProduct;

@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
         return NextResponse.json({ message: 'success', data: products });
     } catch (error: any) {
-        console.log('Error geting all products', getErrorMessage(error));
+        console.log('Error getting all products', getErrorMessage(error));
 
         return NextResponse.json(
             { message: `Internal Server Error: ${getErrorMessage(error)}` },
