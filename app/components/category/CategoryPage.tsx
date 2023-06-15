@@ -19,7 +19,7 @@ export default function CategoryPage({
     const router = useRouter();
     const pathname = usePathname();
     const [filter, setFilter] = useState(parseInt(params.get('filter') || '0'));
-    const [page, setPage] = useState(parseInt(params.get('page') || '1'));
+    const [page, setPage] = useState(parseInt(params.get('page')||'1'));
     const [productsFilter, setProductsFilter] = useState(products);
     const numberOfProductsPerPage = 5;
     const [totalPage, setTotalPage] = useState(
