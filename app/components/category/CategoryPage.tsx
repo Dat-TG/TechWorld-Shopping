@@ -20,12 +20,25 @@ export default function CategoryPage({
     const pathname = usePathname();
     const [filter, setFilter] = useState(parseInt(params.get('filter') || '0'));
     const [page, setPage] = useState(parseInt(params.get('page') || '1'));
+    const [pageTemp, setPageTemp] = useState(parseInt(params.get('page') || '1'));
     const [productsFilter, setProductsFilter] = useState(products);
     const numberOfProductsPerPage = 5;
     const [totalPage, setTotalPage] = useState(
         Math.ceil(productsFilter.length / numberOfProductsPerPage),
     );
     const [array, setArray] = useState(products);
+    useEffect(() => {
+        setFilter(parseInt(params.get('filter') || '0'));
+        setPage(parseInt(params.get('page') || '1'));
+        setPageTemp(page);
+        let arr = [];
+        for (let i = 0; i < productsFilter.length; i += numberOfProductsPerPage) {
+            arr.push(productsFilter.slice(i, i + numberOfProductsPerPage));
+        }
+        setTotalPage(arr.length);
+        arr = arr[page - 1];
+        setArray(arr);
+    }, [params]);
     useEffect(() => {
         switch (filter) {
             case 0:
@@ -89,7 +102,7 @@ export default function CategoryPage({
                 break;
         }
         setTotalPage(Math.ceil(productsFilter.length / numberOfProductsPerPage));
-    }, [filter]);
+    }, [filter, page]);
     /* filter for products:
     0: none
     1: Mới nhất
@@ -98,15 +111,6 @@ export default function CategoryPage({
     4: Giá thấp tới cao
     5: Khoảng giá
     */
-    useEffect(() => {
-        let arr = [];
-        for (let i = 0; i < productsFilter.length; i += numberOfProductsPerPage) {
-            arr.push(productsFilter.slice(i, i + numberOfProductsPerPage));
-        }
-        setTotalPage(arr.length);
-        arr = arr[page - 1];
-        setArray(arr);
-    }, [page, productsFilter]);
     return (
         <div className='flex flex-row mt-4'>
             <div className='w-1/6'>
@@ -117,7 +121,10 @@ export default function CategoryPage({
                     <div className='flex flex-row items-center'>
                         <div className='text-sm mr-4'>Sắp xếp theo </div>
                         <Button
-                            className={'px-6 mr-4 ' + (filter === 1 ? 'bg-amber-700 text-white' : 'bg-white')}
+                            className={
+                                'px-6 mr-4 ' +
+                                (filter === 1 ? 'bg-amber-700 text-white' : 'bg-white')
+                            }
                             onClick={() => {
                                 setPage(1);
                                 if (filter !== 1) setFilter(1);
@@ -127,7 +134,10 @@ export default function CategoryPage({
                             Mới nhất
                         </Button>
                         <Button
-                            className={'px-6 mr-4  ' + (filter === 2 ? 'bg-amber-700 text-white' : 'bg-white')}
+                            className={
+                                'px-6 mr-4  ' +
+                                (filter === 2 ? 'bg-amber-700 text-white' : 'bg-white')
+                            }
                             onClick={() => {
                                 setPage(1);
                                 if (filter !== 2) setFilter(2);
@@ -148,25 +158,15 @@ export default function CategoryPage({
                         <div className='text-sm mr-4 border-spacing-1'>
                             <span className='text-amber-600'>
                                 <input
-                                    type='text'
-                                    defaultValue={page}
-                                    className='w-5'
+                                    type='number'
+                                    value={pageTemp}
+                                    onChange={event => {
+                                        setPageTemp(parseInt(event.target.value));
+                                    }}
+                                    className='w-5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
                                     onKeyUp={event => {
                                         if (event.key == 'Enter') {
                                             setPage(parseInt(event.currentTarget.value));
-                                            router.push(
-                                                pathname +
-                                                    '?filter=' +
-                                                    filter +
-                                                    (params.get('min') !== null
-                                                        ? '&min=' +
-                                                          params.get('min') +
-                                                          '&max=' +
-                                                          params.get('max')
-                                                        : '') +
-                                                    '&page=' +
-                                                    event.currentTarget.value,
-                                            );
                                         }
                                     }}
                                 ></input>
@@ -177,19 +177,6 @@ export default function CategoryPage({
                             className='w-8 font-bold text-md  bg-white'
                             onClick={() => {
                                 if (page <= 1) return;
-                                router.push(
-                                    pathname +
-                                        '?filter=' +
-                                        filter +
-                                        (params.get('min') !== null
-                                            ? '&min=' +
-                                              params.get('min') +
-                                              '&max=' +
-                                              params.get('max')
-                                            : '') +
-                                        '&page=' +
-                                        (page - 1),
-                                );
                                 setPage(page - 1);
                             }}
                         >
@@ -199,19 +186,6 @@ export default function CategoryPage({
                             className='w-8 font-bold text-md  bg-white'
                             onClick={() => {
                                 if (page >= totalPage) return;
-                                router.push(
-                                    pathname +
-                                        '?filter=' +
-                                        filter +
-                                        (params.get('min') !== null
-                                            ? '&min=' +
-                                              params.get('min') +
-                                              '&max=' +
-                                              params.get('max')
-                                            : '') +
-                                        '&page=' +
-                                        (page + 1),
-                                );
                                 setPage(page + 1);
                             }}
                         >
