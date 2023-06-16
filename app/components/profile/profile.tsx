@@ -16,38 +16,21 @@ type Address = {
 
 export default function Profile() {
     const router = useRouter();
-    const [address, setAddress] = useState<Array<Address>>([]);
     const session = useSession();
     let user = (session.data?.user || {}) as User;
     const params = useSearchParams();
     const [tab, setTab] = useState(params.get('tab') || '0');
     const [index, setIndex] = useState(params.get('index') || '0');
+    const [address, setAddress] = useState<Array<Address>>([]);
     useEffect(() => {
         setTab(params.get('tab') || '0');
         setIndex(params.get('index') || '0');
     }, [params]);
     useEffect(() => {
         user = (session.data?.user || '') as User;
+        setAddress(session.data?.user.address || []);
+        console.log(session);
     }, [session.status]);
-    useEffect(() => {
-        setAddress([
-            {
-                name: 'Lê Công Đắt',
-                phone: '0794299999',
-                address: 'KTX Khu B ĐHQG-HCM',
-            },
-            {
-                name: 'Nguyễn Phi Hùng',
-                phone: '0123456789',
-                address: 'Tuy An, Phú Yên',
-            },
-            {
-                name: 'Nguyễn Văn Hào',
-                phone: '0987654321',
-                address: 'Pleiku, Gia Lai',
-            },
-        ]);
-    }, []);
     return (
         <div className='flex justify-around my-20 mx-10'>
             <div className='flex flex-col justify-center items-start me-20 w-60 h-full space-y-5'>

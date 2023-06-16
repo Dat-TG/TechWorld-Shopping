@@ -33,6 +33,7 @@ export const authOptions: AuthOptions = {
                     role: user.role,
                     cartId: user.cartId,
                     image: user.image,
+                    address: user.address
                 };
             },
         }),
@@ -50,6 +51,7 @@ export const authOptions: AuthOptions = {
                     role: session.user.role,
                     cartId: session.user.cartId,
                     image: session.image,
+                    address: session.user.address
                 };
             } else if (user) {
                 return {
@@ -62,6 +64,7 @@ export const authOptions: AuthOptions = {
                         role: user.role,
                         cartId: user.cartId,
                         image: user.image,
+                        address: user.address
                     },
                 };
             }
