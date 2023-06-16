@@ -4,7 +4,11 @@ import Notification from './Notification';
 import UserButtons from './UserButtons';
 import CartHover from './CartHover';
 
-export default function Header() {
+interface Props {
+    productsInCart: any;
+}
+
+export default function Header(props: Props) {
     return (
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>
@@ -57,7 +61,7 @@ export default function Header() {
                             <Notification />
                         </li>
                         <li>
-                            <CartHover />
+                            <CartHover productsInCart={props.productsInCart.CartItem} />
                         </li>
                         <UserButtons />
                     </ul>

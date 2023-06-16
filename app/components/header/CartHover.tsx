@@ -1,8 +1,16 @@
 'use client';
+import { FullCartItem } from '@/models/user';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import Button from '../widgets/button/Button';
+import { CurrencyFormatter } from '@/utils/formatter';
 
-export default function CartHover() {
+interface Props {
+    productsInCart: Array<FullCartItem>;
+}
+
+export default function CartHover(props: Props) {
     const [isHovering, setIsHovering] = useState(false);
 
     const handleMouseOver = () => {
@@ -16,12 +24,15 @@ export default function CartHover() {
         <>
             <Link
                 href='/cart'
-                className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                className='relative block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                 aria-current='page'
                 onMouseOver={handleMouseOver}
                 onMouseOut={handleMouseOut}
             >
                 <i className='bi bi-cart3' style={{ fontSize: 25 }}></i>
+                <div className='absolute top-0 text-xs translate-x-0 -right-3 w-fit h-fit px-2 text-center bg-red-600 text-white rounded-xl'>
+                    {props.productsInCart.length}
+                </div>
             </Link>
             {isHovering && (
                 <div
@@ -30,38 +41,30 @@ export default function CartHover() {
                     onMouseOut={handleMouseOut}
                 >
                     <p className='text-xs text-gray-500'>Sản phẩm mới thêm</p>
-                    <ProductCard
-                        imgPath='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
-                        name='Iphone 14 Pro Max 128GB'
-                        price={26590000}
-                    />
-                    <ProductCard
-                        imgPath='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
-                        name='Iphone 14 Pro Max 128GB'
-                        price={26590000}
-                    />
-                    <ProductCard
-                        imgPath='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
-                        name='Iphone 14 Pro Max 128GB'
-                        price={26590000}
-                    />
-                    <ProductCard
-                        imgPath='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
-                        name='Iphone 14 Pro Max 128GB'
-                        price={26590000}
-                    />
-                    <ProductCard
-                        imgPath='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
-                        name='Iphone 14 Pro Max 128GB'
-                        price={26590000}
-                    />
+                    {props.productsInCart.map((product, key) => {
+                        return (
+                            <ProductCard
+                                key={key}
+                                imgPath={
+                                    product?.Product?.attachments[0]?.path ??
+                                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+                                }
+                                name={product.Product.name}
+                                price={product.Product.price}
+                                slug={product.Product.slug}
+                            />
+                        );
+                    })}
+
                     <div className='flex justify-between px-2 w-full items-center'>
-                        <p className='text-xs text-gray-500'>3 sản phẩm khác trong giỏ hàng</p>
-                        <button className='bg-amber-500 hover:bg-amber-700 text-white text-sm px-2 py-1 rounded-sm'>
+                        <p className='text-xs text-gray-500'>
+                            {props.productsInCart.length} sản phẩm khác trong giỏ hàng
+                        </p>
+                        <Button className='bg-amber-500 hover:bg-amber-700 text-white text-sm '>
                             <Link href={'/cart'} onClick={() => handleMouseOut()}>
                                 Xem giỏ hàng
                             </Link>
-                        </button>
+                        </Button>
                     </div>
                 </div>
             )}
@@ -69,18 +72,29 @@ export default function CartHover() {
     );
 }
 interface ProductCardProps {
-    imgPath?: string;
-    name?: string;
-    price?: number;
+    imgPath: string;
+    name: string;
+    price: number;
+    slug: string;
 }
-function ProductCard({ imgPath, name, price }: ProductCardProps) {
+function ProductCard({ imgPath, name, price, slug }: ProductCardProps) {
     return (
-        <div className='cursor-pointer w-full h-full px-2 py-1 flex justify-between space-x-3 items-center hover:bg-gray-100 focus:bg-gray-100'>
-            {imgPath && (
-                <img src={imgPath} className='w-16 h-16 outline outline-1 outline-gray-700' />
-            )}
-            {name && <p className='text-sm font-semibold text-ellipsis overflow-hidden'>{name}</p>}
-            {price && <p className='text-sm text-amber-500 font-semibold'>{price}đ</p>}
-        </div>
+        <Link
+            href={`/product/${slug}`}
+            className='cursor-pointer w-full h-full px-2 py-1 flex space-x-3 hover:bg-gray-100 focus:bg-gray-100'
+        >
+            <Image
+                src={imgPath}
+                width={100}
+                alt=''
+                height={100}
+                className='w-16 h-16 outline outline-1 rounded-sm outline-gray-700'
+            />
+
+            <p className='text-xs font-semibold text-ellipsis overflow-hidden flex-1'>{name}</p>
+            <p className='text-sm text-amber-500 font-semibold w-20'>
+                {CurrencyFormatter.format(price)}
+            </p>
+        </Link>
     );
 }

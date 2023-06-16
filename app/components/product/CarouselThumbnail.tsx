@@ -37,7 +37,6 @@ function CarouselThumbnail(props: CarouselThumbnailProps) {
             {/* Right Arrow */}
 
             {props.attachments?.map((attachment, index) => {
-                console.log(length, index, current, current + 5);
                 if (length < 5 || (length > 5 && index >= current && index <= current + 5))
                     return (
                         <Image

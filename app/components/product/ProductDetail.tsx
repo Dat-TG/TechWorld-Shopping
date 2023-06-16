@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { use } from 'react';
 import Button from '../widgets/button/Button';
 import Review from './Review';
 import ListProduct from './ListProduct';
@@ -9,6 +9,8 @@ import { FullProduct } from '@/models/product';
 import { CurrencyFormatter } from '@/utils/formatter';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import CarouselThumbnail from './CarouselThumbnail';
+import { useSession } from 'next-auth/react';
+import { User } from 'next-auth';
 
 interface Props {
     product: FullProduct;
@@ -18,6 +20,29 @@ interface Props {
 function ProductDetail({ product, similarProducts }: Props) {
     const [quantity, setQuantity] = React.useState<number>(1);
     const [imgSelect, setImgSelect] = React.useState<number>(0);
+    const session = useSession();
+    const [user, setUser] = React.useState<User>();
+    React.useEffect(() => {
+        if (session.status == 'authenticated') {
+            setUser(session.data.user);
+        }
+    }, [session.status]);
+
+    async function addToCart() {
+        const data = {
+            userId: user?.id,
+            productId: product.id,
+            quantity: quantity,
+        };
+
+        await fetch('/api/user/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+    }
 
     return (
         <>
@@ -114,7 +139,10 @@ function ProductDetail({ product, similarProducts }: Props) {
                             </Button>
                         ) : (
                             <>
-                                <Button className='border-amber-600 px-4 py-3 font-normal mr-8 flex flex-row items-center text-amber-800 bg-amber-100 hover:bg-amber-50'>
+                                <Button
+                                    onClick={addToCart}
+                                    className='border-amber-600 px-4 py-3 font-normal mr-8 flex flex-row items-center text-amber-800 bg-amber-100 hover:bg-amber-50'
+                                >
                                     <i className='bi bi-cart-plus text-xl pr-2'></i>
                                     <div className='text-xl'>Thêm Vào Giỏ Hàng</div>
                                 </Button>

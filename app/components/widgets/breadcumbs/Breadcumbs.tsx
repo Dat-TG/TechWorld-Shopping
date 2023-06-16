@@ -16,7 +16,6 @@ interface Props {
 
 const Breadcrumbs = ({ product }: Props) => {
     const [breadcrumbs, setBreadcrumbs] = useState<Array<Breadcrumbs>>();
-    console.log(product);
 
     useEffect(() => {
         const pathArray = new Array<Breadcrumbs>();
