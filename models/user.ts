@@ -140,6 +140,47 @@ export async function addProductToCart(userId: string, productId: string, quanti
     return user.cart;
 }
 
+export async function changeProductQuantityInCart(
+    userId: string,
+    cardItemId: string,
+    quantity: number,
+) {
+    const user = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            cart: {
+                update: {
+                    CartItem: {
+                        update: {
+                            where: {
+                                id: cardItemId,
+                            },
+                            data: {
+                                quantity: quantity,
+                            },
+                        },
+                    },
+                },
+            },
+        },
+        include: {
+            cart: {
+                include: {
+                    CartItem: {
+                        include: {
+                            Product: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    return user.cart;
+}
+
 export async function removeProductFromCart(userId: string, cardItemId: string) {
     const user = await prisma.user.update({
         where: {
