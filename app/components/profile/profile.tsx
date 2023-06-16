@@ -6,6 +6,7 @@ import ChangePassword from '../form/ChangePassword';
 import Order from '../order/Order';
 import Noti from '../noti/Noti';
 import { useSession } from 'next-auth/react';
+import { User } from '@prisma/client';
 
 type Address = {
     name: string;
@@ -17,7 +18,7 @@ export default function Profile() {
     const router = useRouter();
     const [address, setAddress] = useState<Array<Address>>([]);
     const session = useSession();
-    const user = session.data?.user || {};
+    let user = (session.data?.user || {}) as User;
     const params = useSearchParams();
     const [tab, setTab] = useState(params.get('tab') || '0');
     const [index, setIndex] = useState(params.get('index') || '0');
@@ -25,6 +26,9 @@ export default function Profile() {
         setTab(params.get('tab') || '0');
         setIndex(params.get('index') || '0');
     }, [params]);
+    useEffect(() => {
+        user = (session.data?.user || '') as User;
+    }, [session.status]);
     useEffect(() => {
         setAddress([
             {

@@ -28,6 +28,17 @@ export async function createUser(name: string, phone: string, password: string) 
     return user;
 }
 
+export async function updateUser(id: string, data:object) {
+    const user = await prisma.user.update({
+        where: {
+            id: id
+        },
+        data: data
+    }
+    );
+    return user;
+}
+
 export async function auth(phone: string, password: string) {
     const user = await prisma.user.findUnique({
         where: {

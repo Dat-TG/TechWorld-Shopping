@@ -16,10 +16,9 @@ export default function AvatarButton({ session }: { session: Session }) {
                 height={30}
                 className='outline outline-1 outline-black rounded-full relative cursor-pointer'
                 onClick={() => {
-                    setHovering(true);
+                    setHovering(!hovering);
                 }}
             ></Image>
-
             <div
                 className={
                     'flex flex-col bg-white px-3 py-3 space-y-2 absolute z-10 rounded-md shadow-lg ' +
