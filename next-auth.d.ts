@@ -9,7 +9,7 @@ declare module 'next-auth' {
         phone: string;
         email: string | null;
         cartId: string | null;
-        address: Address[] | null
+        image: string | null;
     }
     interface Session {
         user: User;

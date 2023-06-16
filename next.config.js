@@ -11,6 +11,7 @@ const nextConfig = {
             'docs.amplify.aws',
             'res.cloudinary.com',
             'upload.wikimedia.org',
+            'robohash.org',
         ],
     },
 };
