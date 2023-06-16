@@ -8,6 +8,7 @@ import { redirect, useRouter } from 'next/navigation';
 
 interface Props {
     data?: Address;
+    mode: string;
 }
 interface Village {
     Id?: string;
@@ -43,32 +44,34 @@ function AddressForm(props: Props) {
         data.village =
             (addressVN[province].Districts[district].Wards[village] as Village).Name || '';
         console.log(data);
-        try {
-            const res = await fetch('/api/user/address', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: data.name,
-                    phone: data.phone,
-                    area: data.village + ', ' + data.district + ', ' + data.province,
-                    address: data.address,
-                }),
-            });
-            const json = await res.json();
-            if (json.message === 'success') {
-                Notify.success('Thêm địa chỉ thành công', {
-                    clickToClose: true,
+        if (props.mode === 'add') {
+            try {
+                const res = await fetch('/api/user/address', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: data.name,
+                        phone: data.phone,
+                        area: data.village + ', ' + data.district + ', ' + data.province,
+                        address: data.address,
+                    }),
                 });
-            } else {
-                Notify.failure(json.message);
+                const json = await res.json();
+                if (json.message === 'success') {
+                    Notify.success('Thêm địa chỉ thành công', {
+                        clickToClose: true,
+                    });
+                } else {
+                    Notify.failure(json.message);
+                }
+                setOpening(false);
+                router.refresh();
+            } catch (error) {
+                console.log(error);
+                Notify.failure('Cập nhật thất bại');
             }
-            setOpening(false);
-            router.refresh();
-        } catch (error) {
-            console.log(error);
-            Notify.failure('Cập nhật thất bại');
         }
         setProgressing(false);
     };

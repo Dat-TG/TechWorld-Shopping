@@ -1,19 +1,14 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, use, useEffect, useState } from 'react';
 import EditProfile from '../form/EditProfile';
 import ChangePassword from '../form/ChangePassword';
 import Order from '../order/Order';
 import Noti from '../noti/Noti';
 import { useSession } from 'next-auth/react';
-import { User } from '@prisma/client';
+import { Address, User } from '@prisma/client';
 import AddressForm from '../form/AddressForm';
-
-type Address = {
-    name: string;
-    phone: string;
-    address: string;
-};
+import AddressList from './Address';
 
 export default function Profile() {
     const router = useRouter();
@@ -22,14 +17,12 @@ export default function Profile() {
     const params = useSearchParams();
     const [tab, setTab] = useState(params.get('tab') || '0');
     const [index, setIndex] = useState(params.get('index') || '0');
-    const [address, setAddress] = useState<Array<Address>>([]);
     useEffect(() => {
         setTab(params.get('tab') || '0');
         setIndex(params.get('index') || '0');
     }, [params]);
     useEffect(() => {
         user = (session.data?.user || {}) as User;
-        setAddress(session.data?.user.address || []);
         // console.log(session);
     }, [session.status]);
     return (
@@ -122,45 +115,12 @@ export default function Profile() {
                 <div className={tab === '0' && index === '1' ? 'visible' : 'hidden'}>
                     <div className='flex justify-between mb-2'>
                         <p className='text-3xl'>Địa Chỉ Của Tôi</p>
-                        <AddressForm />
+                        <AddressForm mode='add' />
                     </div>
                     <div>
-                        {address.map(({ name, phone, address }, index) => (
-                            <div key={index} className='flex justify-between w-full relative'>
-                                <div className='py-4'>
-                                    <div className='flex justify-start space-x-2'>
-                                        <p>{name}</p>
-                                        <p className='text-gray-500'> | </p>
-                                        <p className='text-gray-500'>{phone}</p>
-                                    </div>
-                                    <p className='text-gray-500'>{address}</p>
-                                    {index == 0 && (
-                                        <div className='text-sm text-amber-500 outline outline-amber-500 w-fit px-1 mt-1'>
-                                            Mặc định
-                                        </div>
-                                    )}
-                                </div>
-                                <div className='flex flex-col justify-center items-center mb-6'>
-                                    <div className='flex justify-between my-2'>
-                                        <button className='text-blue-500 hover:text-amber-500 mx-2'>
-                                            Chỉnh sửa
-                                        </button>
-                                        <button className='text-blue-500 hover:text-amber-500 mx-2'>
-                                            Xóa
-                                        </button>
-                                    </div>
-                                    <button
-                                        className={
-                                            'outline outline-1 bg-white outline-gray-500 px-2 py-2 hover:bg-gray-100 ' +
-                                            (index == 0 ? 'text-gray-500 cursor-not-allowed ' : '')
-                                        }
-                                    >
-                                        Đặt làm mặc định
-                                    </button>
-                                </div>
-                                <hr className='w-full absolute'></hr>
-                            </div>
-                        ))}
+                        <Suspense fallback={<h2>Đang tải dữ liệu...</h2>}>
+                            <AddressList />
+                        </Suspense>
                     </div>
                 </div>
                 <div className={tab === '0' && index === '2' ? 'visible' : 'hidden'}>
