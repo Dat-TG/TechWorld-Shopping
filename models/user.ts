@@ -139,3 +139,35 @@ export async function addProductToCart(userId: string, productId: string, quanti
 
     return user.cart;
 }
+
+export async function removeProductFromCart(userId: string, cardItemId: string) {
+    const user = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            cart: {
+                update: {
+                    CartItem: {
+                        delete: {
+                            id: cardItemId,
+                        },
+                    },
+                },
+            },
+        },
+        include: {
+            cart: {
+                include: {
+                    CartItem: {
+                        include: {
+                            Product: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+
+    return user.cart;
+}

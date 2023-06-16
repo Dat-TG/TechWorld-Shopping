@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { addProductToCart, getCart } from '@/models/user';
+import { addProductToCart, getCart, removeProductFromCart } from '@/models/user';
 import { NotEnoughQuantity, ProductNotFound } from '@/models/product';
 
 /**
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
             data: cart,
         });
     } catch (error: any) {
-        console.log('Error creating category', getErrorMessage(error));
+        console.log('Error adding product to cart', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
             return NextResponse.json(
