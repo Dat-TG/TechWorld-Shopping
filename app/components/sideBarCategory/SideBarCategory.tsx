@@ -2,10 +2,9 @@
 import Link from 'next/link';
 import styles from './sideBarCategory.module.css';
 import Button from '../widgets/button/Button';
-import Input from '../widgets/input/Input';
 import { Category } from '@prisma/client';
 import { useEffect, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 function SideBarCategory({ categories }: { categories: Category[] }) {
     const [numberOfCategories, setNumberOfCategories] = useState(Math.min(10, categories.length));
@@ -26,7 +25,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
             </div>
             <hr className='w-full bg-amber-500' />
             {categories.slice(0, numberOfCategories).map((category: Category) => (
-                <a
+                <Link
                     key={category.id}
                     href={`/category/${category.slug}`}
                     className='flex flex-row items-center my-2 text-sm ml-4 relative'
@@ -47,7 +46,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     >
                         {category.name}
                     </p>
-                </a>
+                </Link>
             ))}
             <div className='w-full flex justify-center mt-2'>
                 <p
@@ -110,16 +109,16 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                 />
             </div>
             <div className='w-full flex justify-between'>
-                <a href={pathname + '?filter=5&min=' + min + '&max=' + max}>
+                <Link href={pathname + '?filter=5&min=' + min + '&max=' + max}>
                     <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
                         Áp dụng
                     </Button>
-                </a>
-                <a href={pathname}>
+                </Link>
+                <Link href={pathname}>
                     <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
                         Xóa bộ lọc
                     </Button>
-                </a>
+                </Link>
             </div>
 
             <hr className='w-full bg-amber-500 mt-4' />

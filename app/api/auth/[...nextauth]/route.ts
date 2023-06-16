@@ -32,13 +32,28 @@ export const authOptions: AuthOptions = {
                     email: user.email,
                     role: user.role,
                     cartId: user.cartId,
+                    image: user.image,
+                    address: user.address
                 };
             },
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
-            if (user) {
+        async jwt({ token, user, trigger, session }) {
+            if (trigger === 'update' && session?.name) {
+                console.log('trigger jwt', session);
+                token.trigger = 'update';
+                token.user = {
+                    id: session.user.id,
+                    name: session.name,
+                    phone: session.phone,
+                    email: session.email,
+                    role: session.user.role,
+                    cartId: session.user.cartId,
+                    image: session.image,
+                    address: session.user.address
+                };
+            } else if (user) {
                 return {
                     ...token,
                     user: {
@@ -48,15 +63,21 @@ export const authOptions: AuthOptions = {
                         email: user.email,
                         role: user.role,
                         cartId: user.cartId,
+                        image: user.image,
+                        address: user.address
                     },
                 };
             }
             return token;
         },
-        async session({ session, token, user }) {
-            session.user = token.user;
-            session.iat = token.iat;
-            session.exp = token.exp;
+        async session({ session, token }) {
+            if (token.trigger === 'update') {
+                session.user = token.user;
+            } else {
+                session.user = token.user;
+                session.iat = token.iat;
+                session.exp = token.exp;
+            }
             return session;
         },
     },

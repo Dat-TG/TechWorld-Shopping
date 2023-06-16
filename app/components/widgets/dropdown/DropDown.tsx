@@ -10,12 +10,14 @@ interface DropDown {
 
 export default function DropDown(dropdown: DropDown) {
     const params = useSearchParams();
-    const router = useRouter();
-    const filter = params.get('filter');
+    let filter = params.get('filter');
     const [hidden, setHidden] = useState(true);
     const [choose, setChoose] = useState(
         filter === '3' ? 'Cao tới thấp' : filter === '4' ? 'Thấp tới cao' : dropdown.name,
     );
+    useEffect(() => {
+        filter = params.get('filter');
+    }, [params]);
     useEffect(() => {
         if (filter === '3') {
             setChoose('Cao tới thấp');
@@ -36,7 +38,9 @@ export default function DropDown(dropdown: DropDown) {
                     type='button'
                     className={
                         'inline-flex w-40 justify-between items-center px-4 py-2 text-sm font-medium border border-solid border-transparent rounded shadow-md' +
-                        (filter === '3' || filter === '4' ? ' bg-amber-700 text-white' : ' bg-white')
+                        (filter === '3' || filter === '4'
+                            ? ' bg-amber-700 text-white'
+                            : ' bg-white')
                     }
                     id='menu-button'
                     aria-expanded='true'
@@ -69,14 +73,14 @@ export default function DropDown(dropdown: DropDown) {
             >
                 <div className='py-1' role='none'>
                     {dropdown.options.map((option: { title: string; link: string }) => (
-                        <a
+                        <Link
                             href={option.link}
                             key={option.link}
                             className='text-gray-700 block px-4 py-2 text-sm hover:text-amber-700 hover:font-medium'
                             role='menuitem'
                         >
                             {option.title}
-                        </a>
+                        </Link>
                     ))}
                 </div>
             </div>

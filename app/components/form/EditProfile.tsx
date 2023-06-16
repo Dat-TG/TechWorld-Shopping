@@ -1,30 +1,79 @@
 'use client';
 
-import { useState } from 'react';
+import { User } from '@prisma/client';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Notify } from 'notiflix';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { User } from '../../models/user';
 
 export default function EditProfile({ user }: { user: User }) {
+    const router=useRouter();
+    const { data: session, status, update } = useSession();
+    const [editPhone, setEditPhone] = useState(false);
+    const [editEmail, setEditEmail] = useState(false);
+    const [name, setName] = useState(user.name || ''),
+        [phone, setPhone] = useState(user.phone || ''),
+        [email, setEmail] = useState(user.email || '');
     type Data = {
         name: string;
         phone: string;
         email: string;
-        avatar: string;
+        image: string;
     };
     const {
         register,
         handleSubmit,
-        watch,
+        setValue,
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
     });
     const onSubmit = async (data: Data) => {
-        console.log('submit', data);
+        // console.log('submit', data);
+        try {
+            const res = await fetch('/api/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    data,
+                }),
+            });
+            const json = await res.json();
+            if (json.message === 'success') {
+                Notify.success('Cập nhật thông tin thành công', {
+                    clickToClose: true,
+                });
+                if (status === 'authenticated') {
+                    update({
+                        user: user,
+                        name: data.name,
+                        email: data.email,
+                        phone: data.phone,
+                        image: data.image,
+                    });
+                    // console.log(session);
+                }
+                router.refresh();
+            } else {
+                Notify.failure(json.message);
+            }
+        } catch (error) {
+            console.log(error);
+            Notify.failure('Cập nhật thất bại');
+        }
     };
-    const [editPhone, setEditPhone] = useState(false);
-    const [editEmail, setEditEmail] = useState(false);
-    
+    useEffect(() => {
+        setName(user.name || '');
+        setPhone(user.phone || '');
+        setEmail(user.email || '');
+        setValue('name', name);
+        setValue('email', email);
+        setValue('phone', phone);
+    }, [user]);
+
     return (
         <div className='flex justify-around'>
             <form
@@ -43,10 +92,13 @@ export default function EditProfile({ user }: { user: User }) {
                                 id='name'
                                 {...register('name', {
                                     required: true,
-                                    value: user.name
+                                    value: name,
                                 })}
                                 type='text'
-                                value={user.name}
+                                value={name}
+                                onChange={event => {
+                                    setName(event.target.value);
+                                }}
                                 aria-invalid={errors.name ? 'true' : 'false'}
                                 required
                                 className={
@@ -74,15 +126,18 @@ export default function EditProfile({ user }: { user: User }) {
                                 id='phone'
                                 type='tel'
                                 readOnly={!editPhone}
-                                value={user.phone}
+                                value={phone}
                                 {...register('phone', {
                                     required: true,
                                     pattern: /(0[3|5|7|8|9])+([0-9]{8})/,
                                     maxLength: 10,
-                                    value: user.phone
+                                    value: phone,
                                 })}
                                 aria-invalid={errors.phone ? 'true' : 'false'}
                                 required
+                                onChange={event => {
+                                    setPhone(event.target.value);
+                                }}
                                 className={
                                     'border border-gray-300 read-only:bg-slate-50 read-only:text-slate-500 read-only:border-slate-200 read-only:shadow-none ' +
                                     (errors.phone ? 'border-red-500' : 'border-green-500') +
@@ -125,14 +180,17 @@ export default function EditProfile({ user }: { user: User }) {
                             <input
                                 id='email'
                                 readOnly={!editEmail}
-                                value={user.email}
+                                value={email}
                                 {...register('email', {
                                     required: false,
                                     pattern: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-                                    value: user.email
+                                    value: email,
                                 })}
                                 type='email'
                                 aria-invalid={errors.email ? 'true' : 'false'}
+                                onChange={event => {
+                                    setEmail(event.target.value);
+                                }}
                                 className={
                                     'border border-gray-300 read-only:bg-slate-50 read-only:text-slate-500 read-only:border-slate-200 read-only:shadow-none ' +
                                     (errors.email ? 'border-red-500' : 'border-green-500') +
@@ -170,9 +228,19 @@ export default function EditProfile({ user }: { user: User }) {
                 </div>
             </form>
             <div className='w-1/3 flex flex-col items-center justify-center'>
-                <img src={user.avatar||'/images/logo.png'} className='w-36 rounded-full outline outline-8 outline-amber-500'></img>
-                <button type='button' className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'>Chọn Ảnh</button>
-                <p className='text-gray-500 text-sm mt-3 text-center'>Dung lượng ảnh tối đa 1 MB<br></br>Định dạng: JPG, JPEG, PNG</p>
+                <img
+                    src={user.image || '/images/logo.png'}
+                    className='w-36 rounded-full outline outline-8 outline-amber-500'
+                ></img>
+                <button
+                    type='button'
+                    className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'
+                >
+                    Chọn Ảnh
+                </button>
+                <p className='text-gray-500 text-sm mt-3 text-center'>
+                    Dung lượng ảnh tối đa 1 MB<br></br>Định dạng: JPG, JPEG, PNG
+                </p>
             </div>
         </div>
     );

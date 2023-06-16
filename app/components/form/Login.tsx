@@ -49,7 +49,9 @@ export default function Login() {
             if (res?.error) {
                 Notify.failure('Đăng nhập thất bại');
             } else {
-                Notify.success('Đăng nhập thành công');
+                Notify.success('Đăng nhập thành công', {
+                    clickToClose: true,
+                });
                 router.refresh();
             }
         } catch (err) {
