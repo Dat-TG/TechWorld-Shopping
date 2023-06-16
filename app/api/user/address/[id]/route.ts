@@ -1,13 +1,13 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { changeProductQuantityInCart, removeProductFromCart } from '@/models/user';
 import { getErrorMessage } from '@/utils/helper';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
+import { deleteAddress, updateAddress } from '@/models/address';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 /**
- * PATCH /api/user/cart/:id
- * Change quantity of a product in cart of current user
+ * PATCH /api/user/address/:id
+ * Create a new address for current user
  */
 export async function PATCH(
     request: Request,
@@ -22,28 +22,28 @@ export async function PATCH(
         if (!session || !session.user) {
             return NextResponse.json({ message: 'Unauthenticated' }, { status: 401 });
         }
-
         const { id } = params;
         if (!id) {
-            return NextResponse.json({ message: 'Missing cardItemId' }, { status: 400 });
+            return NextResponse.json({ message: 'Missing addressId' }, { status: 400 });
         }
-        const { quantity } = await request.json();
-        if (!quantity) {
+        const { name, phone, area, address } = await request.json();
+        if (!name || !phone || !area || !address) {
             return NextResponse.json(
                 {
-                    message: 'Missing quantity',
+                    message: 'Missing name, phone, area or address',
                 },
                 { status: 400 },
             );
         }
-        const cart = await changeProductQuantityInCart(session.user.id, id, quantity);
+
+        const addressData = await updateAddress(session.user.id, id, name, phone, area, address);
 
         return NextResponse.json({
             message: 'success',
-            data: cart,
+            data: addressData,
         });
     } catch (error: any) {
-        console.log('Error changing product quantity from cart', getErrorMessage(error));
+        console.log('Error updating address', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
             return NextResponse.json(
@@ -54,10 +54,10 @@ export async function PATCH(
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid CardItem Id` }, { status: 400 });
+                return NextResponse.json({ message: `Invalid addressId` }, { status: 400 });
             }
             if (error.code === 'P2025') {
-                return NextResponse.json({ message: `CardItem not found` }, { status: 400 });
+                return NextResponse.json({ message: `Address not found` }, { status: 400 });
             }
         }
 
@@ -71,8 +71,8 @@ export async function PATCH(
 }
 
 /**
- * DELETE /api/user/cart/:id
- * Remove a product from cart of current user
+ * DELETE /api/user/address/:id
+ * Delete an address of current user
  */
 export async function DELETE(
     request: Request,
@@ -90,23 +90,23 @@ export async function DELETE(
 
         const { id } = params;
         if (!id) {
-            return NextResponse.json({ message: 'Missing cardItemId' }, { status: 400 });
+            return NextResponse.json({ message: 'Missing addressId' }, { status: 400 });
         }
-        const cart = await removeProductFromCart(session.user.id, id);
+        const addressData = await deleteAddress(session.user.id, id);
 
         return NextResponse.json({
             message: 'success',
-            data: cart,
+            data: addressData,
         });
     } catch (error: any) {
-        console.log('Error removing product from cart', getErrorMessage(error));
+        console.log('Error deleting address', getErrorMessage(error));
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid CardItem Id` }, { status: 400 });
+                return NextResponse.json({ message: `Invalid addressId` }, { status: 400 });
             }
             if (error.code === 'P2017') {
-                return NextResponse.json({ message: `CardItem not found` }, { status: 400 });
+                return NextResponse.json({ message: `Address not found` }, { status: 400 });
             }
         }
 
