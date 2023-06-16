@@ -7,6 +7,7 @@ import Order from '../order/Order';
 import Noti from '../noti/Noti';
 import { useSession } from 'next-auth/react';
 import { User } from '@prisma/client';
+import AddressForm from '../form/AddressForm';
 
 type Address = {
     name: string;
@@ -27,9 +28,9 @@ export default function Profile() {
         setIndex(params.get('index') || '0');
     }, [params]);
     useEffect(() => {
-        user = (session.data?.user || '') as User;
+        user = (session.data?.user || {}) as User;
         setAddress(session.data?.user.address || []);
-        console.log(session);
+        // console.log(session);
     }, [session.status]);
     return (
         <div className='flex justify-around my-20 mx-10'>
@@ -121,9 +122,7 @@ export default function Profile() {
                 <div className={tab === '0' && index === '1' ? 'visible' : 'hidden'}>
                     <div className='flex justify-between mb-2'>
                         <p className='text-3xl'>Địa Chỉ Của Tôi</p>
-                        <button className='bg-amber-500 text-white py-2 px-2 hover:opacity-50 active:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-300'>
-                            + Thêm địa chỉ mới
-                        </button>
+                        <AddressForm />
                     </div>
                     <div>
                         {address.map(({ name, phone, address }, index) => (
