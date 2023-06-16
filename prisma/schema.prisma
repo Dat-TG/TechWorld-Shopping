@@ -18,7 +18,7 @@ model User {
     password          String
     role              Role                @default(USER)
     image             String?
-    address           Address[]
+    addresses         Address[]
     createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
     verificationToken VerificationToken[]
@@ -107,12 +107,6 @@ model Brand {
     Product Product[]
 }
 
-type Address {
-    name    String
-    address String
-    phone   String
-}
-
 model Review {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
     rating    Int
@@ -123,6 +117,20 @@ model Review {
     userId    String?  @db.ObjectId
     Product   Product? @relation(fields: [productId], references: [id])
     productId String?  @db.ObjectId
+}
+
+model Address {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    phone     String
+    area      String // province, district, ward
+    address   String // street address
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    User      User?    @relation(fields: [userId], references: [id])
+    userId    String?  @db.ObjectId
+
+    @@unique([id, userId])
 }
 
 type VerificationToken {

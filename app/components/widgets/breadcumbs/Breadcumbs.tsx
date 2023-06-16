@@ -1,32 +1,35 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { convertBreadcrumb } from '@/utils/helper';
+import { FullProduct } from '@/models/product';
 
 interface Breadcrumbs {
     href: string;
     breadcrumb: string;
 }
 
-const Breadcrumbs = () => {
-    const router = useRouter();
-    const pathname = usePathname();
+interface Props {
+    product: FullProduct;
+}
+
+const Breadcrumbs = ({ product }: Props) => {
     const [breadcrumbs, setBreadcrumbs] = useState<Array<Breadcrumbs>>();
+    console.log(product);
 
     useEffect(() => {
-        if (router) {
-            const linkPath = pathname.split('/');
-            linkPath.shift();
+        const pathArray = new Array<Breadcrumbs>();
 
-            const pathArray = linkPath.map((path, i) => {
-                return { breadcrumb: path, href: '/' + linkPath.slice(0, i + 1).join('/') };
-            });
+        pathArray.push({
+            breadcrumb: product.category?.name ?? '',
+            href: `category/${product.category?.slug ?? ''}`,
+        });
 
-            setBreadcrumbs(pathArray);
-        }
-    }, [router]);
+        pathArray.push({ breadcrumb: product.name, href: `/product/${product.slug}` });
+
+        setBreadcrumbs(pathArray);
+    }, []);
 
     if (!breadcrumbs) {
         return null;
@@ -44,7 +47,9 @@ const Breadcrumbs = () => {
                         <li key={breadcrumb.href}>
                             {index != breadcrumbs.length - 1 ? (
                                 <div>
-                                    <Link href='#'>{convertBreadcrumb(breadcrumb.breadcrumb)}</Link>
+                                    <Link href={breadcrumb.href}>
+                                        {convertBreadcrumb(breadcrumb.breadcrumb)}
+                                    </Link>
                                     <i className='bi bi-chevron-right text-black px-2'></i>
                                 </div>
                             ) : (

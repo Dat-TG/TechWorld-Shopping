@@ -1,14 +1,12 @@
+import { getErrorMessage } from '@/utils/helper';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { getErrorMessage } from '@/utils/helper';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { addProductToCart, getCart, removeProductFromCart } from '@/models/user';
-import { NotEnoughQuantity, ProductNotFound } from '@/models/product';
+import { createAddress, listAddresses } from '@/models/address';
 
 /**
- * GET /api/user/cart
- * Get all products in cart of current user
+ * GET /api/user/address
+ * Get all addresses of current user
  */
 export async function GET(request: Request) {
     try {
@@ -17,14 +15,14 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: 'Unauthenticated' }, { status: 401 });
         }
 
-        const products = await getCart(session.user.id);
+        const addresses = await listAddresses(session.user.id);
 
         return NextResponse.json({
             message: 'success',
-            data: products,
+            data: addresses,
         });
     } catch (error: any) {
-        console.log('Error getting cart of user', getErrorMessage(error));
+        console.log('Error getting addresses of user', getErrorMessage(error));
 
         return NextResponse.json(
             { message: `Internal Server Error: ${getErrorMessage(error)}` },
@@ -36,8 +34,8 @@ export async function GET(request: Request) {
 }
 
 /**
- * POST /api/user/cart
- * Add product to cart of current user
+ * POST /api/user/address
+ * Create a new address for current user
  */
 export async function POST(request: Request) {
     try {
@@ -46,39 +44,30 @@ export async function POST(request: Request) {
             return NextResponse.json({ message: 'Unauthenticated' }, { status: 401 });
         }
 
-        const { productId, quantity } = await request.json();
-        if (!productId || !quantity) {
-            return NextResponse.json({ message: 'Missing productId or quantity' }, { status: 400 });
+        const { name, phone, area, address } = await request.json();
+        if (!name || !phone || !area || !address) {
+            return NextResponse.json(
+                {
+                    message: 'Missing name, phone, area or address',
+                },
+                { status: 400 },
+            );
         }
 
-        const cart = await addProductToCart(session.user.id, productId, quantity);
+        const addressData = await createAddress(session.user.id, name, phone, area, address);
 
         return NextResponse.json({
             message: 'success',
-            data: cart,
+            data: addressData,
         });
     } catch (error: any) {
-        console.log('Error adding product to cart', getErrorMessage(error));
+        console.log('Error creating address', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
             return NextResponse.json(
                 { message: `Invalid JSON: ${getErrorMessage(error)}` },
                 { status: 400 },
             );
-        }
-
-        if (error instanceof PrismaClientKnownRequestError) {
-            if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid product id` }, { status: 400 });
-            }
-        }
-
-        if (error === ProductNotFound) {
-            return NextResponse.json({ message: `${getErrorMessage(error)}` }, { status: 400 });
-        }
-
-        if (error === NotEnoughQuantity) {
-            return NextResponse.json({ message: `${getErrorMessage(error)}` }, { status: 400 });
         }
 
         return NextResponse.json(

@@ -57,7 +57,7 @@ export default function Header() {
                             <Notification />
                         </li>
                         <li>
-                           <CartHover/>
+                            <CartHover />
                         </li>
                         <UserButtons />
                     </ul>

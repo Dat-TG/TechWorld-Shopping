@@ -2,7 +2,7 @@
 
 import { signOut } from 'next-auth/react';
 
-export default async function UserButtons() {
+export default async function Logout() {
     return (
         <button
             onClick={() => signOut()}
