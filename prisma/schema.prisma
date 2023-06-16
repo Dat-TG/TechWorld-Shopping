@@ -18,7 +18,7 @@ model User {
     password          String
     role              Role                @default(USER)
     image             String?
-    address           String?
+    address           Address[]
     createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
     verificationToken VerificationToken[]
@@ -105,6 +105,12 @@ model Brand {
     name    String
     slug    String    @unique
     Product Product[]
+}
+
+type Address {
+    name    String
+    address String
+    phone   String
 }
 
 model Review {
