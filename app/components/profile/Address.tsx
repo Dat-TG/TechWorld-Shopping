@@ -3,16 +3,18 @@
 import { Address } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Notify } from 'notiflix';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DeleteAddressModal from './DeleteAddressModal';
+import AddressForm, { Province } from '../form/AddressForm';
 
 interface Props {
     defaultAddress: Address;
     address: Address;
     index: number;
+    dataProvince: Array<Province>
 }
 
-export default function Address({ defaultAddress, address, index }: Props) {
+export default function Address({ defaultAddress, address, index, dataProvince }: Props) {
     const router = useRouter();
     const [showingDeleteModal, setShowingDeleteModal] = useState(false);
     return (
@@ -32,7 +34,7 @@ export default function Address({ defaultAddress, address, index }: Props) {
             </div>
             <div className='flex flex-col justify-center items-center mb-6'>
                 <div className='flex justify-between my-2'>
-                    <button className='text-blue-500 hover:text-amber-500 mx-2'>Chỉnh sửa</button>
+                    <AddressForm mode='update' data={address} dataProvince={dataProvince} />
                     <button
                         className='text-blue-500 hover:text-amber-500 mx-2'
                         onClick={() => setShowingDeleteModal(true)}
