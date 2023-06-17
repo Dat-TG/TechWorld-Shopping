@@ -38,7 +38,7 @@ export async function deleteAttachment(id: string) {
         },
     });
 
-    await cloudinary.v2.uploader.destroy(attachment.name);
+    cloudinary.v2.uploader.destroy(attachment.name);
 
     return attachment;
 }

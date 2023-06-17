@@ -30,6 +30,7 @@ export type UserWithImage = User & {
 
 export const UserNotFound = new Error('User does not exist');
 export const InvalidCredentials = new Error('Invalid Credentials');
+export const PhoneAlreadyExists = new Error('Phone number already exists');
 
 export async function getUser(userId: string) {
     const user = await prisma.user.findUnique({
@@ -90,11 +91,24 @@ export async function updateUser(
         throw UserNotFound;
     }
 
+    const u = await prisma.user.findFirst({
+        where: {
+            phone: phone,
+            id: {
+                not: id,
+            },
+        },
+    });
+
+    if (u) {
+        throw PhoneAlreadyExists;
+    }
+
     let userImage: Attachment | null = user.image;
     if (userImage?.path !== image) {
         if (userImage) {
-            // TODO: delete old image
-            await deleteAttachment(userImage?.id);
+            // delete old image
+            deleteAttachment(userImage?.id);
         }
         // create new image
         userImage = await createAttachment(image, AttachmentType.IMAGE);

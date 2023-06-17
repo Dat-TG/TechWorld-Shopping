@@ -1,4 +1,4 @@
-import { updateUser } from '@/models/user';
+import { PhoneAlreadyExists, updateUser } from '@/models/user';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { getServerSession } from 'next-auth';
@@ -40,6 +40,17 @@ export async function PATCH(request: Request) {
             if (error.code === 'P2023') {
                 return NextResponse.json({ message: `Invalid userId` }, { status: 400 });
             }
+
+            if (error.code === 'P2002') {
+                return NextResponse.json(
+                    { message: `Phone number already exists` },
+                    { status: 400 },
+                );
+            }
+        }
+
+        if (error === PhoneAlreadyExists) {
+            return NextResponse.json({ message: `Phone number already exists` }, { status: 400 });
         }
 
         return NextResponse.json(

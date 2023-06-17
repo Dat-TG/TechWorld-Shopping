@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 
 export default function EditProfile({ user }: { user: UserWithImage }) {
     const router = useRouter();
-    const { update } = useSession();
+    const { data: session, update } = useSession();
     const [editPhone, setEditPhone] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [name, setName] = useState(user.name || ''),
@@ -57,10 +57,13 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                     clickToClose: true,
                 });
                 await update({
-                    name: json.data.name,
-                    phone: json.data.phone,
-                    email: json.data.email,
-                    image: json.data.image.path,
+                    ...session,
+                    user: {
+                        name: json.data.name,
+                        phone: json.data.phone,
+                        email: json.data.email,
+                        image: json.data.image.path,
+                    },
                 });
                 router.refresh();
             } else {
@@ -256,6 +259,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                         onChange={e => handleImageChange(e)}
                         className='hidden'
                         type='file'
+                        accept='image/*'
                     />
                 </label>
                 <p className='text-gray-500 text-sm mt-3 text-center'>
