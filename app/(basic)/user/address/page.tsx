@@ -31,8 +31,13 @@ export default async function Page() {
                         <AddressForm mode='add' />
                     </div>
                     <div>
-                        {user.addresses.map((address: Address) => (
-                            <AddressCard key={address.id} address={address} />
+                        {user.addresses.map((address: Address, index) => (
+                            <AddressCard
+                                key={address.id}
+                                defaultAddress={user.addresses[0]}
+                                address={address}
+                                index={index}
+                            />
                         ))}
                     </div>
                 </>
