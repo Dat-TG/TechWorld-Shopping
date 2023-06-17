@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { ratingList } from '../../constrains';
+import { ratingList } from '../../Constant';
 
 function ReviewItem() {
     const [updateRating, setUpdateRating] = useState(false);

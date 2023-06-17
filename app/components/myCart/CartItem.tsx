@@ -3,6 +3,7 @@ import Input from '../widgets/input/Input';
 import Button from '../widgets/button/Button';
 import { FullCartItem } from '@/models/user';
 import { CurrencyFormatter } from '@/utils/formatter';
+import { defaultValue } from '../Constant';
 
 interface CartItemProps {
     item: FullCartItem;
@@ -14,10 +15,7 @@ function CartItem({ enableCheckbox = true, item }: CartItemProps) {
         <div className='flex flex-row bg-white rounded-sm px-4 py-4 items-center justify-between text-base w-full'>
             <Input type='checkbox' className={`${!enableCheckbox && 'hidden'} scale-125 mr-4`} />
             <Image
-                src={
-                    item.Product.attachments[0]?.path ??
-                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                }
+                src={item.Product.attachments[0]?.path ?? defaultValue.image}
                 width={100}
                 height={100}
                 alt='image'

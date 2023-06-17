@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { use } from 'react';
+import React from 'react';
 import Button from '../widgets/button/Button';
 import Review from './Review';
 import ListProduct from './ListProduct';
@@ -11,6 +11,7 @@ import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import CarouselThumbnail from './CarouselThumbnail';
 import { useSession } from 'next-auth/react';
 import { User } from 'next-auth';
+import { defaultValue } from '../Constant';
 
 interface Props {
     product: FullProduct;
@@ -50,10 +51,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                 <div className='flex flex-col'>
                     <div style={{ height: '450px' }} className='mb-4'>
                         <Image
-                            src={
-                                product?.attachments[imgSelect]?.path ??
-                                'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                            }
+                            src={product?.attachments[imgSelect]?.path ?? defaultValue.image}
                             alt='Image'
                             className='mr-4 rounded-md'
                             width={400}

@@ -12,6 +12,7 @@ interface Props {
 
 export default function CartHover(props: Props) {
     const [isHovering, setIsHovering] = useState(false);
+    const totalProductInCart = props.productsInCart.length;
 
     const handleMouseOver = () => {
         setIsHovering(true);
@@ -31,70 +32,84 @@ export default function CartHover(props: Props) {
             >
                 <i className='bi bi-cart3' style={{ fontSize: 25 }}></i>
                 <div className='absolute top-0 text-xs translate-x-0 -right-3 w-fit h-fit px-2 text-center bg-red-600 text-white rounded-xl'>
-                    {props.productsInCart.length}
+                    {totalProductInCart}
                 </div>
             </Link>
-            {isHovering && (
-                <div
-                    className='absolute z-10 px-4 py-4 bg-white rounded-md outline outline-1 outline-gray-200 space-y-2'
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={handleMouseOut}
-                >
-                    <p className='text-xs text-gray-500'>Sản phẩm mới thêm</p>
-                    {props.productsInCart.map((product, key) => {
-                        return (
-                            <ProductCard
-                                key={key}
-                                imgPath={
-                                    product?.Product?.attachments[0]?.path ??
-                                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                                }
-                                name={product.Product.name}
-                                price={product.Product.price}
-                                slug={product.Product.slug}
-                            />
-                        );
-                    })}
 
-                    <div className='flex justify-between px-2 w-full items-center'>
-                        <p className='text-xs text-gray-500'>
-                            {props.productsInCart.length} sản phẩm khác trong giỏ hàng
-                        </p>
-                        <Button className='bg-amber-500 hover:bg-amber-700 text-white text-sm '>
-                            <Link href={'/cart'} onClick={() => handleMouseOut()}>
-                                Xem giỏ hàng
-                            </Link>
-                        </Button>
+            <div
+                className={`${
+                    isHovering ? 'absolute' : 'hidden'
+                } z-10 px-2 py-4 bg-white rounded-md outline outline-1 outline-gray-200 space-y-2`}
+                onMouseOver={handleMouseOver}
+                onMouseOut={handleMouseOut}
+            >
+                {totalProductInCart == 0 ? (
+                    <div className='flex flex-col items-center justify-center w-80 h-56'>
+                        <Image
+                            src={
+                                'https://bizweb.dktcdn.net/100/320/202/themes/714916/assets/empty-cart.png?1650292912948'
+                            }
+                            width={250}
+                            height={250}
+                            alt='Empty'
+                        />
+
                     </div>
-                </div>
-            )}
+                ) : (
+                    <>
+                        <p className='text-xs text-gray-500'>Sản phẩm mới thêm</p>
+                        {props.productsInCart.map((item, index) => {
+                            if (index >= totalProductInCart - 5)
+                                return <ProductCard key={index} item={item} />;
+                        })}
+
+                        <div className='flex justify-between px-2 w-full items-center'>
+                            <p className='text-xs text-gray-500'>
+                                {totalProductInCart - 5} sản phẩm khác trong giỏ hàng
+                            </p>
+                            <Button className='bg-amber-500 hover:bg-amber-700 text-white text-sm '>
+                                <Link href={'/cart'} onClick={() => handleMouseOut()}>
+                                    Xem giỏ hàng
+                                </Link>
+                            </Button>
+                        </div>
+                    </>
+                )}
+            </div>
         </>
     );
 }
 interface ProductCardProps {
-    imgPath: string;
-    name: string;
-    price: number;
-    slug: string;
+    item: FullCartItem;
 }
-function ProductCard({ imgPath, name, price, slug }: ProductCardProps) {
+function ProductCard({ item }: ProductCardProps) {
+    const product = item?.Product;
     return (
         <Link
-            href={`/product/${slug}`}
+            href={`/product/${item.Product.slug}`}
             className='cursor-pointer w-full h-full px-2 py-1 flex space-x-3 hover:bg-gray-100 focus:bg-gray-100'
         >
             <Image
-                src={imgPath}
+                src={product?.attachments[0]?.path ?? ''}
                 width={100}
                 alt=''
                 height={100}
                 className='w-16 h-16 outline outline-1 rounded-sm outline-gray-700'
             />
 
-            <p className='text-xs font-semibold text-ellipsis overflow-hidden flex-1'>{name}</p>
-            <p className='text-sm text-amber-500 font-semibold w-20'>
-                {CurrencyFormatter.format(price)}
+            <p className='w-48 text-xs font-semibold text-ellipsis overflow-hidden flex-1'>
+                {product.name}
             </p>
+            <div className='flex flex-col items-right text-right w-fit'>
+                <p className='text-sm text-amber-500 font-semibold'>
+                    {CurrencyFormatter.format(product.price * (1 - product.sale))}
+                </p>
+                {product?.sale != 0 && (
+                    <p className='text-sm text-gray-500 line-through font-semibold w-20'>
+                        {CurrencyFormatter.format(product.price)}
+                    </p>
+                )}
+            </div>
         </Link>
     );
 }

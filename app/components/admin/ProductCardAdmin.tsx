@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import DeleteProductModal from './DeleteProductModal';
 import { FullProduct } from '@/models/product';
+import { defaultValue } from '../Constant';
 
 interface Props {
     className?: string;
@@ -18,10 +19,7 @@ export default function ProductCardAdmin({ className, product }: Props) {
             }
         >
             <img
-                src={
-                    product.attachments[0]?.path ??
-                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                }
+                src={product.attachments[0]?.path ?? defaultValue.image}
                 className='w-1/2 h-fit self-center'
             ></img>
 
