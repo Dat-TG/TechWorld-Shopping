@@ -8,9 +8,10 @@ import { redirect, useRouter } from 'next/navigation';
 
 interface Props {
     data?: Address;
+    dataProvince: Array<Province>;
     mode: string;
 }
-interface Province {
+export interface Province {
     _id?: string;
     name?: string;
     slug?: string;
@@ -35,15 +36,16 @@ function AddressForm(props: Props) {
     const [province, setProvince] = useState('');
     const [district, setDistrict] = useState('');
     const [village, setVillage] = useState('');
-    const [dataProvince, setDataProvince] = useState<Array<Province>>([]);
     const [dataDistrict, setDataDistrict] = useState<Array<DistrictOrVillage>>([]);
     const [dataVillage, setDataVillage] = useState<Array<DistrictOrVillage>>([]);
     useEffect(() => {
-        fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', { method: 'GET' })
-            .then(res => res.json())
-            .then(data => {
-                setDataProvince(data.data.data);
-            });
+        if (props.mode === 'update') {
+            setProvince(
+                props.dataProvince.filter(function (data) {
+                    return data.name_with_type == props.data?.area.split(',')[2].substring(1);
+                })[0]?.code || '',
+            );
+        }
     }, []);
     useEffect(() => {
         if (province === '') return;
@@ -67,9 +69,23 @@ function AddressForm(props: Props) {
                 setDataVillage(data.data.data);
             });
     }, [district]);
-    // console.log(dataProvince);
-    // console.log(dataDistrict);
-    // console.log(dataVillage);
+    useEffect(() => {
+        if (props.mode !== 'update') return;
+        if (dataVillage && village === '') {
+            setVillage(
+                dataVillage.filter(function (data: DistrictOrVillage) {
+                    return data.name_with_type == props.data?.area.split(',')[0];
+                })[0]?.code || '',
+            );
+        }
+        if (dataDistrict && district === '') {
+            setDistrict(
+                dataDistrict.filter(function (data: DistrictOrVillage) {
+                    return data.name_with_type == props.data?.area.split(',')[1].substring(1);
+                })[0]?.code || '',
+            );
+        }
+    }, [dataDistrict, dataVillage]);
     const router = useRouter();
     const [opeing, setOpening] = useState(false);
     const [progressing, setProgressing] = useState(false);
@@ -84,15 +100,24 @@ function AddressForm(props: Props) {
     const {
         register,
         handleSubmit,
-        watch,
+        setValue,
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
+        defaultValues: {
+            phone: props.data?.phone,
+            address: props.data?.address,
+            district: props.data?.area.split(',')[1].substring(1),
+            name: props.data?.name,
+            province: props.data?.area.split(',')[2].substring(1),
+            village: props.data?.area.split(',')[0],
+        },
     });
     const onSubmit = async (data: Data) => {
+        setProgressing(true);
         console.log(province, district, village);
         data.province =
-            dataProvince.filter(function (data) {
+            props.dataProvince.filter(function (data) {
                 return data.code === province;
             })[0]?.name_with_type || '';
         data.district =
@@ -133,18 +158,59 @@ function AddressForm(props: Props) {
                 Notify.failure('Cập nhật thất bại');
             }
         }
+        if (props.mode === 'update') {
+            try {
+                const res = await fetch(`/api/user/address/${props.data?.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: data.name,
+                        phone: data.phone,
+                        area: data.village + ', ' + data.district + ', ' + data.province,
+                        address: data.address,
+                    }),
+                });
+                const json = await res.json();
+                if (json.message === 'success') {
+                    Notify.success('Cập nhật địa chỉ thành công', {
+                        clickToClose: true,
+                    });
+                } else {
+                    Notify.failure(json.message);
+                }
+                setOpening(false);
+                router.refresh();
+            } catch (error) {
+                console.log(error);
+                Notify.failure('Cập nhật thất bại');
+            }
+        }
         setProgressing(false);
     };
     return (
         <>
-            <button
-                className='bg-amber-500 text-white py-2 px-2 hover:opacity-50 active:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-300'
-                onClick={() => {
-                    setOpening(true);
-                }}
-            >
-                + Thêm địa chỉ mới
-            </button>
+            {props.mode === 'add' && (
+                <button
+                    className='bg-amber-500 text-white py-2 px-2 hover:opacity-50 active:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-300'
+                    onClick={() => {
+                        setOpening(true);
+                    }}
+                >
+                    + Thêm địa chỉ mới
+                </button>
+            )}
+            {props.mode === 'update' && (
+                <button
+                    className='text-blue-500 hover:text-amber-500 mx-2'
+                    onClick={() => {
+                        setOpening(true);
+                    }}
+                >
+                    Chỉnh sửa
+                </button>
+            )}
             <div className={(opeing ? 'absolute' : 'hidden') + ' z-10'}>
                 <div className='fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity'></div>
                 <div
@@ -180,7 +246,7 @@ function AddressForm(props: Props) {
                             </button>
                             <div className='px-6 py-6 lg:px-8 w-full'>
                                 <div className='mb-4 border-b border-gray-200 dark:border-gray-700 text-center text-lg font-semibold py-2'>
-                                    Thêm Địa Chỉ Mới
+                                    {props.mode === 'add' ? 'Thêm Địa Chỉ Mới' : 'Cập nhật địa chỉ'}
                                 </div>
                                 <form
                                     className='space-y-6 w-full'
@@ -192,6 +258,7 @@ function AddressForm(props: Props) {
                                         <label>Số điện thoại</label>
                                         <div className='mt-2'>
                                             <input
+                                                defaultValue={props.data?.phone}
                                                 type='tel'
                                                 {...register('phone', {
                                                     required: true,
@@ -226,6 +293,7 @@ function AddressForm(props: Props) {
                                         <label>Họ tên</label>
                                         <div className='mt-2 flex items-center relative'>
                                             <input
+                                                defaultValue={props.data?.name}
                                                 {...register('name', {
                                                     required: true,
                                                 })}
@@ -253,6 +321,7 @@ function AddressForm(props: Props) {
                                         <label>Địa chỉ người nhận</label>
                                         <div className='flex justify-center space-x-3 mt-2 text-sm'>
                                             <select
+                                                value={province}
                                                 required
                                                 className='px-2 py-2 outline outline-1 rounded-none'
                                                 aria-label='.form-select-sm'
@@ -265,18 +334,20 @@ function AddressForm(props: Props) {
                                                 }}
                                             >
                                                 <option value=''>Chọn tỉnh thành</option>
-                                                {dataProvince.map((data, index) => (
-                                                    <option
-                                                        key={data.code}
-                                                        value={data.code}
-                                                        className='text-black'
-                                                    >
-                                                        {data.name_with_type}
-                                                    </option>
-                                                ))}
+                                                {props.dataProvince &&
+                                                    props.dataProvince.map((data, index) => (
+                                                        <option
+                                                            key={data.code}
+                                                            value={data.code}
+                                                            className='text-black'
+                                                        >
+                                                            {data.name_with_type}
+                                                        </option>
+                                                    ))}
                                             </select>
 
                                             <select
+                                                value={district}
                                                 className='px-2 py-2 outline outline-1 rounded-none'
                                                 aria-label='.form-select-sm'
                                                 required
@@ -303,6 +374,7 @@ function AddressForm(props: Props) {
                                             </select>
 
                                             <select
+                                                value={village}
                                                 className='px-2 py-2 outline outline-1 rounded-none'
                                                 aria-label='.form-select-sm'
                                                 required
@@ -331,6 +403,7 @@ function AddressForm(props: Props) {
                                             <label>Số nhà, đường</label>
                                             <div className='mt-2'>
                                                 <input
+                                                    defaultValue={props.data?.address}
                                                     type='text'
                                                     {...register('address', {
                                                         required: true,
@@ -365,7 +438,6 @@ function AddressForm(props: Props) {
                                                 'relative flex w-full justify-center rounded-md bg-amber-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 ' +
                                                 (progressing ? 'opacity-20' : '')
                                             }
-                                            onClick={() => setProgressing(true)}
                                         >
                                             Xác nhận
                                             {progressing && (
