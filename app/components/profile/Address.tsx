@@ -3,6 +3,8 @@
 import { Address } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Notify } from 'notiflix';
+import { useState } from 'react';
+import DeleteAddressModal from './DeleteAddressModal';
 
 interface Props {
     defaultAddress: Address;
@@ -12,6 +14,7 @@ interface Props {
 
 export default function Address({ defaultAddress, address, index }: Props) {
     const router = useRouter();
+    const [showingDeleteModal, setShowingDeleteModal] = useState(false);
     return (
         <div className='flex justify-between w-full relative'>
             <div className='py-4'>
@@ -30,7 +33,17 @@ export default function Address({ defaultAddress, address, index }: Props) {
             <div className='flex flex-col justify-center items-center mb-6'>
                 <div className='flex justify-between my-2'>
                     <button className='text-blue-500 hover:text-amber-500 mx-2'>Chỉnh sửa</button>
-                    <button className='text-blue-500 hover:text-amber-500 mx-2'>Xóa</button>
+                    <button
+                        className='text-blue-500 hover:text-amber-500 mx-2'
+                        onClick={() => setShowingDeleteModal(true)}
+                    >
+                        Xóa
+                    </button>
+                    <DeleteAddressModal
+                        AddressId={address.id}
+                        showing={showingDeleteModal}
+                        setShowing={setShowingDeleteModal}
+                    />
                 </div>
                 <button
                     className={
