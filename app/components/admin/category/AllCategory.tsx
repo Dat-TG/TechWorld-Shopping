@@ -1,6 +1,7 @@
 import { listCategories } from '@/models/category';
 import { Category } from '@prisma/client';
 import Link from 'next/link';
+import DeleteCategoryButton from './DeleteCategoryButton';
 
 async function getAllCategories() {
     const res = await listCategories();
@@ -69,14 +70,19 @@ export default async function AllCategories() {
                             <div className='w-full grid grid-cols-3'>
                                 {listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].map(
                                     data => (
-                                        <Link
-                                            key={data.id}
-                                            href={`/category/${data.slug}`}
-                                            target='_blank'
-                                            className='mb-3 hover:text-amber-500'
-                                        >
-                                            {data.name}
-                                        </Link>
+                                        <div key={data.id} className='flex space-x-2 group'>
+                                            <Link
+                                                href={`/category/${data.slug}`}
+                                                target='_blank'
+                                                className='mb-3 hover:text-amber-500'
+                                            >
+                                                {data.name}
+                                            </Link>
+                                            <span className='text-gray-300 hover:text-amber-500 cursor-pointer invisible group-hover:visible'>
+                                                <i className='bi bi-pencil-square'></i>
+                                            </span>
+                                            <DeleteCategoryButton Category={data} />
+                                        </div>
                                     ),
                                 )}
                             </div>
