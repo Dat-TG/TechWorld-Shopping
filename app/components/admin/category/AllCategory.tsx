@@ -44,10 +44,26 @@ export default async function AllCategories() {
     // console.log(listCategoriesAlphabet);
     return (
         <div className='w-full bg-white px-10 py-10'>
+            <div className='w-full flex justify-between text-xl'>
+                {alphabet.map(data => (
+                    <Link
+                        key={data}
+                        href={`/admin/category#${data}`}
+                        className={
+                            listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].length >
+                            0
+                                ? 'text-amber-700'
+                                : 'text-gray-500 pointer-events-none'
+                        }
+                    >
+                        {data}
+                    </Link>
+                ))}
+            </div>
             {alphabet.map(
                 (data, index) =>
                     listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].length > 0 && (
-                        <div key={index} className='w-full'>
+                        <div key={index} className='w-full' id={data}>
                             <p className='text-4xl font-bold mb-4 mt-10'>{data}</p>
                             <hr className='mb-4'></hr>
                             <div className='w-full grid grid-cols-3'>
