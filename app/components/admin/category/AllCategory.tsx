@@ -2,6 +2,7 @@ import { listCategories } from '@/models/category';
 import { Category } from '@prisma/client';
 import Link from 'next/link';
 import DeleteCategoryButton from './DeleteCategoryButton';
+import CategoryForm from './CategoryForm';
 
 async function getAllCategories() {
     const res = await listCategories();
@@ -61,6 +62,9 @@ export default async function AllCategories() {
                     </Link>
                 ))}
             </div>
+            <div className='mt-10'>
+                <CategoryForm mode='add' />
+            </div>
             {alphabet.map(
                 (data, index) =>
                     listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].length > 0 && (
@@ -78,9 +82,7 @@ export default async function AllCategories() {
                                             >
                                                 {data.name}
                                             </Link>
-                                            <span className='text-gray-300 hover:text-amber-500 cursor-pointer invisible group-hover:visible'>
-                                                <i className='bi bi-pencil-square'></i>
-                                            </span>
+                                            <CategoryForm mode='update' data={data} />
                                             <DeleteCategoryButton Category={data} />
                                         </div>
                                     ),
