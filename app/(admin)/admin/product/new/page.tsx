@@ -1,7 +1,7 @@
 import AddProduct from '@/app/components/admin/AddProduct';
 
 export const metadata = {
-    title: 'Admin site | TechWorld',
+    title: 'Thêm sản phẩm mới | Admin site | TechWorld',
     icons: '/images/logo.png',
 };
 

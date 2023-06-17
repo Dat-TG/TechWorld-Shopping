@@ -1,7 +1,7 @@
 import ReviewList from '@/app/components/admin/review/ReviewList';
 
 export const metadata = {
-    title: 'Admin site | TechWorld',
+    title: 'Quản lý đánh giá | Admin site | TechWorld',
     icons: '/images/logo.png',
 };
 

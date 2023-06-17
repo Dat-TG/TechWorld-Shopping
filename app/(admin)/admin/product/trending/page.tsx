@@ -1,7 +1,7 @@
 import Trending from '@/app/components/admin/Trending';
 
 export const metadata = {
-    title: 'Admin site | TechWorld',
+    title: 'Xu hướng | Admin site | TechWorld',
     icons: '/images/logo.png',
 };
 

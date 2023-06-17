@@ -22,6 +22,15 @@ export default function Sidebar() {
                     <i className='bi bi-journals'></i>
                     <p className='text-md'>Dashboard</p>
                 </Link>
+                <Link
+                    href='/admin/category'
+                    className={`${
+                        pathName.includes('/admin/category') ? 'bg-gray-200' : 'hover:bg-gray-200'
+                    } rounded-xl flex py-3 px-3 space-x-3 cursor-pointer `}
+                >
+                    <i className='bi bi-tags-fill'></i>
+                    <p className='text-md'>Danh mục</p>
+                </Link>
                 <CollapsableSidebarItem />
                 <Link
                     href='/admin/order'

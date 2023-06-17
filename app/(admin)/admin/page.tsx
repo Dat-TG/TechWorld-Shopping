@@ -1,7 +1,7 @@
 import Dashboard from '@/app/components/admin/dashboard/Dashboard';
 
 export const metadata = {
-    title: 'Admin site | TechWorld',
+    title: 'Dashboard | Admin site | TechWorld',
     icons: '/images/logo.png',
 };
 
