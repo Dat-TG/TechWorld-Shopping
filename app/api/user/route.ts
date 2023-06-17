@@ -1,4 +1,4 @@
-import { updateUser } from '@/models/user';
+import { PhoneAlreadyExists, updateUser } from '@/models/user';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { getServerSession } from 'next-auth';
@@ -13,18 +13,18 @@ export async function PATCH(request: Request) {
         }
 
         const { name, phone, email, image } = await request.json();
-        if (!name || !phone || !email) {
+        if (!name || !phone || !email || !image) {
             return NextResponse.json(
                 { message: 'Missing name, phone, email or image' },
                 { status: 400 },
             );
         }
 
-        const res = await updateUser(session.user.id, name, phone, email, image);
+        const user = await updateUser(session.user.id, name, phone, email, image);
 
         return NextResponse.json({
             message: 'success',
-            data: res,
+            data: user,
         });
     } catch (error: any) {
         console.log('Error updating user', getErrorMessage(error));
@@ -40,6 +40,17 @@ export async function PATCH(request: Request) {
             if (error.code === 'P2023') {
                 return NextResponse.json({ message: `Invalid userId` }, { status: 400 });
             }
+
+            if (error.code === 'P2002') {
+                return NextResponse.json(
+                    { message: `Phone number already exists` },
+                    { status: 400 },
+                );
+            }
+        }
+
+        if (error === PhoneAlreadyExists) {
+            return NextResponse.json({ message: `Phone number already exists` }, { status: 400 });
         }
 
         return NextResponse.json(

@@ -13,7 +13,7 @@ async function getUserCart(userId: string) {
 async function MyCart() {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
-        redirect('/login');
+        redirect('/auth/login');
     } else {
         try {
             const cart = await getUserCart(session.user.id);
@@ -29,7 +29,7 @@ async function MyCart() {
                 </div>
             );
         } catch (error) {
-            redirect('/login');
+            redirect('/auth/login');
         }
     }
 }

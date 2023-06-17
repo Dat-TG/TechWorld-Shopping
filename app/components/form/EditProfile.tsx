@@ -1,21 +1,21 @@
 'use client';
 
-import { User } from '@prisma/client';
+import { UserWithImage } from '@/models/user';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Notify } from 'notiflix';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export default function EditProfile({ user }: { user: User }) {
+export default function EditProfile({ user }: { user: UserWithImage }) {
     const router = useRouter();
-    const { update } = useSession();
+    const { data: session, update } = useSession();
     const [editPhone, setEditPhone] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [name, setName] = useState(user.name || ''),
         [phone, setPhone] = useState(user.phone || ''),
         [email, setEmail] = useState(user.email || ''),
-        [image, setImage] = useState(user.image || '');
+        [image, setImage] = useState(user.image?.path || '');
 
     type Data = {
         name: string;
@@ -34,7 +34,7 @@ export default function EditProfile({ user }: { user: User }) {
             name: user.name || '',
             phone: user.phone || '',
             email: user.email || '',
-            image: user.image || '',
+            image: user.image?.path || '',
         },
     });
     const onSubmit = async (data: Data) => {
@@ -45,7 +45,10 @@ export default function EditProfile({ user }: { user: User }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    ...data,
+                    name: data.name,
+                    phone: data.phone,
+                    email: data.email,
+                    image: image,
                 }),
             });
             const json = await res.json();
@@ -53,12 +56,14 @@ export default function EditProfile({ user }: { user: User }) {
                 Notify.success('Cập nhật thông tin thành công', {
                     clickToClose: true,
                 });
-                update({
-                    user: user,
-                    name: data.name,
-                    email: data.email,
-                    phone: data.phone,
-                    image: data.image,
+                await update({
+                    ...session,
+                    user: {
+                        name: json.data.name,
+                        phone: json.data.phone,
+                        email: json.data.email,
+                        image: json.data.image.path,
+                    },
                 });
                 router.refresh();
             } else {
@@ -70,7 +75,7 @@ export default function EditProfile({ user }: { user: User }) {
         }
     };
 
-    const handleEmailChange = (e: any) => {
+    const handleImageChange = (e: any) => {
         if (e.target.files.length) {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -87,7 +92,7 @@ export default function EditProfile({ user }: { user: User }) {
         setName(user.name || '');
         setPhone(user.phone);
         setEmail(user.email || '');
-        setImage(user.image || '');
+        setImage(user.image?.path || '');
     }, []);
 
     return (
@@ -251,9 +256,10 @@ export default function EditProfile({ user }: { user: User }) {
                         {...register('image', {
                             required: false,
                         })}
-                        onChange={e => handleEmailChange(e)}
+                        onChange={e => handleImageChange(e)}
                         className='hidden'
                         type='file'
+                        accept='image/*'
                     />
                 </label>
                 <p className='text-gray-500 text-sm mt-3 text-center'>
