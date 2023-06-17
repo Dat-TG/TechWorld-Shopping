@@ -43,9 +43,18 @@ export async function deleteAttachment(id: string) {
     return attachment;
 }
 
-export async function addAttachments(attachments: Attachment[]) {
-    const newAttachments = await prisma.attachment.createMany({
-        data: attachments,
-    });
-    return newAttachments;
+export async function createAttachments(attachments: string[]) {
+    return await Promise.all(
+        attachments.map(attachment => {
+            return createAttachment(attachment, AttachmentType.IMAGE);
+        }),
+    );
+}
+
+export async function deleteAttachments(attachments: Attachment[]) {
+    return await Promise.all(
+        attachments.map(attachment => {
+            return deleteAttachment(attachment.id);
+        }),
+    );
 }

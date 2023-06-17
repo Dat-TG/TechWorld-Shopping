@@ -253,9 +253,6 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                     Chọn Ảnh
                     <input
                         id='image'
-                        {...register('image', {
-                            required: false,
-                        })}
                         onChange={e => handleImageChange(e)}
                         className='hidden'
                         type='file'

@@ -1,6 +1,11 @@
 import { toSlug } from '@/utils/helper';
 import prisma from '../libs/prismadb';
-import { AttachmentInput } from './attachment';
+import {
+    AttachmentInput,
+    createAttachments,
+    deleteAttachment,
+    deleteAttachments,
+} from './attachment';
 import { Attachment, Brand, Category, Product } from '@prisma/client';
 
 export type FullProduct = Product & {
@@ -61,21 +66,22 @@ export async function listProducts(categorySlug?: string, brandSlug?: string) {
 
 export async function createProduct(
     name: string,
-    price: number,
-    description: string,
     quantity: number,
+    price: number,
+    sale: number,
+    description: string,
     brandId: string,
     categoryId: string,
-    attachments: AttachmentInput[],
-    sale?: number,
+    attachments: string[],
 ) {
-    const newProducts = await prisma.product.create({
+    const product = await prisma.product.create({
         data: {
             name: name,
-            slug: toSlug(name),
-            price: price,
-            description: description,
             quantity: quantity,
+            price: price,
+            sale: sale,
+            slug: toSlug(name),
+            description: description,
             brand: {
                 connect: {
                     id: brandId,
@@ -86,29 +92,61 @@ export async function createProduct(
                     id: categoryId,
                 },
             },
-            attachments: {
-                create: attachments,
-            },
-            sale: sale,
         },
     });
-    return newProducts;
+
+    const attachmentsData = await createAttachments(attachments);
+
+    const newProduct = await prisma.product.update({
+        where: {
+            id: product.id,
+        },
+        data: {
+            attachments: {
+                connect: attachmentsData.map(attachment => {
+                    return {
+                        id: attachment.id,
+                    };
+                }),
+            },
+        },
+    });
+
+    return newProduct;
 }
 
 export async function updateProduct(
     id: string,
     name: string,
-    price: number,
-    description: string,
     quantity: number,
+    price: number,
+    sale: number,
+    description: string,
     brandId: string,
     categoryId: string,
-    attachments: AttachmentInput[],
-    sale?: number,
+    attachments: string[],
 ) {
-    const oldProduct = await prisma.product.findUnique({
+    const oldProduct = await prisma.product.update({
         where: {
             id: id,
+        },
+        data: {
+            name: name,
+            slug: toSlug(name),
+            quantity: quantity,
+            price: price,
+            sale: sale,
+            description: description,
+            brand: {
+                connect: {
+                    id: brandId,
+                },
+            },
+            category: {
+                connect: {
+                    id: categoryId,
+                },
+            },
         },
         include: {
             attachments: true,
@@ -119,17 +157,15 @@ export async function updateProduct(
         throw ProductNotFound;
     }
 
-    const attachmentsToAdd = attachments.filter((attachment) => {
-        return !oldProduct.attachments.some((oldAttachment) => {
-            return oldAttachment.name === attachment.name;
+    const attachmentsToAdd = attachments.filter(attachment => attachment.startsWith('data:'));
+    const attachmentsToRemove = oldProduct.attachments.filter(oldAttachment => {
+        return !attachments.some(attachment => {
+            return oldAttachment.path === attachment;
         });
     });
 
-    const attachmentsToRemove = oldProduct.attachments.filter((oldAttachment) => {
-        return !attachments.some((attachment) => {
-            return oldAttachment.name === attachment.name;
-        });
-    });
+    deleteAttachments(attachmentsToRemove);
+    const attachmentsData = await createAttachments(attachmentsToAdd);
 
     const newProduct = await prisma.product.update({
         where: {
@@ -138,20 +174,19 @@ export async function updateProduct(
         data: {
             name: name,
             slug: toSlug(name),
-            price: price,
-            description: description,
             quantity: quantity,
+            price: price,
+            sale: sale,
+            description: description,
             brandId: brandId,
             categoryId: categoryId,
             attachments: {
-                create: attachmentsToAdd,
-                deleteMany: attachmentsToRemove.map((attachment) => {
+                connect: attachmentsData.map(attachment => {
                     return {
                         id: attachment.id,
                     };
                 }),
             },
-            sale: sale,
         },
     });
 

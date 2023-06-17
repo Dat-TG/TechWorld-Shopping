@@ -23,15 +23,20 @@ export async function GET(request: Request) {
     }
 }
 
+/**
+ * POST /api/product
+ * Create a new product
+ */
 export async function POST(request: Request) {
     try {
         const { name, price, description, brandId, categoryId, attachments, quantity, sale } =
             await request.json();
         if (
             !name ||
+            !quantity ||
+            sale == null ||
             !price ||
             !description ||
-            !quantity ||
             !brandId ||
             !categoryId ||
             !attachments
@@ -39,7 +44,7 @@ export async function POST(request: Request) {
             return NextResponse.json(
                 {
                     message:
-                        'Missing name, price, description, quantity, brandId, categoryId or attachments',
+                        'Missing name, quantity, price, sale, description, brandId, categoryId or attachments',
                 },
                 { status: 400 },
             );
@@ -47,15 +52,15 @@ export async function POST(request: Request) {
 
         const product = await createProduct(
             name,
-            price,
-            description,
             quantity,
+            price,
+            sale / 100,
+            description,
             brandId,
             categoryId,
             attachments,
-            sale,
         );
-        return NextResponse.json(product);
+        return NextResponse.json({ message: 'success', data: product });
     } catch (error: any) {
         console.log('Error creating product', getErrorMessage(error));
 
@@ -65,6 +70,7 @@ export async function POST(request: Request) {
                 { status: 400 },
             );
         }
+
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
                 return NextResponse.json({ message: `Product already exists` }, { status: 400 });

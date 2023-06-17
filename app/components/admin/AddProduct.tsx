@@ -1,36 +1,12 @@
 'use client';
-import { AttachmentType } from '@prisma/client';
-import FormAddProduct from './FormAddProduct';
-import { AttachmentInput } from '@/models/attachment';
+import FormAddProduct, { Data } from './FormAddProduct';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 export default function AddProduct() {
     const router = useRouter();
-    const onSumbit = async (product: any, newAttachments: AttachmentInput[]) => {
+    const onSumbit = async (product: Data, attachments: string[]) => {
         try {
-            const requests = newAttachments.map((attachment: AttachmentInput) => {
-                const formData = new FormData();
-                formData.append('file', attachment.path);
-                formData.append('upload_preset', 'cvp46avx');
-
-                return fetch('https://api.cloudinary.com/v1_1/dgwf1woqx/image/upload', {
-                    method: 'POST',
-                    body: formData,
-                });
-            });
-            const responses = await Promise.all(requests);
-            const errors = responses.filter(response => !response.ok);
-
-            if (errors.length > 0) {
-                throw errors.map(response => Error(response.statusText));
-            }
-
-            const json = responses.map(response => response.json());
-            const data = await Promise.all(json);
-
-            const attachments = data.map((asset: any) => {
-                return { name: asset.asset_id, path: asset.secure_url, type: AttachmentType.IMAGE };
-            }) as AttachmentInput[];
             const res = await fetch('/api/product', {
                 method: 'POST',
                 headers: {
@@ -39,18 +15,24 @@ export default function AddProduct() {
                 body: JSON.stringify({
                     name: product.name,
                     price: Number(product.price),
+                    quantity: Number(product.quantity),
+                    sale: Number(product.sale),
                     categoryId: product.category,
                     brandId: product.brand,
                     description: product.description,
-                    attachments,
-                    quantity: 10, // TODO: add this
-                    // sale: 0, // can be undefined
+                    attachments: attachments,
                 }),
             });
-            if (res.ok) {
-                router.push('/admin/product');
+            const json = await res.json();
+
+            if (json.message === 'success') {
+                toast.success('Thêm sản phẩm thành công');
+                router.push('/admin/product?created=true');
+            } else {
+                toast.error(json.message);
             }
         } catch (errors) {
+            toast.error('Thêm sản phẩm thất bại');
             console.log(errors);
         }
     };
