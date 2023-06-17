@@ -1,8 +1,17 @@
 import bcrypt from 'bcrypt';
 import prisma from '../libs/prismadb';
 import { NotEnoughQuantity, ProductNotFound } from './product';
-import { Address, Attachment, CartItem, Category, Product, User } from '@prisma/client';
+import {
+    Address,
+    Attachment,
+    AttachmentType,
+    CartItem,
+    Category,
+    Product,
+    User,
+} from '@prisma/client';
 import crypto from 'crypto';
+import { createAttachment, deleteAttachment } from './attachment';
 
 export type FullCartItem = CartItem & {
     Product: Product & {
@@ -15,6 +24,10 @@ export type UserWithAddresses = User & {
     addresses: Address[];
 };
 
+export type UserWithImage = User & {
+    image: Attachment | null;
+};
+
 export const UserNotFound = new Error('User does not exist');
 export const InvalidCredentials = new Error('Invalid Credentials');
 
@@ -25,6 +38,7 @@ export async function getUser(userId: string) {
         },
         include: {
             addresses: true,
+            image: true,
         },
     });
     if (!user) {
@@ -41,7 +55,13 @@ export async function createUser(name: string, phone: string, password: string) 
             name: name,
             phone: phone,
             password: hashedPassword,
-            image: `https://robohash.org/${hashedPhone}.png?set=set4`,
+            image: {
+                create: {
+                    name: hashedPhone,
+                    path: `https://robohash.org/${hashedPhone}.png?set=set4`,
+                    type: AttachmentType.IMAGE,
+                },
+            },
             cart: {
                 create: {},
             },
@@ -57,7 +77,30 @@ export async function updateUser(
     email: string,
     image: string,
 ) {
-    const user = await prisma.user.update({
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id,
+        },
+        include: {
+            image: true,
+        },
+    });
+
+    if (!user) {
+        throw UserNotFound;
+    }
+
+    let userImage: Attachment | null = user.image;
+    if (userImage?.path !== image) {
+        if (userImage) {
+            // TODO: delete old image
+            await deleteAttachment(userImage?.id);
+        }
+        // create new image
+        userImage = await createAttachment(image, AttachmentType.IMAGE);
+    }
+
+    const newUser = await prisma.user.update({
         where: {
             id: id,
         },
@@ -65,10 +108,18 @@ export async function updateUser(
             name: name,
             phone: phone,
             email: email,
-            image: image,
+            image: {
+                connect: {
+                    id: userImage?.id,
+                },
+            },
+        },
+        include: {
+            image: true,
         },
     });
-    return user;
+
+    return newUser;
 }
 
 export async function changePassword(id: string, password: string, newPassword: string) {
@@ -100,6 +151,9 @@ export async function auth(phone: string, password: string) {
     const user = await prisma.user.findUnique({
         where: {
             phone: phone,
+        },
+        include: {
+            image: true,
         },
     });
 

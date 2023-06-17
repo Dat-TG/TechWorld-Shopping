@@ -13,18 +13,18 @@ export async function PATCH(request: Request) {
         }
 
         const { name, phone, email, image } = await request.json();
-        if (!name || !phone || !email) {
+        if (!name || !phone || !email || !image) {
             return NextResponse.json(
                 { message: 'Missing name, phone, email or image' },
                 { status: 400 },
             );
         }
 
-        const res = await updateUser(session.user.id, name, phone, email, image);
+        const user = await updateUser(session.user.id, name, phone, email, image);
 
         return NextResponse.json({
             message: 'success',
-            data: res,
+            data: user,
         });
     } catch (error: any) {
         console.log('Error updating user', getErrorMessage(error));

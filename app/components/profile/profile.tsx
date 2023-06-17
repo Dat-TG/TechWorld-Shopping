@@ -1,8 +1,8 @@
-'use client';
 import { User } from '@prisma/client';
 import EditProfile from '../form/EditProfile';
+import { UserWithImage } from '@/models/user';
 
-export default function Profile({ user }: { user: User }) {
+export default function Profile({ user }: { user: UserWithImage }) {
     return (
         <>
             <p className='text-3xl'>Hồ Sơ Của Tôi</p>

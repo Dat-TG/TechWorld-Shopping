@@ -13,7 +13,7 @@ async function getCurrentUser(userId: string) {
 export default async function Page() {
     const session = await getServerSession(authOptions);
     if (!session || !session.user) {
-        redirect('/login');
+        redirect('/auth/login');
     } else {
         try {
             const user = await getCurrentUser(session.user.id);
@@ -34,7 +34,7 @@ export default async function Page() {
                 </>
             );
         } catch (error) {
-            redirect('/login');
+            redirect('/auth/login');
         }
     }
 }

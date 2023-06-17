@@ -31,7 +31,7 @@ export const authOptions: AuthOptions = {
                     email: user.email,
                     role: user.role,
                     cartId: user.cartId,
-                    image: user.image,
+                    image: user.image?.path || '',
                 };
             },
         }),
@@ -39,7 +39,6 @@ export const authOptions: AuthOptions = {
     callbacks: {
         async jwt({ token, user, trigger, session }) {
             if (trigger === 'update' && session?.name) {
-                console.log('trigger jwt', session);
                 token.trigger = 'update';
                 token.user = {
                     id: session.user.id,
