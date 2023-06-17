@@ -15,7 +15,7 @@ export default function Address({ address }: Props) {
                     <p className='text-gray-500'> | </p>
                     <p className='text-gray-500'>{address.phone}</p>
                 </div>
-                <p className='text-gray-500'>{address.address}</p>
+                <p className='text-gray-500'>{address.address + ', ' + address.area}</p>
                 {/* {index == 0 && (
                                         <div className='text-sm text-amber-500 outline outline-amber-500 w-fit px-1 mt-1'>
                                             Mặc định

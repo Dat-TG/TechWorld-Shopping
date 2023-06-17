@@ -1,8 +1,8 @@
+/* eslint-disable arrow-parens */
 'use client';
 import { Address } from '@prisma/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import addressVN from '@/models/address_vietnam.json';
 import { Notify } from 'notiflix';
 import { redirect, useRouter } from 'next/navigation';
 
@@ -10,18 +10,69 @@ interface Props {
     data?: Address;
     mode: string;
 }
-interface Village {
-    Id?: string;
-    Name?: string;
-    Level: string;
+interface Province {
+    _id?: string;
+    name?: string;
+    slug?: string;
+    type?: string;
+    name_with_type?: string;
+    code?: string;
+    isDeleted?: boolean;
+}
+interface DistrictOrVillage {
+    _id?: string;
+    name?: string;
+    type?: string;
+    slug?: string;
+    name_with_type?: string;
+    path?: string;
+    path_with_type?: string;
+    code?: string;
+    parent_code?: string;
+    isDeleted?: boolean;
 }
 function AddressForm(props: Props) {
+    const [province, setProvince] = useState('');
+    const [district, setDistrict] = useState('');
+    const [village, setVillage] = useState('');
+    const [dataProvince, setDataProvince] = useState<Array<Province>>([]);
+    const [dataDistrict, setDataDistrict] = useState<Array<DistrictOrVillage>>([]);
+    const [dataVillage, setDataVillage] = useState<Array<DistrictOrVillage>>([]);
+    useEffect(() => {
+        fetch('https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1', { method: 'GET' })
+            .then(res => res.json())
+            .then(data => {
+                setDataProvince(data.data.data);
+            });
+    }, []);
+    useEffect(() => {
+        if (province === '') return;
+        fetch(
+            `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${province}&limit=-1`,
+            { method: 'GET' },
+        )
+            .then(res => res.json())
+            .then(data => {
+                setDataDistrict(data.data.data);
+            });
+    }, [province]);
+    useEffect(() => {
+        if (district === '') return;
+        fetch(
+            `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${district}&limit=-1`,
+            { method: 'GET' },
+        )
+            .then(res => res.json())
+            .then(data => {
+                setDataVillage(data.data.data);
+            });
+    }, [district]);
+    // console.log(dataProvince);
+    // console.log(dataDistrict);
+    // console.log(dataVillage);
     const router = useRouter();
     const [opeing, setOpening] = useState(false);
     const [progressing, setProgressing] = useState(false);
-    const [province, setProvince] = useState(-1),
-        [district, setDistrict] = useState(-1),
-        [village, setVillage] = useState(-1);
     type Data = {
         phone: string;
         name: string;
@@ -39,10 +90,19 @@ function AddressForm(props: Props) {
         mode: 'all',
     });
     const onSubmit = async (data: Data) => {
-        data.province = addressVN[province].Name;
-        data.district = addressVN[province].Districts[district].Name;
+        console.log(province, district, village);
+        data.province =
+            dataProvince.filter(function (data) {
+                return data.code === province;
+            })[0]?.name_with_type || '';
+        data.district =
+            dataDistrict.filter(function (data) {
+                return data.code === district;
+            })[0]?.name_with_type || '';
         data.village =
-            (addressVN[province].Districts[district].Wards[village] as Village).Name || '';
+            dataVillage.filter(function (data) {
+                return data.code === village;
+            })[0]?.name_with_type || '';
         console.log(data);
         if (props.mode === 'add') {
             try {
@@ -200,18 +260,18 @@ function AddressForm(props: Props) {
                                                     required: true,
                                                 })}
                                                 onChange={event => {
-                                                    setProvince(parseInt(event.target.value));
-                                                    setDistrict(-1);
+                                                    setProvince(event.target.value);
+                                                    setDistrict('');
                                                 }}
                                             >
                                                 <option value=''>Chọn tỉnh thành</option>
-                                                {addressVN.map((data, index) => (
+                                                {dataProvince.map((data, index) => (
                                                     <option
-                                                        key={data.Id}
-                                                        value={index}
+                                                        key={data.code}
+                                                        value={data.code}
                                                         className='text-black'
                                                     >
-                                                        {data.Name}
+                                                        {data.name_with_type}
                                                     </option>
                                                 ))}
                                             </select>
@@ -224,23 +284,22 @@ function AddressForm(props: Props) {
                                                     required: true,
                                                 })}
                                                 onChange={event => {
-                                                    setDistrict(parseInt(event.target.value));
-                                                    setVillage(-1);
+                                                    setDistrict(event.target.value);
+                                                    setVillage('');
                                                 }}
                                             >
                                                 <option value=''>Chọn quận huyện</option>
-                                                {province >= 0 &&
-                                                    addressVN[province].Districts.map(
-                                                        (data, index) => (
-                                                            <option
-                                                                key={data.Id}
-                                                                value={index}
-                                                                className='text-black'
-                                                            >
-                                                                {data.Name}
-                                                            </option>
-                                                        ),
-                                                    )}
+                                                {province !== '' &&
+                                                    dataDistrict &&
+                                                    dataDistrict.map((data, index) => (
+                                                        <option
+                                                            key={data.code}
+                                                            value={data.code}
+                                                            className='text-black'
+                                                        >
+                                                            {data.name_with_type}
+                                                        </option>
+                                                    ))}
                                             </select>
 
                                             <select
@@ -251,20 +310,19 @@ function AddressForm(props: Props) {
                                                     required: true,
                                                 })}
                                                 onChange={event => {
-                                                    setVillage(parseInt(event.target.value));
+                                                    setVillage(event.target.value);
                                                 }}
                                             >
                                                 <option value=''>Chọn phường xã</option>
-                                                {district >= 0 &&
-                                                    addressVN[province].Districts[
-                                                        district
-                                                    ].Wards.map((data: Village, index) => (
+                                                {district !== '' &&
+                                                    dataVillage &&
+                                                    dataVillage.map((data, index) => (
                                                         <option
-                                                            key={data.Id}
-                                                            value={index}
+                                                            key={data.code}
+                                                            value={data.code}
                                                             className='text-black'
                                                         >
-                                                            {data.Name}
+                                                            {data.name_with_type}
                                                         </option>
                                                     ))}
                                             </select>
