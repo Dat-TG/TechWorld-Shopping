@@ -7,6 +7,7 @@ import { CurrencyFormatter } from '@/utils/formatter';
 import { defaultValue } from '../Constant';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import React from 'react';
+import { useGlobalContext } from '@/app/context/GlobalContext';
 
 interface CartItemProps {
     item: FullCartItem;
@@ -14,20 +15,23 @@ interface CartItemProps {
 }
 
 function CartItem({ enableCheckbox = true, item }: CartItemProps) {
+    const { updateMyCart } = useGlobalContext();
     const [quantity, setQuantity] = React.useState(item.quantity);
 
-    async function updateQuantity(quantity: number) {
+    async function updateQuantity(quantityUpdate: number) {
         try {
             await fetch(`/api/user/cart/${item.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ quantity }),
+                body: JSON.stringify({ quantity: quantityUpdate }),
             });
+            return true;
         } catch (error) {
             console.log(error);
         }
+        return false;
     }
 
     return (

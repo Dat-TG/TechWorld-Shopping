@@ -9,9 +9,8 @@ import { FullProduct } from '@/models/product';
 import { CurrencyFormatter } from '@/utils/formatter';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import CarouselThumbnail from './CarouselThumbnail';
-import { useSession } from 'next-auth/react';
-import { User } from 'next-auth';
 import { defaultValue } from '../Constant';
+import { useGlobalContext } from '@/app/context/GlobalContext';
 
 interface Props {
     product: FullProduct;
@@ -19,15 +18,9 @@ interface Props {
 }
 
 function ProductDetail({ product, similarProducts }: Props) {
+    const {user, updateMyCart} = useGlobalContext();
     const [quantity, setQuantity] = React.useState<number>(1);
     const [imgSelect, setImgSelect] = React.useState<number>(0);
-    const session = useSession();
-    const [user, setUser] = React.useState<User>();
-    React.useEffect(() => {
-        if (session.status == 'authenticated') {
-            setUser(session.data.user);
-        }
-    }, [session.status]);
 
     async function addToCart() {
         const data = {
@@ -43,6 +36,7 @@ function ProductDetail({ product, similarProducts }: Props) {
             },
             body: JSON.stringify(data),
         });
+        await updateMyCart();
     }
 
     return (

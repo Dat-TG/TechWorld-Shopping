@@ -13,7 +13,7 @@ function FormCustomer() {
                 </div>
                 <div className='flex flex-col flex-1 mx-3'>
                     <label htmlFor='phone'>Số điện thoại</label>
-                    <Input type='number' name='phone' placeholder='0123456789' />
+                    <Input type='text' name='phone' placeholder='0123456789' />
                 </div>
             </div>
 

@@ -10,7 +10,7 @@ interface InputQuantityProps {
     setQuantity: React.Dispatch<React.SetStateAction<number>>;
     max?: number;
     disableInputText?: boolean | false;
-    updateQuantity?: (quantity: number) => Promise<void>;
+    updateQuantity?: (quantity: number) => Promise<boolean>;
 }
 
 function InputQuantity(props: InputQuantityProps) {
@@ -22,16 +22,19 @@ function InputQuantity(props: InputQuantityProps) {
             if (props.max == null || props.quantity < props.max) {
                 if (props.disableInputText) {
                     setIsLoading(true);
-                    await props.updateQuantity?.(props.quantity + 1);
+                    const result = await props.updateQuantity?.(props.quantity + 1);
+                    if (result) props.setQuantity(props.quantity + 1);
                     setIsLoading(false);
+                } else {
+                    props.setQuantity(props.quantity + 1);
                 }
-                props.setQuantity(props.quantity + 1);
+                setIsLoading(false);
                 return true;
             }
         } catch (error) {
             console.log(error);
         }
-
+        setIsLoading(false);
         return false;
     }
 
@@ -40,16 +43,20 @@ function InputQuantity(props: InputQuantityProps) {
             if (props.quantity > 0) {
                 if (props.disableInputText) {
                     setIsLoading(true);
-                    await props.updateQuantity?.(props.quantity - 1);
+                    const result = await props.updateQuantity?.(props.quantity - 1);
+                    if (result) props.setQuantity(props.quantity - 1);
                     setIsLoading(false);
+                } else {
+                    props.setQuantity(props.quantity - 1);
                 }
-                props.setQuantity(props.quantity - 1);
+                setIsLoading(false);
                 return true;
             }
         } catch (error) {
             console.log(error);
         }
 
+        setIsLoading(false);
         return false;
     }
 

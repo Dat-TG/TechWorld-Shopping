@@ -1,18 +1,19 @@
 'use client';
+
 import { FullCartItem } from '@/models/user';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import Button from '../widgets/button/Button';
 import { CurrencyFormatter } from '@/utils/formatter';
+import { useGlobalContext } from '@/app/context/GlobalContext';
 
-interface Props {
-    productsInCart: any;
-}
 
-export default function CartHover(props: Props) {
+export default function CartHover() {
+    const { myCart } = useGlobalContext();
+
     const [isHovering, setIsHovering] = useState(false);
-    const totalProductInCart = props.productsInCart.length;
+    const totalProductInCart = myCart?.CartItem?.length;
 
     const handleMouseOver = () => {
         setIsHovering(true);
@@ -58,7 +59,7 @@ export default function CartHover(props: Props) {
                 ) : (
                     <>
                         <p className='text-xs text-gray-500'>Sản phẩm mới thêm</p>
-                        {props.productsInCart.map((item: FullCartItem, index: number) => {
+                        {myCart?.CartItem.map((item: FullCartItem, index: number) => {
                             if (index >= totalProductInCart - 5)
                                 return <ProductCard key={index} item={item} />;
                         })}

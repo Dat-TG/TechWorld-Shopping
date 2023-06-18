@@ -3,13 +3,8 @@ import CollapsingCategory from './CollapsingCategory';
 import Notification from './Notification';
 import UserButtons from './UserButtons';
 import CartHover from './CartHover';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getCart } from '@/models/user';
 
 export default async function Header() {
-    const session = await getServerSession(authOptions);
-    const productsInCart = await getCart(session?.user.id ?? '');
 
     return (
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
@@ -63,7 +58,7 @@ export default async function Header() {
                             <Notification />
                         </li>
                         <li>
-                            <CartHover productsInCart={productsInCart?.CartItem} />
+                            <CartHover />
                         </li>
                         <UserButtons />
                     </ul>
