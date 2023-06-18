@@ -17,13 +17,12 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
         if (numberOfCategories >= categories.length) setSeeMore(false);
     }, [numberOfCategories]);
     return (
-        <div className='flex flex-col items-start justify-start w-52 mr-4'>
+        <div className='flex flex-col items-start justify-start w-52 mr-6'>
             {/* Category */}
-            <div className='flex flex-row items-center mb-2 justify-center text-md font-bold '>
-                <i className='bi bi-list-task mr-2 text-lg py-4'></i>
+            <div className='flex flex-row w-5/6 items-center mb-2 text-md font-bold border-b border-solid border-gray-700'>
+                <i className='bi bi-list-task mr-2 text-lg py-4  text-left'></i>
                 <span>Tất cả danh mục</span>
             </div>
-            <hr className='w-full bg-amber-500' />
             {categories.slice(0, numberOfCategories).map((category: Category) => (
                 <Link
                     key={category.id}
@@ -75,10 +74,10 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                 </p>
             </div>
 
-            <hr className='w-full bg-amber-500 mt-4' />
+            <hr className='w-full bg-black mt-4' style={{ height: '1.5px', opacity: 0.1 }} />
 
             {/* Filter */}
-            <div className='flex flex-row items-center justify-center text-md font-bold '>
+            <div className='flex flex-row items-center text-md font-bold mb-2 border-b border-solid border-gray-700 w-5/6'>
                 <i className='bi bi-funnel mr-2 text-lg py-4'></i>
                 <h2>Bộ lọc tìm kiếm</h2>
             </div>

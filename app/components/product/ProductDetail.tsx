@@ -36,7 +36,7 @@ function ProductDetail({ product, similarProducts }: Props) {
             },
             body: JSON.stringify(data),
         });
-        await updateMyCart();
+        await updateMyCart?.();
     }
 
     return (
@@ -120,7 +120,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                             setQuantity={setQuantity}
                             max={product.quantity}
                         />
-                        <div className='text-gray-600'>{product.quantity} sản phẩm có sẵn</div>
+                        <div className='ml-8 text-gray-600'>{product.quantity} sản phẩm có sẵn</div>
                     </div>
                     <div className='flex flex-row items-center mt-12'>
                         {product.quantity == 0 ? (

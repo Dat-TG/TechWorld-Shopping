@@ -3,6 +3,7 @@
 import React from 'react';
 import Button from '../button/Button';
 import Input from '../input/Input';
+import { useGlobalContext } from '@/app/context/GlobalContext';
 
 interface InputQuantityProps {
     label?: string | '';
@@ -14,6 +15,7 @@ interface InputQuantityProps {
 }
 
 function InputQuantity(props: InputQuantityProps) {
+    const { updateMyCart } = useGlobalContext();
     const soldOut = props.max == 0;
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -23,6 +25,7 @@ function InputQuantity(props: InputQuantityProps) {
                 if (props.disableInputText) {
                     setIsLoading(true);
                     const result = await props.updateQuantity?.(props.quantity + 1);
+                    await updateMyCart?.();
                     if (result) props.setQuantity(props.quantity + 1);
                     setIsLoading(false);
                 } else {
@@ -40,7 +43,7 @@ function InputQuantity(props: InputQuantityProps) {
 
     async function decreaseQuantity() {
         try {
-            if (props.quantity > 0) {
+            if (props.quantity > 1) {
                 if (props.disableInputText) {
                     setIsLoading(true);
                     const result = await props.updateQuantity?.(props.quantity - 1);
@@ -74,7 +77,9 @@ function InputQuantity(props: InputQuantityProps) {
 
     return (
         <div className='flex flex-row items-center'>
-            {props.label != '' && <div className='text-lg text-gray-500 mr-12'>{props.label}</div>}
+            <div className={`${props.label == null ? 'hidden' : ''} text-lg text-gray-500 mr-12`}>
+                {props.label}
+            </div>
             <Button
                 onClick={decreaseQuantity}
                 className={`${soldOut || isLoading ? 'bg-gray-100' : 'bg-white'} text-base px-4`}
@@ -82,7 +87,6 @@ function InputQuantity(props: InputQuantityProps) {
             >
                 -
             </Button>
-
             <Input
                 type='text'
                 className='w-16 text-center text-base px-4'
@@ -92,12 +96,9 @@ function InputQuantity(props: InputQuantityProps) {
                 min={1}
                 disable={soldOut || props.disableInputText}
             />
-
             <Button
                 onClick={increaseQuantity}
-                className={`${
-                    soldOut || isLoading ? 'bg-gray-100' : 'bg-white'
-                } text-base px-4 mr-6`}
+                className={`${soldOut || isLoading ? 'bg-gray-100' : 'bg-white'} text-base px-4`}
                 disable={soldOut || isLoading}
             >
                 +

@@ -1,18 +1,22 @@
 import { toSlug } from '@/utils/helper';
 import prisma from '../libs/prismadb';
 import {
-    AttachmentInput,
     createAttachments,
-    deleteAttachment,
     deleteAttachments,
 } from './attachment';
 import { Attachment, Brand, Category, Product } from '@prisma/client';
+import { FullCartItem } from './user';
 
 export type FullProduct = Product & {
     category: Category | null;
     brand: Brand | null;
     attachments: Attachment[];
 };
+
+export type MyCart = {
+    id: string;
+    CartItem: Array<FullCartItem>;
+}
 
 export const ProductNotFound = new Error('Product not found');
 export const NotEnoughQuantity = new Error('Not enough quantity');

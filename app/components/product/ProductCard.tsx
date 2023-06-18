@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FullProduct } from '@/models/product';
 import { defaultValue } from '../Constant';
+import { CurrencyFormatter } from '@/utils/formatter';
 
 interface Props {
     product: FullProduct;
@@ -45,18 +46,14 @@ export default function ProductCard({ product }: Props) {
                             </div>
                             <div className='font-light'>
                                 <span className='font-normal line-through text-sm'>
-                                    {Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND',
-                                    }).format(product.price)}
+                                    {CurrencyFormatter.format(product.price)}
                                 </span>{' '}
                                 -{product.sale * 100}%
                             </div>
                             <div className='text-amber-500 font-bold text-md'>
-                                {Intl.NumberFormat('vi-VN', {
-                                    style: 'currency',
-                                    currency: 'VND',
-                                }).format(Math.round(product.price * (1 - product.sale)))}
+                                {CurrencyFormatter.format(
+                                    Math.round(product.price * (1 - product.sale)),
+                                )}
                             </div>
                             <div className='text-sm'>Đã bán {product.sold}</div>
                             <div className='flex flex-row  w-28 items-center justify-between text-sm mt-2'>

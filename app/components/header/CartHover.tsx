@@ -13,7 +13,7 @@ export default function CartHover() {
     const { myCart } = useGlobalContext();
 
     const [isHovering, setIsHovering] = useState(false);
-    const totalProductInCart = myCart?.CartItem?.length;
+    const totalProductInCart = myCart?.CartItem?.length ?? 0;
 
     const handleMouseOver = () => {
         setIsHovering(true);
@@ -32,7 +32,11 @@ export default function CartHover() {
                 onMouseOut={handleMouseOut}
             >
                 <i className='bi bi-cart3' style={{ fontSize: 25 }}></i>
-                <div className='absolute top-0 text-xs translate-x-0 -right-3 w-fit h-fit px-2 text-center bg-red-600 text-white rounded-xl'>
+                <div
+                    className={`${
+                        totalProductInCart == 0 ? 'hidden' : 'absolute'
+                    } top-0 text-xs translate-x-0 -right-3 w-fit h-fit px-2 text-center bg-red-600 text-white rounded-xl`}
+                >
                     {totalProductInCart}
                 </div>
             </Link>
@@ -65,7 +69,9 @@ export default function CartHover() {
 
                         <div className='flex justify-between px-2 w-full items-center'>
                             <p className='text-xs text-gray-500'>
-                                {totalProductInCart - 5} sản phẩm khác trong giỏ hàng
+                                {totalProductInCart > 5
+                                    ? `${totalProductInCart - 5} sản phẩm khác trong giỏ hàng`
+                                    : ''}
                             </p>
                             <Button className='bg-amber-500 hover:bg-amber-700 text-white text-sm '>
                                 <Link href={'/cart'} onClick={() => handleMouseOut()}>

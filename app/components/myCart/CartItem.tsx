@@ -10,11 +10,10 @@ import React from 'react';
 
 interface CartItemProps {
     item: FullCartItem;
-    enableCheckbox?: boolean;
     removeItemFromCart: () => Promise<void>;
 }
 
-function CartItem({ enableCheckbox = true, item, removeItemFromCart }: CartItemProps) {
+function CartItem({ item, removeItemFromCart }: CartItemProps) {
     const [quantity, setQuantity] = React.useState(item.quantity);
     const [remove, setRemove] = React.useState(false);
 
@@ -40,11 +39,7 @@ function CartItem({ enableCheckbox = true, item, removeItemFromCart }: CartItemP
     }
 
     return (
-        <div className='flex flex-row bg-white rounded-sm px-4 py-4 justify-between text-base w-full h-32'>
-            <Input
-                type='checkbox'
-                className={`${!enableCheckbox && 'hidden'} scale-125 mr-4 self-center`}
-            />
+        <div className='flex flex-row bg-white rounded-sm px-4 py-4 justify-between item-center text-base w-full h-32'>
             <Image
                 src={item.Product.attachments?.[0]?.path ?? defaultValue.image}
                 width={100}
@@ -53,7 +48,7 @@ function CartItem({ enableCheckbox = true, item, removeItemFromCart }: CartItemP
                 style={{ width: '100px', height: '100px', objectFit: 'contain' }}
                 className='mr-4 rounded-md'
             />
-            <div className='flex flex-col mr-4 w-72 justify-between'>
+            <div className='flex flex-col mr-4 flex-1 justify-between'>
                 <h3 className='font-semibold text-base uppercase mb-2'>{item.Product.name}</h3>
                 <p className='font-medium text-sm text-gray-500'>
                     Danh mục: {item.Product.category?.name}
@@ -76,7 +71,7 @@ function CartItem({ enableCheckbox = true, item, removeItemFromCart }: CartItemP
                 disableInputText={true}
                 updateQuantity={updateQuantity}
             />
-            <div className='px-4 py-4 text-sm w-28 text-center whitespace-nowrap self-center'>
+            <div className='ml-3 px-1 py-1 text-sm w-20 text-center whitespace-nowrap self-center'>
                 <button onClick={() => setRemove(true)} className={remove ? 'hidden' : ''}>
                     <i className='bi bi-trash3 text-xl text-red-600'></i>
                 </button>
@@ -84,7 +79,7 @@ function CartItem({ enableCheckbox = true, item, removeItemFromCart }: CartItemP
                     className={`${remove ? 'flex' : 'hidden'} flex-row items-center justify-around`}
                 >
                     <button onClick={removeItem}>
-                        <i className='bi bi-check-lg text-xl text-green-600'></i>
+                        <i className='bi bi-check-lg text-xl text-green-600 mr-3'></i>
                     </button>{' '}
                     <button onClick={() => setRemove(false)}>
                         <i className='bi bi-x-lg text-xl text-red-600'></i>
