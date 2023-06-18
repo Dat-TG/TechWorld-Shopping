@@ -1,0 +1,118 @@
+'use client';
+
+import { FullCartItem } from '@/models/user';
+
+import React, { createContext, useContext, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { User } from '@prisma/client';
+
+interface ContextProps {
+    user: User;
+    myCart: any;
+    updateMyCart: () => void;
+}
+
+const GlobalContext = createContext<ContextProps>({
+    user: {
+        id: '',
+        name: null,
+        email: null,
+        phone: '',
+        password: '',
+        role: 'ADMIN',
+        image: null,
+        address: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        verificationToken: [],
+        emailVerified: null,
+        phoneVerified: null,
+        cartId: null,
+    },
+    myCart: null,
+    // myCart: {
+    //     cartId: null,
+    //     Product: {
+    //         brandId: null,
+    //         categoryId: null,
+    //         createdAt: new Date(),
+    //         description: null,
+    //         id: '',
+    //         name: '',
+    //         price: 0,
+    //         quantity: 0,
+    //         sale: 0,
+    //         slug: '',
+    //         sold: 0,
+    //         updatedAt: new Date(),
+    //         attachments: [],
+    //         category: null,
+    //     },
+    //     id: '',
+    //     productId: null,
+    //     quantity: 0,
+    // },
+    updateMyCart: () => {
+        return;
+    },
+});
+
+export const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
+    const session = useSession();
+    const [myCart, setMyCart] = useState<any>();
+    // {
+    // cartId: null,
+    // Product: {
+    //     brandId: null,
+    //     categoryId: null,
+    //     createdAt: new Date(),
+    //     description: null,
+    //     id: '',
+    //     name: '',
+    //     price: 0,
+    //     quantity: 0,
+    //     sale: 0,
+    //     slug: '',
+    //     sold: 0,
+    //     updatedAt: new Date(),
+    //     attachments: [],
+    //     category: null,
+    // },
+    // id: '',
+    // productId: null,
+    // quantity: 0,
+    // }
+
+    const [user, setUser] = React.useState<any>({});
+    React.useEffect(() => {
+        if (session.status == 'authenticated') {
+            console.log(1);
+            setUser(session.data?.user as User);
+            updateMyCart();
+        }
+    }, [session.status]);
+
+    async function updateMyCart() {
+        try {
+            const res = await fetch('/api/user/cart', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await res.json();
+            setMyCart(data.data);
+            console.log(data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return (
+        <GlobalContext.Provider value={{ user: user, myCart: myCart, updateMyCart: updateMyCart }}>
+            {children}
+        </GlobalContext.Provider>
+    );
+};
+
+export const useGlobalContext = () => useContext(GlobalContext);

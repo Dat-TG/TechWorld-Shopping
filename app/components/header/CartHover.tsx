@@ -7,7 +7,7 @@ import Button from '../widgets/button/Button';
 import { CurrencyFormatter } from '@/utils/formatter';
 
 interface Props {
-    productsInCart: Array<FullCartItem>;
+    productsInCart: any;
 }
 
 export default function CartHover(props: Props) {
@@ -58,7 +58,7 @@ export default function CartHover(props: Props) {
                 ) : (
                     <>
                         <p className='text-xs text-gray-500'>Sản phẩm mới thêm</p>
-                        {props.productsInCart.map((item, index) => {
+                        {props.productsInCart.map((item: FullCartItem, index: number) => {
                             if (index >= totalProductInCart - 5)
                                 return <ProductCard key={index} item={item} />;
                         })}

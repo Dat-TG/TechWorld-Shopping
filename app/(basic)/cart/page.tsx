@@ -10,10 +10,10 @@ export const metadata = {
 export default function Page() {
     return (
         <div className='flex flex-row my-4'>
-            <div className='block'>
+            <div className='block flex-1'>
                 <MyCart />
             </div>
-            <div className='ml-4 w-full bg-white rounded-sm p-4'>
+            <div className='flex-1 ml-4 w-full bg-white rounded-sm p-4'>
                 {/* Customer information */}
                 <FormCustomer />
 

@@ -121,6 +121,7 @@ function ProductDetail({ product, similarProducts }: Props) {
 
                     <div className='flex flex-row mt-12 items-center'>
                         <InputQuantity
+                            label='Số lượng'
                             quantity={quantity}
                             setQuantity={setQuantity}
                             max={product.quantity}

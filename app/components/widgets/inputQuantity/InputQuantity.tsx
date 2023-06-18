@@ -5,20 +5,52 @@ import Button from '../button/Button';
 import Input from '../input/Input';
 
 interface InputQuantityProps {
+    label?: string | '';
     quantity: number;
     setQuantity: React.Dispatch<React.SetStateAction<number>>;
     max?: number;
+    disableInputText?: boolean | false;
+    updateQuantity?: (quantity: number) => Promise<void>;
 }
 
 function InputQuantity(props: InputQuantityProps) {
     const soldOut = props.max == 0;
+    const [isLoading, setIsLoading] = React.useState(false);
 
-    function increaseQuantity() {
-        if (props.max == null || props.quantity < props.max) props.setQuantity(props.quantity + 1);
+    async function increaseQuantity() {
+        try {
+            if (props.max == null || props.quantity < props.max) {
+                if (props.disableInputText) {
+                    setIsLoading(true);
+                    await props.updateQuantity?.(props.quantity + 1);
+                    setIsLoading(false);
+                }
+                props.setQuantity(props.quantity + 1);
+                return true;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        return false;
     }
 
-    function decreaseQuantity() {
-        if (props.quantity > 0) props.setQuantity(props.quantity - 1);
+    async function decreaseQuantity() {
+        try {
+            if (props.quantity > 0) {
+                if (props.disableInputText) {
+                    setIsLoading(true);
+                    await props.updateQuantity?.(props.quantity - 1);
+                    setIsLoading(false);
+                }
+                props.setQuantity(props.quantity - 1);
+                return true;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        return false;
     }
 
     function changeQuantity(e: React.ChangeEvent<HTMLInputElement>) {
@@ -35,11 +67,11 @@ function InputQuantity(props: InputQuantityProps) {
 
     return (
         <div className='flex flex-row items-center'>
-            <div className='text-lg text-gray-500 mr-12'>Số lượng</div>
+            {props.label != '' && <div className='text-lg text-gray-500 mr-12'>{props.label}</div>}
             <Button
                 onClick={decreaseQuantity}
-                className={`${soldOut ? 'bg-gray-100' : 'bg-white'} text-base px-4`}
-                disable={soldOut}
+                className={`${soldOut || isLoading ? 'bg-gray-100' : 'bg-white'} text-base px-4`}
+                disable={soldOut || isLoading}
             >
                 -
             </Button>
@@ -50,14 +82,16 @@ function InputQuantity(props: InputQuantityProps) {
                 value={props.quantity.toString()}
                 onChange={changeQuantity}
                 max={props.max}
-                min={0}
-                disable={soldOut}
+                min={1}
+                disable={soldOut || props.disableInputText}
             />
 
             <Button
                 onClick={increaseQuantity}
-                className={`${soldOut ? 'bg-gray-100' : 'bg-white'} text-base px-4 mr-6`}
-                disable={soldOut}
+                className={`${
+                    soldOut || isLoading ? 'bg-gray-100' : 'bg-white'
+                } text-base px-4 mr-6`}
+                disable={soldOut || isLoading}
             >
                 +
             </Button>
