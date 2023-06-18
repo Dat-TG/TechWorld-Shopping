@@ -63,7 +63,11 @@ function CartInformation() {
                 <Input
                     type='text'
                     name='address'
-                    value={address?.[0].address + ',' + address?.[0].area ?? ''}
+                    value={
+                        address?.[0].address && address?.[0].area
+                            ? address?.[0].address + ',' + address?.[0].area
+                            : ''
+                    }
                     placeholder='VD: 227 Nguyen Van Cu, Q5, HCM'
                 />
             </div>
