@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { ratingList } from '../../Constant';
+import { defaultStatus } from '../../Constant';
 
 function ReviewItem() {
     const [updateRating, setUpdateRating] = useState(false);
@@ -35,7 +35,7 @@ function ReviewItem() {
                         !updateRating ? 'hidden' : 'absolute'
                     } absolute z-10 bg-white w-32 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                 >
-                    {ratingList.map((rating, key) => {
+                    {defaultStatus.ratingList.map((rating, key) => {
                         return (
                             <div
                                 key={key}
