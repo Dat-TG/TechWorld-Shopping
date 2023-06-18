@@ -6,19 +6,22 @@ import FAB from '@/app/components/widgets/fab/FAB';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@/styles/globals.css';
+import { GlobalContextProvider } from '../context/GlobalContext';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang='vi'>
             <body suppressHydrationWarning={true} className='bg-gray-200'>
                 <AuthContext>
                     <ToasterContext />
-                    <Header />
-                    <main className='max-w-screen-xl mx-auto align-middle items-center'>
-                        {children}
-                    </main>
-                    <FAB />
-                    <Footer />
+                    <GlobalContextProvider>
+                        <Header />
+                        <main className='max-w-screen-xl mx-auto align-middle items-center'>
+                            {children}
+                        </main>
+                        <FAB />
+                        <Footer />
+                    </GlobalContextProvider>
                 </AuthContext>
             </body>
         </html>

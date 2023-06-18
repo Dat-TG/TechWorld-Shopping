@@ -21,6 +21,7 @@ async function getProduct(slug: string) {
     return product;
 }
 
+
 async function Page({ params }: { params: { slug: string } }) {
     const product = await getProduct(params.slug);
     const similarProducts = await listProducts(product?.category?.slug);
@@ -29,7 +30,10 @@ async function Page({ params }: { params: { slug: string } }) {
         product && (
             <div className='flex flex-col'>
                 <Breadcrumbs product={product} />
-                <ProductDetail product={product} similarProducts={similarProducts} />
+                <ProductDetail
+                    product={product}
+                    similarProducts={similarProducts}
+                />
             </div>
         )
     );

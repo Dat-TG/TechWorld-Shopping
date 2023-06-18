@@ -12,6 +12,7 @@ const nextConfig = {
             'res.cloudinary.com',
             'upload.wikimedia.org',
             'robohash.org',
+            'bizweb.dktcdn.net',
         ],
     },
 };

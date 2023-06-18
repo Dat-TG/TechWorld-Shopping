@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Input from '../../widgets/input/Input';
-import { statusOrder } from '../../constrains';
+import { statusOrder } from '../../Constant';
 import CartItem from '../../myCart/CartItem';
 import Button from '../../widgets/button/Button';
 
