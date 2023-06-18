@@ -37,7 +37,6 @@ function CartInformation() {
             totalPrice: totalPrice,
         };
     }
-
     return (
         <>
             {/* Customer information */}
@@ -64,8 +63,8 @@ function CartInformation() {
                     type='text'
                     name='address'
                     value={
-                        address?.[0].address && address?.[0].area
-                            ? address?.[0].address + ',' + address?.[0].area
+                        address?.[0]?.address && address?.[0]?.area
+                            ? address?.[0]?.address + ',' + address?.[0]?.area
                             : ''
                     }
                     placeholder='VD: 227 Nguyen Van Cu, Q5, HCM'
