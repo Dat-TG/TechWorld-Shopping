@@ -7,16 +7,16 @@ import { CurrencyFormatter } from '@/utils/formatter';
 import { defaultValue } from '../Constant';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import React from 'react';
-import { useGlobalContext } from '@/app/context/GlobalContext';
 
 interface CartItemProps {
     item: FullCartItem;
     enableCheckbox?: boolean;
+    removeItemFromCart: () => Promise<void>;
 }
 
-function CartItem({ enableCheckbox = true, item }: CartItemProps) {
-    const { updateMyCart } = useGlobalContext();
+function CartItem({ enableCheckbox = true, item, removeItemFromCart }: CartItemProps) {
     const [quantity, setQuantity] = React.useState(item.quantity);
+    const [remove, setRemove] = React.useState(false);
 
     async function updateQuantity(quantityUpdate: number) {
         try {
@@ -34,6 +34,11 @@ function CartItem({ enableCheckbox = true, item }: CartItemProps) {
         return false;
     }
 
+    async function removeItem(){
+        await removeItemFromCart();
+        setRemove(false);
+    }
+
     return (
         <div className='flex flex-row bg-white rounded-sm px-4 py-4 justify-between text-base w-full h-32'>
             <Input
@@ -41,7 +46,7 @@ function CartItem({ enableCheckbox = true, item }: CartItemProps) {
                 className={`${!enableCheckbox && 'hidden'} scale-125 mr-4 self-center`}
             />
             <Image
-                src={item.Product.attachments[0]?.path ?? defaultValue.image}
+                src={item.Product.attachments?.[0]?.path ?? defaultValue.image}
                 width={100}
                 height={100}
                 alt='image'
@@ -71,7 +76,21 @@ function CartItem({ enableCheckbox = true, item }: CartItemProps) {
                 disableInputText={true}
                 updateQuantity={updateQuantity}
             />
-            <i className='bi bi-trash  text-xl text-red-500 self-center'></i>
+            <div className='px-4 py-4 text-sm w-28 text-center whitespace-nowrap self-center'>
+                <button onClick={() => setRemove(true)} className={remove ? 'hidden' : ''}>
+                    <i className='bi bi-trash3 text-xl text-red-600'></i>
+                </button>
+                <div
+                    className={`${remove ? 'flex' : 'hidden'} flex-row items-center justify-around`}
+                >
+                    <button onClick={removeItem}>
+                        <i className='bi bi-check-lg text-xl text-green-600'></i>
+                    </button>{' '}
+                    <button onClick={() => setRemove(false)}>
+                        <i className='bi bi-x-lg text-xl text-red-600'></i>
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }

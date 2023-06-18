@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Button from '../widgets/button/Button';
 import { CurrencyFormatter } from '@/utils/formatter';
 import { useGlobalContext } from '@/app/context/GlobalContext';
-
+import { defaultValue } from '../Constant';
 
 export default function CartHover() {
     const { myCart } = useGlobalContext();
@@ -54,7 +54,6 @@ export default function CartHover() {
                             height={250}
                             alt='Empty'
                         />
-
                     </div>
                 ) : (
                     <>
@@ -91,7 +90,7 @@ function ProductCard({ item }: ProductCardProps) {
             className='cursor-pointer w-full h-full px-2 py-1 flex space-x-3 hover:bg-gray-100 focus:bg-gray-100'
         >
             <Image
-                src={product?.attachments[0]?.path ?? ''}
+                src={product?.attachments?.[0]?.path ?? defaultValue.image}
                 width={100}
                 alt=''
                 height={100}

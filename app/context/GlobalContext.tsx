@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 interface ContextProps {
     user: any;
     myCart: any;
+    setMyCart: React.Dispatch<React.SetStateAction<any>>;
     updateMyCart: () => Promise<void>;
 }
 
@@ -53,19 +54,23 @@ const GlobalContext = createContext<ContextProps>({
     updateMyCart: async function () {
         return;
     },
+    setMyCart: function (): void {
+        return;
+    },
 });
 
 export const GlobalContextProvider = ({ children }: { children: React.ReactNode }) => {
     const session = useSession();
     const [myCart, setMyCart] = useState();
-
     const [user, setUser] = React.useState<any>();
+    
     React.useEffect(() => {
         if (session.status == 'authenticated') {
             setUser(session.data?.user);
             if (session.data?.user != null) updateMyCart();
         }
     }, [session.data?.user]);
+
 
     async function updateMyCart() {
         try {
@@ -83,7 +88,14 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
     }
 
     return (
-        <GlobalContext.Provider value={{ user: user, myCart: myCart, updateMyCart: updateMyCart }}>
+        <GlobalContext.Provider
+            value={{
+                user: user,
+                myCart: myCart,
+                setMyCart: setMyCart,
+                updateMyCart: updateMyCart,
+            }}
+        >
             {children}
         </GlobalContext.Provider>
     );
