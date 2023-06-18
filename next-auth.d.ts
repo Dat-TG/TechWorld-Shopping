@@ -2,7 +2,7 @@ import { Address } from '@prisma/client';
 import { JWT } from 'next-auth/jwt';
 
 declare module 'next-auth' {
-    interface User {
+    export interface User {
         id: string;
         name: string | null;
         role: string;
@@ -11,7 +11,7 @@ declare module 'next-auth' {
         cartId: string | null;
         image: string | null;
     }
-    interface Session {
+    export interface Session {
         user: User;
         iat: number;
         exp: number;

@@ -1,17 +1,16 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
-import { UserWithImage } from '@/models/user';
+import { User } from 'next-auth';
 
-export default function AvatarButton({ user }: { user: UserWithImage }) {
+export default function AvatarButton({ user }: { user: User }) {
     const [hovering, setHovering] = useState(false);
     return (
         <>
             <Image
-                src={user.image?.path || '/images/logo.png'}
+                src={user.image || '/images/logo.png'}
                 alt={user.name || 'user avatar'}
                 width={30}
                 height={30}
