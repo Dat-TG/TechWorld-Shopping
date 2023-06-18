@@ -17,13 +17,13 @@ export default function ProductCard({ product }: Props) {
                     <div className='bg-white shadow-md border border-gray-200 rounded-lg max-w-xs'>
                     <div className={'h-52 flex flex-col w-full '+(product.attachments[0]?.path?'justify-between':'justify-center')}>
                         <Image
-                            className='rounded-t-lg'
+                            className='rounded-t-lg overflow-hidden '
                             src={
                                 product.attachments[0]?.path ??
                                 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
                             }
                             alt={product.name}
-                            width={200}
+                            width={400}
                             height={200}
                         />
                        </div>

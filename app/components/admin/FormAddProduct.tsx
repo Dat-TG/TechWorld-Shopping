@@ -1,10 +1,10 @@
 'use client';
 import { FullProduct } from '@/models/product';
 import { Brand, Category } from '@prisma/client';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from './Time';
-import Link from 'next/link';
 
 export interface Data {
     name: string;
@@ -40,14 +40,13 @@ export default function FormAddProduct({ product, submit }: Props) {
     }, []);
 
     useEffect(() => {
-        const atm = product?.attachments?.map(attachment => attachment.path);
+        const atm = product?.attachments?.map((attachment) => attachment.path);
         setAttachments(() => [...(atm ?? [])]);
     }, []);
 
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
@@ -60,7 +59,7 @@ export default function FormAddProduct({ product, submit }: Props) {
             const reader = new FileReader();
 
             reader.onload = function (onLoadEvent) {
-                setAttachments(attachments => [
+                setAttachments((attachments) => [
                     ...attachments,
                     onLoadEvent.target?.result as string,
                 ]);
@@ -194,7 +193,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                                         value={product?.category?.id}
                                     >
                                         <option value=''>Chọn một danh mục</option>
-                                        {categories.map(category => (
+                                        {categories.map((category) => (
                                             <option key={category.id} value={category.id}>
                                                 {category.name}
                                             </option>
@@ -221,7 +220,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                                         value={product?.brand?.id}
                                     >
                                         <option value=''>Thương hiệu</option>
-                                        {brands.map(brand => (
+                                        {brands.map((brand) => (
                                             <option key={brand.id} value={brand.id}>
                                                 {brand.name}
                                             </option>

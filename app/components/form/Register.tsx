@@ -1,11 +1,10 @@
 'use client';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-hot-toast';
 import { signIn, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Notify } from 'notiflix';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
 export default function Register() {
     const session = useSession();
@@ -20,11 +19,11 @@ export default function Register() {
 
     const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
     function toggleRetypePasswordVisibility() {
-        setIsRetypePasswordVisible(prevState => !prevState);
+        setIsRetypePasswordVisible((prevState) => !prevState);
     }
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible(prevState => !prevState);
+        setIsPasswordVisible((prevState) => !prevState);
     }
     const [registering, setRegistering] = useState(false);
     type Data = {

@@ -26,7 +26,6 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
     const {
         register,
         handleSubmit,
-        setValue,
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
@@ -116,7 +115,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                                 })}
                                 type='text'
                                 value={name}
-                                onChange={event => {
+                                onChange={(event) => {
                                     setName(event.target.value);
                                 }}
                                 aria-invalid={errors.name ? 'true' : 'false'}
@@ -154,7 +153,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                                 })}
                                 aria-invalid={errors.phone ? 'true' : 'false'}
                                 required
-                                onChange={event => {
+                                onChange={(event) => {
                                     setPhone(event.target.value);
                                 }}
                                 className={
@@ -205,7 +204,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                                 })}
                                 type='email'
                                 aria-invalid={errors.email ? 'true' : 'false'}
-                                onChange={event => {
+                                onChange={(event) => {
                                     setEmail(event.target.value);
                                 }}
                                 className={
@@ -253,7 +252,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                     Chọn Ảnh
                     <input
                         id='image'
-                        onChange={e => handleImageChange(e)}
+                        onChange={(e) => handleImageChange(e)}
                         className='hidden'
                         type='file'
                         accept='image/*'

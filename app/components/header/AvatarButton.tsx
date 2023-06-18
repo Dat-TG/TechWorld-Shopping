@@ -14,7 +14,7 @@ export default function AvatarButton({ user }: { user: User }) {
                 alt={user.name || 'user avatar'}
                 width={30}
                 height={30}
-                className='outline outline-1 outline-black rounded-full relative cursor-pointer'
+                className='outline outline-2 outline-white outline-offset-2 rounded-full relative cursor-pointer bg-white'
                 onClick={() => {
                     setHovering(!hovering);
                 }}

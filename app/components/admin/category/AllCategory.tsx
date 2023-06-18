@@ -3,6 +3,8 @@ import { Category } from '@prisma/client';
 import Link from 'next/link';
 import DeleteCategoryButton from './DeleteCategoryButton';
 import CategoryForm from './CategoryForm';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 async function getAllCategories() {
     const res = await listCategories();
@@ -31,13 +33,14 @@ function toNonAccentVietnamese(str: string) {
 }
 
 export default async function AllCategories() {
+    const session = await getServerSession(authOptions);
     const listCategories = await getAllCategories();
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
     const listCategoriesAlphabet = [] as Array<Array<Category>>;
     for (let i = 1; i <= alphabet.length; i++) {
         listCategoriesAlphabet.push([] as Array<Category>);
     }
-    listCategories.map((data, index) => {
+    listCategories.map((data) => {
         listCategoriesAlphabet[
             toNonAccentVietnamese(data.name.charAt(0)).charCodeAt(0) - 'A'.charCodeAt(0)
         ].push(data as Category);
@@ -47,10 +50,14 @@ export default async function AllCategories() {
     return (
         <div className='w-full bg-white px-10 py-10'>
             <div className='w-full flex justify-between text-xl'>
-                {alphabet.map(data => (
+                {alphabet.map((data) => (
                     <Link
                         key={data}
-                        href={`/admin/category#${data}`}
+                        href={
+                            session?.user.role === 'ADMIN'
+                                ? `/admin/category#${data}`
+                                : `/category/all#${data}`
+                        }
                         className={
                             listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].length >
                             0
@@ -62,9 +69,11 @@ export default async function AllCategories() {
                     </Link>
                 ))}
             </div>
-            <div className='mt-10'>
-                <CategoryForm mode='add' />
-            </div>
+            {session?.user.role === 'ADMIN' && (
+                <div className='mt-10'>
+                    <CategoryForm mode='add' />
+                </div>
+            )}
             {alphabet.map(
                 (data, index) =>
                     listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].length > 0 && (
@@ -73,17 +82,25 @@ export default async function AllCategories() {
                             <hr className='mb-4'></hr>
                             <div className='w-full grid grid-cols-3'>
                                 {listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].map(
-                                    data => (
+                                    (data) => (
                                         <div key={data.id} className='flex space-x-2 group'>
                                             <Link
                                                 href={`/category/${data.slug}`}
-                                                target='_blank'
+                                                target={
+                                                    session?.user.role === 'ADMIN'
+                                                        ? '_blank'
+                                                        : '_self'
+                                                }
                                                 className='mb-3 hover:text-amber-500'
                                             >
                                                 {data.name}
                                             </Link>
-                                            <CategoryForm mode='update' data={data} />
-                                            <DeleteCategoryButton Category={data} />
+                                            {session?.user.role === 'ADMIN' && (
+                                                <CategoryForm mode='update' data={data} />
+                                            )}
+                                            {session?.user.role === 'ADMIN' && (
+                                                <DeleteCategoryButton Category={data} />
+                                            )}
                                         </div>
                                     ),
                                 )}

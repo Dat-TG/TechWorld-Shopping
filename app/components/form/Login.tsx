@@ -11,7 +11,7 @@ export default function Login() {
     const router = useRouter();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible(prevState => !prevState);
+        setIsPasswordVisible((prevState) => !prevState);
     }
     const [logining, setLogining] = useState(false);
 
@@ -29,7 +29,6 @@ export default function Login() {
     const {
         register,
         handleSubmit,
-        watch,
         formState: { errors },
     } = useForm<Data>({
         mode: 'onSubmit',
