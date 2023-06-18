@@ -7,7 +7,7 @@ export default async function UserButtons() {
     const session = await getServerSession(authOptions);
     return (
         <>
-            {!session ? (
+            {!session || !session.user ? (
                 <>
                     <li>
                         <Link
@@ -29,7 +29,7 @@ export default async function UserButtons() {
             ) : (
                 <>
                     <li>
-                        <AvatarButton session={session} />
+                        <AvatarButton user={session.user} />
                     </li>
                 </>
             )}

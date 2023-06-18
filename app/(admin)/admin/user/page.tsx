@@ -1,7 +1,7 @@
 import UserList from '@/app/components/admin/user/UserList';
 
 export const metadata = {
-    title: 'Admin site | TechWorld',
+    title: 'Quản lý người dùng | Admin site | TechWorld',
     icons: '/images/logo.png',
 };
 

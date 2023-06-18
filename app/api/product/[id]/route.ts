@@ -56,7 +56,9 @@ export async function PATCH(
             await request.json();
         if (
             !name ||
+            !quantity ||
             !price ||
+            sale == null ||
             !description ||
             !quantity ||
             !brandId ||
@@ -66,7 +68,7 @@ export async function PATCH(
             return NextResponse.json(
                 {
                     message:
-                        'Missing name, price, description, quantity, brandId, categoryId or attachments',
+                        'Missing name, quantity, price, sale, description, brandId, categoryId or attachments',
                 },
                 { status: 400 },
             );
@@ -75,15 +77,15 @@ export async function PATCH(
         const product = await updateProduct(
             id,
             name,
-            price,
-            description,
             quantity,
+            price,
+            sale / 100,
+            description,
             brandId,
             categoryId,
             attachments,
-            sale,
         );
-        return NextResponse.json(product);
+        return NextResponse.json({ message: 'success', data: product });
     } catch (error: any) {
         console.log('Error updating product', getErrorMessage(error));
 

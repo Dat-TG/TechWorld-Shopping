@@ -1,17 +1,17 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
+import { User } from 'next-auth';
 
-export default function AvatarButton({ session }: { session: Session }) {
+export default function AvatarButton({ user }: { user: User }) {
     const [hovering, setHovering] = useState(false);
     return (
         <>
             <Image
-                src={session.user.image || '/images/logo.png'}
-                alt={session.user.name || 'user avatar'}
+                src={user.image || '/images/logo.png'}
+                alt={user.name || 'user avatar'}
                 width={30}
                 height={30}
                 className='outline outline-1 outline-black rounded-full relative cursor-pointer'
@@ -31,9 +31,9 @@ export default function AvatarButton({ session }: { session: Session }) {
                     setHovering(false);
                 }}
             >
-                <p>Xin chào, {session.user.name}</p>
+                <p>Xin chào, {user.name}</p>
                 <hr></hr>
-                {session.user.role === 'ADMIN' && (
+                {user.role === 'ADMIN' && (
                     <Link href={'/admin'} className='hover:text-amber-500'>
                         Admin site
                     </Link>

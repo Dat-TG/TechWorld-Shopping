@@ -17,7 +17,8 @@ model User {
     phone             String              @unique
     password          String
     role              Role                @default(USER)
-    image             String?
+    image             Attachment?         @relation(fields: [imageId], references: [id])
+    imageId           String?             @db.ObjectId
     addresses         Address[]
     createdAt         DateTime            @default(now())
     updatedAt         DateTime            @updatedAt
@@ -60,6 +61,7 @@ model Attachment {
     updatedAt DateTime       @updatedAt
     product   Product?       @relation(fields: [productId], references: [id])
     productId String?        @db.ObjectId
+    User      User[]
 }
 
 model Category {

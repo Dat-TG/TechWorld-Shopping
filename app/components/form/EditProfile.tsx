@@ -1,20 +1,22 @@
 'use client';
 
-import { User } from '@prisma/client';
-import { signIn, useSession } from 'next-auth/react';
+import { UserWithImage } from '@/models/user';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Notify } from 'notiflix';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-export default function EditProfile({ user }: { user: User }) {
-    const router=useRouter();
-    const { data: session, status, update } = useSession();
+export default function EditProfile({ user }: { user: UserWithImage }) {
+    const router = useRouter();
+    const { data: session, update } = useSession();
     const [editPhone, setEditPhone] = useState(false);
     const [editEmail, setEditEmail] = useState(false);
     const [name, setName] = useState(user.name || ''),
         [phone, setPhone] = useState(user.phone || ''),
-        [email, setEmail] = useState(user.email || '');
+        [email, setEmail] = useState(user.email || ''),
+        [image, setImage] = useState(user.image?.path || '');
+
     type Data = {
         name: string;
         phone: string;
@@ -28,17 +30,25 @@ export default function EditProfile({ user }: { user: User }) {
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
+        defaultValues: {
+            name: user.name || '',
+            phone: user.phone || '',
+            email: user.email || '',
+            image: user.image?.path || '',
+        },
     });
     const onSubmit = async (data: Data) => {
-        // console.log('submit', data);
         try {
             const res = await fetch('/api/user', {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    data,
+                    name: data.name,
+                    phone: data.phone,
+                    email: data.email,
+                    image: image,
                 }),
             });
             const json = await res.json();
@@ -46,16 +56,15 @@ export default function EditProfile({ user }: { user: User }) {
                 Notify.success('Cập nhật thông tin thành công', {
                     clickToClose: true,
                 });
-                if (status === 'authenticated') {
-                    update({
-                        user: user,
-                        name: data.name,
-                        email: data.email,
-                        phone: data.phone,
-                        image: data.image,
-                    });
-                    // console.log(session);
-                }
+                await update({
+                    ...session,
+                    user: {
+                        name: json.data.name,
+                        phone: json.data.phone,
+                        email: json.data.email,
+                        image: json.data.image.path,
+                    },
+                });
                 router.refresh();
             } else {
                 Notify.failure(json.message);
@@ -65,14 +74,26 @@ export default function EditProfile({ user }: { user: User }) {
             Notify.failure('Cập nhật thất bại');
         }
     };
+
+    const handleImageChange = (e: any) => {
+        if (e.target.files.length) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function (onLoadEvent) {
+                setImage(onLoadEvent.target?.result as string);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    };
+
     useEffect(() => {
         setName(user.name || '');
-        setPhone(user.phone || '');
+        setPhone(user.phone);
         setEmail(user.email || '');
-        setValue('name', name);
-        setValue('email', email);
-        setValue('phone', phone);
-    }, [user]);
+        setImage(user.image?.path || '');
+    }, []);
 
     return (
         <div className='flex justify-around'>
@@ -92,7 +113,6 @@ export default function EditProfile({ user }: { user: User }) {
                                 id='name'
                                 {...register('name', {
                                     required: true,
-                                    value: name,
                                 })}
                                 type='text'
                                 value={name}
@@ -131,7 +151,6 @@ export default function EditProfile({ user }: { user: User }) {
                                     required: true,
                                     pattern: /(0[3|5|7|8|9])+([0-9]{8})/,
                                     maxLength: 10,
-                                    value: phone,
                                 })}
                                 aria-invalid={errors.phone ? 'true' : 'false'}
                                 required
@@ -152,7 +171,6 @@ export default function EditProfile({ user }: { user: User }) {
                                 }
                                 onClick={() => {
                                     setEditPhone(true);
-                                    // console.log('click ', editPhone);
                                 }}
                             >
                                 <i className={'bi bi-pencil'}></i>
@@ -184,7 +202,6 @@ export default function EditProfile({ user }: { user: User }) {
                                 {...register('email', {
                                     required: false,
                                     pattern: /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
-                                    value: email,
                                 })}
                                 type='email'
                                 aria-invalid={errors.email ? 'true' : 'false'}
@@ -229,15 +246,19 @@ export default function EditProfile({ user }: { user: User }) {
             </form>
             <div className='w-1/3 flex flex-col items-center justify-center'>
                 <img
-                    src={user.image || '/images/logo.png'}
+                    src={image || '/images/logo.png'}
                     className='w-36 rounded-full outline outline-8 outline-amber-500'
                 ></img>
-                <button
-                    type='button'
-                    className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'
-                >
+                <label className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'>
                     Chọn Ảnh
-                </button>
+                    <input
+                        id='image'
+                        onChange={e => handleImageChange(e)}
+                        className='hidden'
+                        type='file'
+                        accept='image/*'
+                    />
+                </label>
                 <p className='text-gray-500 text-sm mt-3 text-center'>
                     Dung lượng ảnh tối đa 1 MB<br></br>Định dạng: JPG, JPEG, PNG
                 </p>

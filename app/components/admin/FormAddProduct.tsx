@@ -1,22 +1,30 @@
 'use client';
 import { FullProduct } from '@/models/product';
-import { AttachmentType, Brand, Category } from '@prisma/client';
+import { Brand, Category } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from './Time';
-import { AttachmentInput } from '@/models/attachment';
 import Link from 'next/link';
+
+export interface Data {
+    name: string;
+    quantity: number;
+    price: number;
+    sale: number;
+    brand: string;
+    category: string;
+    description: string;
+}
 
 interface Props {
     product?: FullProduct;
-    setShowing?: React.Dispatch<React.SetStateAction<boolean>>;
-    submit?: (data: any, attachments: AttachmentInput[]) => void;
+    submit?: (data: Data, attachments: string[]) => void;
 }
 
-export default function FormAddProduct({ product, setShowing, submit }: Props) {
+export default function FormAddProduct({ product, submit }: Props) {
     const [brands, setBrands] = useState<Brand[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
-    const [attachments, setAttachments] = useState<AttachmentInput[]>([]);
+    const [attachments, setAttachments] = useState<string[]>([]);
     useEffect(() => {
         const fetchBrand = async () => {
             const res = await fetch('/api/brand');
@@ -28,30 +36,14 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
             const { data } = await res.json();
             setCategories(data);
         };
-        fetchBrand();
-        fetchCategory();
+        Promise.all([fetchBrand(), fetchCategory()]);
     }, []);
 
     useEffect(() => {
-        const atm = product?.attachments?.map(
-            attachment =>
-                ({
-                    name: attachment.name,
-                    path: attachment.path,
-                    type: attachment.type,
-                } as AttachmentInput),
-        );
-
-        setAttachments(attachments => [...(atm ?? [])]);
+        const atm = product?.attachments?.map(attachment => attachment.path);
+        setAttachments(() => [...(atm ?? [])]);
     }, []);
 
-    type Data = {
-        name: string;
-        price: number;
-        brand: string;
-        category: string;
-        description: string;
-    };
     const {
         register,
         handleSubmit,
@@ -70,11 +62,7 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
             reader.onload = function (onLoadEvent) {
                 setAttachments(attachments => [
                     ...attachments,
-                    {
-                        name: '',
-                        path: JSON.parse(JSON.stringify(onLoadEvent.target?.result)),
-                        type: AttachmentType.IMAGE,
-                    } as AttachmentInput,
+                    onLoadEvent.target?.result as string,
                 ]);
             };
 
@@ -83,7 +71,6 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
     }
 
     const onSubmit = async (data: Data) => {
-        if (setShowing) setShowing(false);
         if (submit) submit(data, attachments);
     };
     return (
@@ -118,6 +105,34 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                             </div>
                         </div>
                         <div>
+                            <label>Số lượng</label>
+                            <div className='mt-2'>
+                                <input
+                                    type='number'
+                                    {...register('quantity', {
+                                        required: true,
+                                        min: 1,
+                                    })}
+                                    aria-invalid={errors.quantity ? 'true' : 'false'}
+                                    required
+                                    className={
+                                        'border border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
+                                    }
+                                    defaultValue={product?.quantity}
+                                />
+                                {errors.quantity?.type === 'required' && (
+                                    <p role='alert' className='text-sm text-red-500'>
+                                        Vui lòng nhập số lượng sản phẩm
+                                    </p>
+                                )}
+                                {errors.quantity?.type === 'min' && (
+                                    <p role='alert' className='text-sm text-red-500'>
+                                        Số lượng không hợp lệ
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <div>
                             <label>Giá sản phẩm</label>
                             <div className='mt-2'>
                                 <input
@@ -141,6 +156,29 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                                 {errors.price?.type === 'min' && (
                                     <p role='alert' className='text-sm text-red-500'>
                                         Giá không hợp lệ
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                        <div>
+                            <label>Sale (%)</label>
+                            <div className='mt-2'>
+                                <input
+                                    type='number'
+                                    {...register('sale', {
+                                        required: false,
+                                        min: 0,
+                                        max: 100,
+                                    })}
+                                    aria-invalid={errors.sale ? 'true' : 'false'}
+                                    className={
+                                        'border border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
+                                    }
+                                    defaultValue={(product?.sale ?? 0) * 100}
+                                />
+                                {errors.sale?.type === 'min' && (
+                                    <p role='alert' className='text-sm text-red-500'>
+                                        Sale không hợp lệ
                                     </p>
                                 )}
                             </div>
@@ -233,11 +271,21 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                     </div>
 
                     <div className='w-1/2'>
-                        <p>
-                            <input type='file' name='files[]' multiple onChange={handleOnChange} />
-                        </p>
+                        <label className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'>
+                            Chọn Ảnh
+                            <input
+                                id='image'
+                                onChange={handleOnChange}
+                                className='hidden'
+                                type='file'
+                                name='files[]'
+                                multiple
+                                accept='image/*'
+                            />
+                        </label>
+
                         {attachments.map((attachment, index) => (
-                            <p key={index}>
+                            <span key={index}>
                                 <div
                                     onClick={() =>
                                         setAttachments(attachments.filter((_, i) => i !== index))
@@ -245,8 +293,8 @@ export default function FormAddProduct({ product, setShowing, submit }: Props) {
                                 >
                                     X
                                 </div>
-                                <img src={attachment.path} />
-                            </p>
+                                <img src={attachment} />
+                            </span>
                         ))}
                     </div>
                 </div>

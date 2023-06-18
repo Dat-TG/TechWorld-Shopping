@@ -1,26 +1,94 @@
+/* eslint-disable arrow-parens */
 'use client';
 import { Address } from '@prisma/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import addressVN from '@/models/address_vietnam.json';
 import { Notify } from 'notiflix';
 import { redirect, useRouter } from 'next/navigation';
 
 interface Props {
     data?: Address;
+    dataProvince: Array<Province>;
+    mode: string;
 }
-interface Village {
-    Id?: string;
-    Name?: string;
-    Level: string;
+export interface Province {
+    _id?: string;
+    name?: string;
+    slug?: string;
+    type?: string;
+    name_with_type?: string;
+    code?: string;
+    isDeleted?: boolean;
+}
+interface DistrictOrVillage {
+    _id?: string;
+    name?: string;
+    type?: string;
+    slug?: string;
+    name_with_type?: string;
+    path?: string;
+    path_with_type?: string;
+    code?: string;
+    parent_code?: string;
+    isDeleted?: boolean;
 }
 function AddressForm(props: Props) {
+    const [province, setProvince] = useState('');
+    const [district, setDistrict] = useState('');
+    const [village, setVillage] = useState('');
+    const [dataDistrict, setDataDistrict] = useState<Array<DistrictOrVillage>>([]);
+    const [dataVillage, setDataVillage] = useState<Array<DistrictOrVillage>>([]);
+    useEffect(() => {
+        if (props.mode === 'update') {
+            setProvince(
+                props.dataProvince.filter(function (data) {
+                    return data.name_with_type == props.data?.area.split(',')[2].substring(1);
+                })[0]?.code || '',
+            );
+        }
+    }, []);
+    useEffect(() => {
+        if (province === '') return;
+        fetch(
+            `https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode=${province}&limit=-1`,
+            { method: 'GET' },
+        )
+            .then(res => res.json())
+            .then(data => {
+                setDataDistrict(data.data.data);
+            });
+    }, [province]);
+    useEffect(() => {
+        if (district === '') return;
+        fetch(
+            `https://vn-public-apis.fpo.vn/wards/getByDistrict?districtCode=${district}&limit=-1`,
+            { method: 'GET' },
+        )
+            .then(res => res.json())
+            .then(data => {
+                setDataVillage(data.data.data);
+            });
+    }, [district]);
+    useEffect(() => {
+        if (props.mode !== 'update') return;
+        if (dataVillage && village === '') {
+            setVillage(
+                dataVillage.filter(function (data: DistrictOrVillage) {
+                    return data.name_with_type == props.data?.area.split(',')[0];
+                })[0]?.code || '',
+            );
+        }
+        if (dataDistrict && district === '') {
+            setDistrict(
+                dataDistrict.filter(function (data: DistrictOrVillage) {
+                    return data.name_with_type == props.data?.area.split(',')[1].substring(1);
+                })[0]?.code || '',
+            );
+        }
+    }, [dataDistrict, dataVillage]);
     const router = useRouter();
     const [opeing, setOpening] = useState(false);
     const [progressing, setProgressing] = useState(false);
-    const [province, setProvince] = useState(-1),
-        [district, setDistrict] = useState(-1),
-        [village, setVillage] = useState(-1);
     type Data = {
         phone: string;
         name: string;
@@ -32,56 +100,117 @@ function AddressForm(props: Props) {
     const {
         register,
         handleSubmit,
-        watch,
+        setValue,
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
+        defaultValues: {
+            phone: props.data?.phone,
+            address: props.data?.address,
+            district: props.data?.area.split(',')[1].substring(1),
+            name: props.data?.name,
+            province: props.data?.area.split(',')[2].substring(1),
+            village: props.data?.area.split(',')[0],
+        },
     });
     const onSubmit = async (data: Data) => {
-        data.province = addressVN[province].Name;
-        data.district = addressVN[province].Districts[district].Name;
+        setProgressing(true);
+        console.log(province, district, village);
+        data.province =
+            props.dataProvince.filter(function (data) {
+                return data.code === province;
+            })[0]?.name_with_type || '';
+        data.district =
+            dataDistrict.filter(function (data) {
+                return data.code === district;
+            })[0]?.name_with_type || '';
         data.village =
-            (addressVN[province].Districts[district].Wards[village] as Village).Name || '';
+            dataVillage.filter(function (data) {
+                return data.code === village;
+            })[0]?.name_with_type || '';
         console.log(data);
-        try {
-            const res = await fetch('/api/user/address', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: data.name,
-                    phone: data.phone,
-                    area: data.village + ', ' + data.district + ', ' + data.province,
-                    address: data.address,
-                }),
-            });
-            const json = await res.json();
-            if (json.message === 'success') {
-                Notify.success('Thêm địa chỉ thành công', {
-                    clickToClose: true,
+        if (props.mode === 'add') {
+            try {
+                const res = await fetch('/api/user/address', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: data.name,
+                        phone: data.phone,
+                        area: data.village + ', ' + data.district + ', ' + data.province,
+                        address: data.address,
+                    }),
                 });
-            } else {
-                Notify.failure(json.message);
+                const json = await res.json();
+                if (json.message === 'success') {
+                    Notify.success('Thêm địa chỉ thành công', {
+                        clickToClose: true,
+                    });
+                } else {
+                    Notify.failure(json.message);
+                }
+                setOpening(false);
+                router.refresh();
+            } catch (error) {
+                console.log(error);
+                Notify.failure('Cập nhật thất bại');
             }
-            setOpening(false);
-            router.refresh();
-        } catch (error) {
-            console.log(error);
-            Notify.failure('Cập nhật thất bại');
+        }
+        if (props.mode === 'update') {
+            try {
+                const res = await fetch(`/api/user/address/${props.data?.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: data.name,
+                        phone: data.phone,
+                        area: data.village + ', ' + data.district + ', ' + data.province,
+                        address: data.address,
+                    }),
+                });
+                const json = await res.json();
+                if (json.message === 'success') {
+                    Notify.success('Cập nhật địa chỉ thành công', {
+                        clickToClose: true,
+                    });
+                } else {
+                    Notify.failure(json.message);
+                }
+                setOpening(false);
+                router.refresh();
+            } catch (error) {
+                console.log(error);
+                Notify.failure('Cập nhật thất bại');
+            }
         }
         setProgressing(false);
     };
     return (
         <>
-            <button
-                className='bg-amber-500 text-white py-2 px-2 hover:opacity-50 active:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-300'
-                onClick={() => {
-                    setOpening(true);
-                }}
-            >
-                + Thêm địa chỉ mới
-            </button>
+            {props.mode === 'add' && (
+                <button
+                    className='bg-amber-500 text-white py-2 px-2 hover:opacity-50 active:bg-amber-700 focus:outline-none focus:ring focus:ring-amber-300'
+                    onClick={() => {
+                        setOpening(true);
+                    }}
+                >
+                    + Thêm địa chỉ mới
+                </button>
+            )}
+            {props.mode === 'update' && (
+                <button
+                    className='text-blue-500 hover:text-amber-500 mx-2'
+                    onClick={() => {
+                        setOpening(true);
+                    }}
+                >
+                    Chỉnh sửa
+                </button>
+            )}
             <div className={(opeing ? 'absolute' : 'hidden') + ' z-10'}>
                 <div className='fixed inset-0 bg-gray-500 bg-opacity-25 transition-opacity'></div>
                 <div
@@ -117,7 +246,7 @@ function AddressForm(props: Props) {
                             </button>
                             <div className='px-6 py-6 lg:px-8 w-full'>
                                 <div className='mb-4 border-b border-gray-200 dark:border-gray-700 text-center text-lg font-semibold py-2'>
-                                    Thêm Địa Chỉ Mới
+                                    {props.mode === 'add' ? 'Thêm Địa Chỉ Mới' : 'Cập nhật địa chỉ'}
                                 </div>
                                 <form
                                     className='space-y-6 w-full'
@@ -129,6 +258,7 @@ function AddressForm(props: Props) {
                                         <label>Số điện thoại</label>
                                         <div className='mt-2'>
                                             <input
+                                                defaultValue={props.data?.phone}
                                                 type='tel'
                                                 {...register('phone', {
                                                     required: true,
@@ -163,6 +293,7 @@ function AddressForm(props: Props) {
                                         <label>Họ tên</label>
                                         <div className='mt-2 flex items-center relative'>
                                             <input
+                                                defaultValue={props.data?.name}
                                                 {...register('name', {
                                                     required: true,
                                                 })}
@@ -190,6 +321,7 @@ function AddressForm(props: Props) {
                                         <label>Địa chỉ người nhận</label>
                                         <div className='flex justify-center space-x-3 mt-2 text-sm'>
                                             <select
+                                                value={province}
                                                 required
                                                 className='px-2 py-2 outline outline-1 rounded-none'
                                                 aria-label='.form-select-sm'
@@ -197,23 +329,25 @@ function AddressForm(props: Props) {
                                                     required: true,
                                                 })}
                                                 onChange={event => {
-                                                    setProvince(parseInt(event.target.value));
-                                                    setDistrict(-1);
+                                                    setProvince(event.target.value);
+                                                    setDistrict('');
                                                 }}
                                             >
                                                 <option value=''>Chọn tỉnh thành</option>
-                                                {addressVN.map((data, index) => (
-                                                    <option
-                                                        key={data.Id}
-                                                        value={index}
-                                                        className='text-black'
-                                                    >
-                                                        {data.Name}
-                                                    </option>
-                                                ))}
+                                                {props.dataProvince &&
+                                                    props.dataProvince.map((data, index) => (
+                                                        <option
+                                                            key={data.code}
+                                                            value={data.code}
+                                                            className='text-black'
+                                                        >
+                                                            {data.name_with_type}
+                                                        </option>
+                                                    ))}
                                             </select>
 
                                             <select
+                                                value={district}
                                                 className='px-2 py-2 outline outline-1 rounded-none'
                                                 aria-label='.form-select-sm'
                                                 required
@@ -221,26 +355,26 @@ function AddressForm(props: Props) {
                                                     required: true,
                                                 })}
                                                 onChange={event => {
-                                                    setDistrict(parseInt(event.target.value));
-                                                    setVillage(-1);
+                                                    setDistrict(event.target.value);
+                                                    setVillage('');
                                                 }}
                                             >
                                                 <option value=''>Chọn quận huyện</option>
-                                                {province >= 0 &&
-                                                    addressVN[province].Districts.map(
-                                                        (data, index) => (
-                                                            <option
-                                                                key={data.Id}
-                                                                value={index}
-                                                                className='text-black'
-                                                            >
-                                                                {data.Name}
-                                                            </option>
-                                                        ),
-                                                    )}
+                                                {province !== '' &&
+                                                    dataDistrict &&
+                                                    dataDistrict.map((data, index) => (
+                                                        <option
+                                                            key={data.code}
+                                                            value={data.code}
+                                                            className='text-black'
+                                                        >
+                                                            {data.name_with_type}
+                                                        </option>
+                                                    ))}
                                             </select>
 
                                             <select
+                                                value={village}
                                                 className='px-2 py-2 outline outline-1 rounded-none'
                                                 aria-label='.form-select-sm'
                                                 required
@@ -248,20 +382,19 @@ function AddressForm(props: Props) {
                                                     required: true,
                                                 })}
                                                 onChange={event => {
-                                                    setVillage(parseInt(event.target.value));
+                                                    setVillage(event.target.value);
                                                 }}
                                             >
                                                 <option value=''>Chọn phường xã</option>
-                                                {district >= 0 &&
-                                                    addressVN[province].Districts[
-                                                        district
-                                                    ].Wards.map((data: Village, index) => (
+                                                {district !== '' &&
+                                                    dataVillage &&
+                                                    dataVillage.map((data, index) => (
                                                         <option
-                                                            key={data.Id}
-                                                            value={index}
+                                                            key={data.code}
+                                                            value={data.code}
                                                             className='text-black'
                                                         >
-                                                            {data.Name}
+                                                            {data.name_with_type}
                                                         </option>
                                                     ))}
                                             </select>
@@ -270,6 +403,7 @@ function AddressForm(props: Props) {
                                             <label>Số nhà, đường</label>
                                             <div className='mt-2'>
                                                 <input
+                                                    defaultValue={props.data?.address}
                                                     type='text'
                                                     {...register('address', {
                                                         required: true,
@@ -304,7 +438,6 @@ function AddressForm(props: Props) {
                                                 'relative flex w-full justify-center rounded-md bg-amber-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 ' +
                                                 (progressing ? 'opacity-20' : '')
                                             }
-                                            onClick={() => setProgressing(true)}
                                         >
                                             Xác nhận
                                             {progressing && (

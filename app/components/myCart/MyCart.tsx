@@ -32,7 +32,7 @@ async function MyCart() {
                 </div>
             );
         } catch (error) {
-            redirect('/login');
+            redirect('/auth/login');
         }
     }
 }
