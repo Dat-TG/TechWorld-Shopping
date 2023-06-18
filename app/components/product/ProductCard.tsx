@@ -29,7 +29,7 @@ export default function ProductCard({ product }: Props) {
                                 className='rounded-t-lg'
                                 src={product.attachments[0]?.path ?? defaultValue.image}
                                 alt={product.name}
-                                width={200}
+                                width={400}
                                 height={200}
                             />
                         </div>

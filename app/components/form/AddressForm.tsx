@@ -1,10 +1,10 @@
 /* eslint-disable arrow-parens */
 'use client';
 import { Address } from '@prisma/client';
+import { useRouter } from 'next/navigation';
+import { Notify } from 'notiflix';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Notify } from 'notiflix';
-import { redirect, useRouter } from 'next/navigation';
 
 interface Props {
     data?: Address;

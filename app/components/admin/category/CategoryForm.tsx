@@ -1,10 +1,10 @@
 /* eslint-disable arrow-parens */
 'use client';
-import { Address, Category } from '@prisma/client';
-import { useEffect, useState } from 'react';
+import { Category } from '@prisma/client';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Notify } from 'notiflix';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     data?: Category;
@@ -20,7 +20,6 @@ function CategoryForm(props: Props) {
     const {
         register,
         handleSubmit,
-        setValue,
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',

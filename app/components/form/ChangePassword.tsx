@@ -1,21 +1,20 @@
 'use client';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { Notify } from 'notiflix';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 export default function ChangePassword() {
     const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
     function toggleRetypePasswordVisibility() {
-        setIsRetypePasswordVisible(prevState => !prevState);
+        setIsRetypePasswordVisible((prevState) => !prevState);
     }
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible(prevState => !prevState);
+        setIsPasswordVisible((prevState) => !prevState);
     }
     const [isOldPasswordVisible, setIsOldPasswordVisible] = useState(false);
     function toggleOldPasswordVisibility() {
-        setIsOldPasswordVisible(prevState => !prevState);
+        setIsOldPasswordVisible((prevState) => !prevState);
     }
     type Data = {
         oldpassword: string;

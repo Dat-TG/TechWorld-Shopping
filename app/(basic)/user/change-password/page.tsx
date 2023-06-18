@@ -1,5 +1,10 @@
 import ChangePassword from '@/app/components/form/ChangePassword';
 
+export const metadata = {
+    title: 'Thay đổi mật khẩu | Tài khoản của tôi | TechWord',
+    icons: '/images/logo.png',
+};
+
 export default async function Page() {
     return (
         <>

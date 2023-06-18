@@ -91,7 +91,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     placeholder='₫ TỪ'
                     min={0}
                     defaultValue={parseInt(params.get('min') || '0')}
-                    onChange={event => {
+                    onChange={(event) => {
                         setMin(parseInt(event.target.value));
                     }}
                 />
@@ -102,7 +102,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     placeholder='₫ ĐẾN'
                     min={0}
                     defaultValue={parseInt(params.get('max') || '0')}
-                    onChange={event => {
+                    onChange={(event) => {
                         setMax(parseInt(event.target.value));
                     }}
                 />
