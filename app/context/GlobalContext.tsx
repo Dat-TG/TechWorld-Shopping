@@ -4,7 +4,6 @@ import React, { createContext, useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { MyCart } from '@/models/product';
 import { User } from 'next-auth';
-
 interface ContextProps {
     user?: User;
     myCart?: MyCart;

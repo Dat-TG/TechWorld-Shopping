@@ -7,21 +7,21 @@ import { FullCartItem } from '@/models/user';
 import { CurrencyFormatter } from '@/utils/formatter';
 import Input from '../widgets/input/Input';
 import { Address } from '@prisma/client';
-import { Loading } from 'notiflix';
+import { Block, Loading } from 'notiflix';
 
 function CartInformation() {
     const { myCart } = useGlobalContext();
     const [address, setAddress] = useState<Array<Address>>();
 
     useEffect(() => {
-        Loading.hourglass();
         async function getAddress() {
+            Block.dots('.information');
             const res = await fetch('/api/user/address');
             const data = await res.json();
             setAddress(data?.data);
+            Block.remove('.information');
         }
         getAddress();
-        Loading.remove();
     }, []);
 
     function calculateMyCart() {
@@ -44,39 +44,41 @@ function CartInformation() {
         <>
             {/* Customer information */}
             <div className='font-bold mb-3 text-lg'>Thông tin nhận hàng</div>
-            <div className='flex flex-row justify-between mb-4'>
-                <div className='flex flex-col flex-1 mx-3'>
-                    <label htmlFor='name'>Họ và tên người nhận</label>
-                    <Input
-                        type='text'
-                        name='name'
-                        defaultValue={address?.[0]?.name ? address[0].name : ''}
-                        placeholder='Nhập họ tên người nhận'
-                    />
+            <div className='information'>
+                <div className='flex flex-row justify-between mb-4'>
+                    <div className='flex flex-col flex-1 mx-3'>
+                        <label htmlFor='name'>Họ và tên người nhận</label>
+                        <Input
+                            type='text'
+                            name='name'
+                            defaultValue={address?.[0]?.name ? address[0].name : ''}
+                            placeholder='Nhập họ tên người nhận'
+                        />
+                    </div>
+                    <div className='flex flex-col flex-1 mx-3'>
+                        <label htmlFor='phone'>Số điện thoại</label>
+                        <Input
+                            type='text'
+                            name='phone'
+                            placeholder='Nhập số điện thoại'
+                            defaultValue={address?.[0]?.phone ? address[0].phone : ''}
+                        />
+                    </div>
                 </div>
-                <div className='flex flex-col flex-1 mx-3'>
-                    <label htmlFor='phone'>Số điện thoại</label>
-                    <Input
-                        type='text'
-                        name='phone'
-                        placeholder='Nhập số điện thoại'
-                        defaultValue={address?.[0]?.phone ? address[0].phone : ''}
-                    />
-                </div>
-            </div>
 
-            <div className='flex flex-col flex-1 mx-3 mb-6'>
-                <label htmlFor='address'>Địa chỉ</label>
-                <Input
-                    type='text'
-                    name='address'
-                    value={
-                        address?.[0]?.address && address?.[0]?.area
-                            ? address?.[0]?.address + ', ' + address?.[0]?.area
-                            : ''
-                    }
-                    placeholder='Nhập địa chỉ người nhận'
-                />
+                <div className='flex flex-col flex-1 mx-3 mb-6'>
+                    <label htmlFor='address'>Địa chỉ</label>
+                    <Input
+                        type='text'
+                        name='address'
+                        defaultValue={
+                            address?.[0]?.address && address?.[0]?.area
+                                ? address?.[0]?.address + ', ' + address?.[0]?.area
+                                : ''
+                        }
+                        placeholder='Nhập địa chỉ người nhận'
+                    />
+                </div>
             </div>
 
             {/* Cart information */}
