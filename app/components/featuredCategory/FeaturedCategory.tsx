@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 type Data = {
@@ -13,7 +14,11 @@ export default function FeaturedCategory({ list }: { list: Array<Data> }) {
                 {list.map(({ img, name, href }, key) => (
                     <div key={key}>
                         <Link href={href}>
-                            <img src={img} className='w-fit h-fit hover:opacity-50'></img>
+                            <Image
+                                alt='poster'
+                                src={img}
+                                className='w-fit h-fit hover:opacity-50'
+                            ></Image>
                             <div className='flex justify-center mt-2 hover:text-orange-500'>
                                 <p className='text-center max-w-fit'>{name}</p>
                             </div>

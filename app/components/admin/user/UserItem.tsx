@@ -1,11 +1,10 @@
 'use client';
 
 import { UserWithImage } from '@/models/user';
-import { User } from '@prisma/client';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
-function UserItem({user}:{user:UserWithImage}) {
+function UserItem({ user }: { user: UserWithImage }) {
     const [remove, setRemove] = useState(false);
 
     return (
@@ -18,7 +17,12 @@ function UserItem({user}:{user:UserWithImage}) {
             <td className='px-4 py-4 text-sm whitespace-nowrap'>{user.role}</td>
             <td className='px-12 py-4 text-sm font-medium whitespace-nowrap'>
                 <div className='flex flex-row items-center'>
-                    <Image src={user.image?.path || '/images/logo.png'} width={20} height={20} alt='' />
+                    <Image
+                        src={user.image?.path || '/images/logo.png'}
+                        width={20}
+                        height={20}
+                        alt=''
+                    />
                     <div className='font-medium pl-2 '>{user.name}</div>
                 </div>
             </td>

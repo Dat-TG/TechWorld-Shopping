@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
@@ -11,7 +12,7 @@ export default function Login() {
     const router = useRouter();
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible((prevState) => !prevState);
+        setIsPasswordVisible(prevState => !prevState);
     }
     const [logining, setLogining] = useState(false);
 
@@ -62,7 +63,7 @@ export default function Login() {
         <>
             <div className='flex justify-evenly items-center h-screen'>
                 <div className='w-fit flex flex-col justify-center items-center'>
-                    <img
+                    <Image
                         className='w-44 sm:w-48 md:w-72 mb-2'
                         src='/images/logo.png'
                         alt='TechWorld'

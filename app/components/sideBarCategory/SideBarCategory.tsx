@@ -15,7 +15,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
     const pathname = usePathname();
     useEffect(() => {
         if (numberOfCategories >= categories.length) setSeeMore(false);
-    }, [numberOfCategories]);
+    }, [numberOfCategories, categories.length]);
     return (
         <div className='flex flex-col items-start justify-start w-52 mr-6'>
             {/* Category */}

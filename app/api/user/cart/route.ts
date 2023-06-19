@@ -3,14 +3,14 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { addProductToCart, getCart, removeProductFromCart } from '@/models/user';
+import { addProductToCart, getCart } from '@/models/user';
 import { NotEnoughQuantity, ProductNotFound } from '@/models/product';
 
 /**
  * GET /api/user/cart
  * Get all products in cart of current user
  */
-export async function GET(request: Request) {
+export async function GET() {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
             message: 'success',
             data: products,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error getting cart of user', getErrorMessage(error));
 
         return NextResponse.json(
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
             message: 'success',
             data: cart,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error adding product to cart', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid product id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid product id' }, { status: 400 });
             }
         }
 

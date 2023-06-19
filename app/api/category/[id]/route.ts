@@ -3,14 +3,7 @@ import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
-export async function GET(
-    request: Request,
-    {
-        params,
-    }: {
-        params: { id: string };
-    },
-) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         if (!id) {
@@ -18,7 +11,7 @@ export async function GET(
         }
         const category = await getCategory(id);
         if (!category) {
-            return NextResponse.json({ message: `Category not found` }, { status: 400 });
+            return NextResponse.json({ message: 'Category not found' }, { status: 400 });
         }
 
         return NextResponse.json({ message: 'success', data: category });
@@ -27,7 +20,7 @@ export async function GET(
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid category id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid category id' }, { status: 400 });
             }
         }
 
@@ -70,10 +63,10 @@ export async function PATCH(
         }
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid category id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid category id' }, { status: 400 });
             }
             if (error.code === 'P2025') {
-                return NextResponse.json({ message: `Category not found` }, { status: 400 });
+                return NextResponse.json({ message: 'Category not found' }, { status: 400 });
             }
         }
 
@@ -86,14 +79,7 @@ export async function PATCH(
     }
 }
 
-export async function DELETE(
-    request: Request,
-    {
-        params,
-    }: {
-        params: { id: string };
-    },
-) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         if (!id) {
@@ -106,10 +92,10 @@ export async function DELETE(
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid category id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid category id' }, { status: 400 });
             }
             if (error.code === 'P2025') {
-                return NextResponse.json({ message: `Category not found` }, { status: 400 });
+                return NextResponse.json({ message: 'Category not found' }, { status: 400 });
             }
         }
 

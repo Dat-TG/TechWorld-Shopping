@@ -1,11 +1,12 @@
 'use client';
+import Image from 'next/image';
 import { Carousel } from 'react-responsive-carousel';
 import Button from '../widgets/button/Button';
 
 export default function PromotionBox({ banner, bg }: { banner: string; bg: string }) {
     return (
         <div className={['rounded-2xl', bg, 'mb-10'].join(' ')}>
-            <img src={banner} className='w-full h-28'></img>
+            <Image alt='banner' src={banner} className='w-full h-28'></Image>
             <Carousel
                 showThumbs={false}
                 infiniteLoop={true}

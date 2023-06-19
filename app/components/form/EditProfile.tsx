@@ -1,10 +1,11 @@
 'use client';
 
+import Image from 'next/image';
 import { UserWithImage } from '@/models/user';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Block, Loading, Notify } from 'notiflix';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function EditProfile({ user }: { user: UserWithImage }) {
@@ -78,9 +79,9 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
         }
     };
 
-    const handleImageChange = (e: any) => {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         Block.standard('.image');
-        if (e.target.files.length) {
+        if (e.target.files?.length) {
             const file = e.target.files[0];
             const reader = new FileReader();
 
@@ -98,7 +99,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
         setPhone(user.phone);
         setEmail(user.email || '');
         setImage(user.image?.path || '');
-    }, []);
+    }, [user.name, user.phone, user.email, user.image?.path]);
 
     return (
         <div className='flex justify-around'>
@@ -250,10 +251,11 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                 </div>
             </form>
             <div className='w-1/3 flex flex-col items-center justify-center'>
-                <img
+                <Image
+                    alt='avatar'
                     src={image || '/images/logo.png'}
                     className='w-36 rounded-full outline outline-8 outline-amber-500'
-                ></img>
+                ></Image>
                 <label className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'>
                     Chọn Ảnh
                     <input

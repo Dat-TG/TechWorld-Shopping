@@ -1,4 +1,3 @@
-import { User } from '@prisma/client';
 import EditProfile from '../form/EditProfile';
 import { UserWithImage } from '@/models/user';
 

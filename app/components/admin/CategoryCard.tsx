@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface Props {
     name?: string;
     img?: string;
@@ -12,7 +14,7 @@ export default function CategoryCard({ name, img, className, sold }: Props) {
                 className
             }
         >
-            {img && <img src={img} className='w-1/2 h-fit self-center'></img>}
+            {img && <Image src={img} className='w-1/2 h-fit self-center' alt='poster' />}
             {name && <p className='font-semibold text-center text-md'>{name}</p>}
             {sold && (
                 <div>

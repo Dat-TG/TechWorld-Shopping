@@ -42,7 +42,7 @@ export async function PATCH(
             message: 'success',
             data: addressData,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error updating address', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -54,10 +54,10 @@ export async function PATCH(
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid addressId` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid addressId' }, { status: 400 });
             }
             if (error.code === 'P2025') {
-                return NextResponse.json({ message: `Address not found` }, { status: 400 });
+                return NextResponse.json({ message: 'Address not found' }, { status: 400 });
             }
         }
 
@@ -74,14 +74,7 @@ export async function PATCH(
  * DELETE /api/user/address/:id
  * Delete an address of current user
  */
-export async function DELETE(
-    request: Request,
-    {
-        params,
-    }: {
-        params: { id: string };
-    },
-) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -98,15 +91,15 @@ export async function DELETE(
             message: 'success',
             data: addressData,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error deleting address', getErrorMessage(error));
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid addressId` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid addressId' }, { status: 400 });
             }
             if (error.code === 'P2017') {
-                return NextResponse.json({ message: `Address not found` }, { status: 400 });
+                return NextResponse.json({ message: 'Address not found' }, { status: 400 });
             }
         }
 

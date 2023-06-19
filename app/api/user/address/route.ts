@@ -8,7 +8,7 @@ import { createAddress, listAddresses } from '@/models/address';
  * GET /api/user/address
  * Get all addresses of current user
  */
-export async function GET(request: Request) {
+export async function GET() {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
             message: 'success',
             data: addresses,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error getting addresses of user', getErrorMessage(error));
 
         return NextResponse.json(
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
             message: 'success',
             data: addressData,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error creating address', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {

@@ -3,7 +3,7 @@
 import { Address } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Notify } from 'notiflix';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DeleteAddressModal from './DeleteAddressModal';
 import AddressForm, { Province } from '../form/AddressForm';
 
@@ -11,7 +11,7 @@ interface Props {
     defaultAddress: Address;
     address: Address;
     index: number;
-    dataProvince: Array<Province>
+    dataProvince: Array<Province>;
 }
 
 export default function Address({ defaultAddress, address, index, dataProvince }: Props) {

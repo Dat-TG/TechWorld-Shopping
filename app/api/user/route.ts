@@ -26,7 +26,7 @@ export async function PATCH(request: Request) {
             message: 'success',
             data: user,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error updating user', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -38,19 +38,19 @@ export async function PATCH(request: Request) {
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid userId` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid userId' }, { status: 400 });
             }
 
             if (error.code === 'P2002') {
                 return NextResponse.json(
-                    { message: `Phone number already exists` },
+                    { message: 'Phone number already exists' },
                     { status: 400 },
                 );
             }
         }
 
         if (error === PhoneAlreadyExists) {
-            return NextResponse.json({ message: `Phone number already exists` }, { status: 400 });
+            return NextResponse.json({ message: 'Phone number already exists' }, { status: 400 });
         }
 
         return NextResponse.json(

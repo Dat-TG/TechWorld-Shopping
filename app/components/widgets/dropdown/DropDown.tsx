@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 interface DropDown {
     name: string;
@@ -10,13 +10,13 @@ interface DropDown {
 
 export default function DropDown(dropdown: DropDown) {
     const params = useSearchParams();
-    let filter = params.get('filter');
+    const [filter, setFilter] = useState(params.get('filter'));
     const [hidden, setHidden] = useState(true);
     const [choose, setChoose] = useState(
         filter === '3' ? 'Cao tới thấp' : filter === '4' ? 'Thấp tới cao' : dropdown.name,
     );
     useEffect(() => {
-        filter = params.get('filter');
+        setFilter(params.get('filter'));
     }, [params]);
     useEffect(() => {
         if (filter === '3') {
@@ -26,7 +26,7 @@ export default function DropDown(dropdown: DropDown) {
         } else {
             setChoose(dropdown.name);
         }
-    }, [filter]);
+    }, [filter, dropdown.name]);
     return (
         <div
             className={'relative inline-block text-left'}

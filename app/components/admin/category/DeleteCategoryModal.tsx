@@ -7,7 +7,7 @@ interface Props {
     Category: Category;
     className?: string;
     showing: boolean;
-    setShowing: React.Dispatch<React.SetStateAction<boolean>>;
+    setShowing?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function DeleteCategoryModal({ Category, className, showing, setShowing }: Props) {
     const router = useRouter();
@@ -36,7 +36,7 @@ export default function DeleteCategoryModal({ Category, className, showing, setS
                 className='bg-gray-500 bg-opacity-10 transition-opacity fixed flex justify-center items-center z-50 w-screen h-screen overflow-x-auto overflow-y-auto md:inset-0 m-0 p-0'
                 onClick={event => {
                     if (event.target !== event.currentTarget) return;
-                    setShowing(false);
+                    if (setShowing) setShowing(false);
                 }}
             >
                 <div className='relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg'>
@@ -79,7 +79,7 @@ export default function DeleteCategoryModal({ Category, className, showing, setS
                             onClick={() => {
                                 // delete product
                                 deleteCategory(Category.id);
-                                setShowing(false);
+                                if (setShowing) setShowing(false);
                             }}
                             className='inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto'
                         >
@@ -87,7 +87,9 @@ export default function DeleteCategoryModal({ Category, className, showing, setS
                         </button>
                         <button
                             type='button'
-                            onClick={() => setShowing(false)}
+                            onClick={() => {
+                                if (setShowing) setShowing(false);
+                            }}
                             className='mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto'
                         >
                             Hủy

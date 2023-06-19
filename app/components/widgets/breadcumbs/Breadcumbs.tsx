@@ -28,7 +28,7 @@ const Breadcrumbs = ({ product }: Props) => {
         pathArray.push({ breadcrumb: product.name, href: `/product/${product.slug}` });
 
         setBreadcrumbs(pathArray);
-    }, []);
+    }, [product.category?.name, product.name, product.slug, product.category?.slug]);
 
     if (!breadcrumbs) {
         return null;

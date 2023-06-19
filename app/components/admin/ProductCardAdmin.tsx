@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { useState } from 'react';
 import DeleteProductModal from './DeleteProductModal';
 import { FullProduct } from '@/models/product';
@@ -18,10 +19,11 @@ export default function ProductCardAdmin({ className, product }: Props) {
                 className
             }
         >
-            <img
+            <Image
+                alt='poster'
                 src={product.attachments[0]?.path ?? defaultValue.image}
                 className='w-1/2 h-fit self-center'
-            ></img>
+            ></Image>
 
             <p className='font-semibold text-center text-md'>{product.name}</p>
             <div>

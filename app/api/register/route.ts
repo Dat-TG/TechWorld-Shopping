@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
         const user = await createUser(name, phone, password);
         return NextResponse.json({ message: 'success', data: user });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error creating user', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
                 return NextResponse.json(
-                    { message: `Phone number already exists` },
+                    { message: 'Phone number already exists' },
                     { status: 400 },
                 );
             }

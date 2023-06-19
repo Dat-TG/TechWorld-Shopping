@@ -5,9 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import Button from '../widgets/button/Button';
-import { CurrencyFormatter } from '@/utils/formatter';
 import { useGlobalContext } from '@/app/context/GlobalContext';
 import { defaultValue } from '../Constant';
+import { CurrencyFormatter } from '@/utils/formatter';
 
 export default function CartHover() {
     const { myCart } = useGlobalContext();

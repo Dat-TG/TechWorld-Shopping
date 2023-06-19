@@ -3,14 +3,7 @@ import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
-export async function GET(
-    request: Request,
-    {
-        params,
-    }: {
-        params: { id: string };
-    },
-) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         if (!id) {
@@ -19,15 +12,15 @@ export async function GET(
 
         const product = await getProduct(id);
         if (!product) {
-            return NextResponse.json({ message: `Product not found` }, { status: 400 });
+            return NextResponse.json({ message: 'Product not found' }, { status: 400 });
         }
         return NextResponse.json({ message: 'success', data: product });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error getting product', getErrorMessage(error));
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid product id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid product id' }, { status: 400 });
             }
         }
         return NextResponse.json(
@@ -86,7 +79,7 @@ export async function PATCH(
             attachments,
         );
         return NextResponse.json({ message: 'success', data: product });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error updating product', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -97,17 +90,17 @@ export async function PATCH(
         }
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
-                return NextResponse.json({ message: `Product already exists` }, { status: 400 });
+                return NextResponse.json({ message: 'Product already exists' }, { status: 400 });
             }
             if (error.code === 'P2023') {
                 return NextResponse.json(
-                    { message: `Invalid product, category or brand` },
+                    { message: 'Invalid product, category or brand' },
                     { status: 400 },
                 );
             }
             if (error.code === 'P2025') {
                 return NextResponse.json(
-                    { message: `Category or brand not found` },
+                    { message: 'Category or brand not found' },
                     { status: 400 },
                 );
             }
@@ -126,14 +119,7 @@ export async function PATCH(
     }
 }
 
-export async function DELETE(
-    request: Request,
-    {
-        params,
-    }: {
-        params: { id: string };
-    },
-) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         if (!id) {
@@ -146,10 +132,10 @@ export async function DELETE(
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid product id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid product id' }, { status: 400 });
             }
             if (error.code === 'P2025') {
-                return NextResponse.json({ message: `Product not found` }, { status: 400 });
+                return NextResponse.json({ message: 'Product not found' }, { status: 400 });
             }
         }
 

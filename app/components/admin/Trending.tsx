@@ -1,4 +1,3 @@
-import ProductCardAdmin from './ProductCardAdmin';
 import CategoryCard from './CategoryCard';
 import Time from './Time';
 

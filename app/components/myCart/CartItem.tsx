@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Input from '../widgets/input/Input';
 import { FullCartItem } from '@/models/user';
 import { CurrencyFormatter } from '@/utils/formatter';
 import { defaultValue } from '../Constant';

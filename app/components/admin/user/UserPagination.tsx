@@ -2,10 +2,9 @@
 import { useState } from 'react';
 import UserItem from './UserItem';
 import DeleteOrderModel from '../order/DeleteOrderModel';
-import { User } from '@prisma/client';
 import { UserWithImage } from '@/models/user';
 
-export default function UserPagination({usersList}: {usersList:UserWithImage[]}) {
+export default function UserPagination({ usersList }: { usersList: UserWithImage[] }) {
     const [enableDeleteModel, setEnableDeleteModel] = useState(false);
     return (
         <>
@@ -58,7 +57,9 @@ export default function UserPagination({usersList}: {usersList:UserWithImage[]})
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
-                                    {usersList.map((data, index)=><UserItem key={index} user={data}/>)} 
+                                    {usersList.map((data, index) => (
+                                        <UserItem key={index} user={data} />
+                                    ))}
                                 </tbody>
                             </table>
                             <DeleteOrderModel
