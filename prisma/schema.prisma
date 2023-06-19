@@ -48,8 +48,9 @@ model Product {
     brand       Brand?       @relation(fields: [brandId], references: [id])
     brandId     String?      @db.ObjectId
     CartItem    CartItem[]
-    Invoice     Invoice[]
     Reviews     Review[]
+    Invoices    Invoice[]    @relation(fields: [invoiceIds], references: [id])
+    invoiceIds  String[]     @db.ObjectId
 }
 
 model Attachment {
@@ -84,22 +85,28 @@ model CartItem {
     cartId    String? @db.ObjectId
     Product   Product @relation(fields: [productId], references: [id])
     productId String  @db.ObjectId
+
+    @@unique([cartId, productId])
 }
 
 // an invoice only contains one product
 // if a user wants to buy multiple products, they have to add them to the cart first
 model Invoice {
-    id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    id           String    @id @default(auto()) @map("_id") @db.ObjectId
     quantity     Int
-    status       Status   @default(PENDING)
-    address      String
-    deliveryCost Float
-    createAt     DateTime @default(now())
-    updatedAt    DateTime @updatedAt
-    User         User?    @relation(fields: [userId], references: [id])
-    userId       String?  @db.ObjectId
-    Product      Product? @relation(fields: [productId], references: [id])
-    productId    String?  @db.ObjectId
+    total        Float
+    Products     Product[] @relation(fields: [productIds], references: [id])
+    productIds   String[]  @db.ObjectId
+    status       Status    @default(PENDING)
+    address      Address   @relation(fields: [addressId], references: [id])
+    addressId    String    @db.ObjectId
+    deliveryCost Float     @default(0)
+    createAt     DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+    User         User      @relation(fields: [userId], references: [id])
+    userId       String    @db.ObjectId
+
+    @@unique([id, userId])
 }
 
 model Brand {
@@ -115,22 +122,26 @@ model Review {
     comment   String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    User      User?    @relation(fields: [userId], references: [id])
-    userId    String?  @db.ObjectId
-    Product   Product? @relation(fields: [productId], references: [id])
-    productId String?  @db.ObjectId
+    User      User     @relation(fields: [userId], references: [id])
+    userId    String   @db.ObjectId
+    Product   Product  @relation(fields: [productId], references: [id])
+    productId String   @db.ObjectId
+
+    @@unique([id, userId])
+    @@unique([id, productId])
 }
 
 model Address {
-    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
     name      String
     phone     String
     area      String // province, district, ward
     address   String // street address
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    User      User?    @relation(fields: [userId], references: [id])
-    userId    String?  @db.ObjectId
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    User      User?     @relation(fields: [userId], references: [id])
+    userId    String?   @db.ObjectId
+    Invoice   Invoice[]
 
     @@unique([id, userId])
 }
@@ -161,7 +172,7 @@ enum Status {
     PROCESSING
     DELIVERING
     DELIVERED
-    PAID
     CANCELLED
+    RETURNING
     RETURNED
 }

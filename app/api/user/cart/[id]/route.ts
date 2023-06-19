@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { changeProductQuantityInCart, removeProductFromCart } from '@/models/user';
+import { changeProductQuantityInCart, removeProductFromCart } from '@/models/cart';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { getServerSession } from 'next-auth';
@@ -25,7 +25,7 @@ export async function PATCH(
 
         const { id } = params;
         if (!id) {
-            return NextResponse.json({ message: 'Missing cardItemId' }, { status: 400 });
+            return NextResponse.json({ message: 'Missing cartItemId' }, { status: 400 });
         }
         const { quantity } = await request.json();
         if (!quantity) {
@@ -36,7 +36,7 @@ export async function PATCH(
                 { status: 400 },
             );
         }
-        const cart = await changeProductQuantityInCart(session.user.id, id, quantity);
+        const cart = await changeProductQuantityInCart(id, quantity);
 
         return NextResponse.json({
             message: 'success',
@@ -83,7 +83,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
         const { id } = params;
         if (!id) {
-            return NextResponse.json({ message: 'Missing cardItemId' }, { status: 400 });
+            return NextResponse.json({ message: 'Missing cartItemId' }, { status: 400 });
         }
         const cart = await removeProductFromCart(session.user.id, id);
 

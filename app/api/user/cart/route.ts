@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { addProductToCart, getCart } from '@/models/user';
+import { addProductToCart, getCart } from '@/models/cart';
 import { NotEnoughQuantity, ProductNotFound } from '@/models/product';
 
 /**
