@@ -4,10 +4,12 @@ import { UserWithImage } from '@/models/user';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import DeleteUserModal from './DeleteUserModal';
-
+import { Confirm, Loading, Notify } from 'notiflix';
+import { useRouter } from 'next/navigation';
 function UserItem({ user }: { user: UserWithImage }) {
     const [opening, setOpening] = useState(false);
     const [deleteUser, setDeleteUser] = useState(false);
+    const router = useRouter();
     return (
         <>
             <tr className='hover:bg-slate-100 h-16'>
@@ -52,7 +54,59 @@ function UserItem({ user }: { user: UserWithImage }) {
                         </div>{' '}
                         <hr></hr>
                         <div
-                            onClick={() => setOpening(false)}
+                            onClick={() => {
+                                setOpening(false);
+                                Confirm.prompt(
+                                    user.role === 'USER'
+                                        ? 'CẤP QUYỀN QUẢN TRỊ VIÊN'
+                                        : 'XÓA QUYỀN QUẢN TRỊ VIÊN',
+                                    'Để xác nhận, hãy nhập số điện thoại của tài khoản này',
+                                    'Số điện thoại',
+                                    'Xác nhận',
+                                    'Hủy',
+                                    async clientAnswer => {
+                                        if (clientAnswer == user.phone) {
+                                            Loading.dots();
+                                            try {
+                                                const res = await fetch(`/api/user/${user.id}`, {
+                                                    method: 'PATCH',
+                                                });
+                                                if (res.ok) {
+                                                    Notify.success(
+                                                        'Cập nhật quyền Quản trị viên thành công',
+                                                        {
+                                                            clickToClose: true,
+                                                            width: '400px',
+                                                        },
+                                                    );
+                                                    router.refresh();
+                                                } else {
+                                                    const res1 = await res.json();
+                                                    Notify.warning(res1.message, {
+                                                        clickToClose: true,
+                                                        width: '400px',
+                                                    });
+                                                }
+                                            } catch (error) {
+                                                console.log(error);
+                                                Notify.failure('Cập nhật không không thành công');
+                                            }
+                                            Loading.remove();
+                                        } else {
+                                            Notify.failure('Không chính xác', {
+                                                position: 'center-center',
+                                                clickToClose: true,
+                                            });
+                                        }
+                                    },
+                                    clientAnswer => {
+                                        //
+                                    },
+                                    {
+                                        titleFontSize: '20px',
+                                    },
+                                );
+                            }}
                             className='hover:text-amber-500 cursor-pointer'
                         >
                             {user.role === 'USER'
