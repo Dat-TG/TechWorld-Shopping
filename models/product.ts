@@ -1,9 +1,6 @@
 import { toSlug } from '@/utils/helper';
 import prisma from '../libs/prismadb';
-import {
-    createAttachments,
-    deleteAttachments,
-} from './attachment';
+import { createAttachments, deleteAttachments } from './attachment';
 import { Attachment, Brand, Category, Product } from '@prisma/client';
 import { FullCartItem } from './user';
 
@@ -16,7 +13,7 @@ export type FullProduct = Product & {
 export type MyCart = {
     id: string;
     CartItem: Array<FullCartItem>;
-}
+};
 
 export const ProductNotFound = new Error('Product not found');
 export const NotEnoughQuantity = new Error('Not enough quantity');
@@ -30,6 +27,18 @@ export async function getProduct(id: string) {
             attachments: true,
             brand: true,
             category: true,
+            Reviews: {
+                include: {
+                    User: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            image: true,
+                        },
+                    },
+                },
+            },
         },
     });
     return product;

@@ -32,6 +32,7 @@ export type UserWithImage = User & {
 export const UserNotFound = new Error('User does not exist');
 export const InvalidCredentials = new Error('Invalid Credentials');
 export const PhoneAlreadyExists = new Error('Phone number already exists');
+export const Unauthorized = new Error('Unauthorized');
 
 export async function getUser(userId: string) {
     const user = await prisma.user.findUnique({

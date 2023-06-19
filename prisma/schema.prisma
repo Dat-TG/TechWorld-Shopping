@@ -32,25 +32,24 @@ model User {
 }
 
 model Product {
-    id          String       @id @default(auto()) @map("_id") @db.ObjectId
+    id          String        @id @default(auto()) @map("_id") @db.ObjectId
     name        String
-    slug        String       @unique
+    slug        String        @unique
     description String?
     price       Float
-    sale        Float        @default(0) // discount 0% by default
-    quantity    Int          @default(0)
-    sold        Int          @default(0)
-    createdAt   DateTime     @default(now())
-    updatedAt   DateTime     @updatedAt
+    sale        Float         @default(0) // discount 0% by default
+    quantity    Int           @default(0)
+    sold        Int           @default(0)
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
     attachments Attachment[]
-    category    Category?    @relation(fields: [categoryId], references: [id])
-    categoryId  String?      @db.ObjectId
-    brand       Brand?       @relation(fields: [brandId], references: [id])
-    brandId     String?      @db.ObjectId
+    category    Category?     @relation(fields: [categoryId], references: [id])
+    categoryId  String?       @db.ObjectId
+    brand       Brand?        @relation(fields: [brandId], references: [id])
+    brandId     String?       @db.ObjectId
     CartItem    CartItem[]
+    InvoiceItem InvoiceItem[]
     Reviews     Review[]
-    Invoices    Invoice[]    @relation(fields: [invoiceIds], references: [id])
-    invoiceIds  String[]     @db.ObjectId
 }
 
 model Attachment {
@@ -92,21 +91,30 @@ model CartItem {
 // an invoice only contains one product
 // if a user wants to buy multiple products, they have to add them to the cart first
 model Invoice {
-    id           String    @id @default(auto()) @map("_id") @db.ObjectId
-    quantity     Int
+    id           String        @id @default(auto()) @map("_id") @db.ObjectId
     total        Float
-    Products     Product[] @relation(fields: [productIds], references: [id])
-    productIds   String[]  @db.ObjectId
-    status       Status    @default(PENDING)
-    address      Address   @relation(fields: [addressId], references: [id])
-    addressId    String    @db.ObjectId
-    deliveryCost Float     @default(0)
-    createAt     DateTime  @default(now())
-    updatedAt    DateTime  @updatedAt
-    User         User      @relation(fields: [userId], references: [id])
-    userId       String    @db.ObjectId
+    InvoicesItem InvoiceItem[]
+    status       Status        @default(PENDING)
+    address      Address       @relation(fields: [addressId], references: [id])
+    addressId    String        @db.ObjectId
+    deliveryCost Float         @default(0)
+    createAt     DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+    User         User          @relation(fields: [userId], references: [id])
+    userId       String        @db.ObjectId
 
     @@unique([id, userId])
+}
+
+model InvoiceItem {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId
+    quantity  Int
+    Invoice   Invoice @relation(fields: [invoiceId], references: [id])
+    invoiceId String  @db.ObjectId
+    Product   Product @relation(fields: [productId], references: [id])
+    productId String  @db.ObjectId
+
+    @@unique([invoiceId, productId])
 }
 
 model Brand {

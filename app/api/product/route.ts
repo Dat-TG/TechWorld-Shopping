@@ -3,6 +3,10 @@ import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
+/**
+ * GET /api/product
+ * Get all products
+ */
 export async function GET(request: Request) {
     try {
         const { searchParams } = new URL(request.url);
