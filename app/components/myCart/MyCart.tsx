@@ -1,37 +1,48 @@
-import { getCart } from '@/models/user';
-import Input from '../widgets/input/Input';
+'use client';
+
 import CartItem from './CartItem';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
+import { useGlobalContext } from '@/app/context/GlobalContext';
+import { FullCartItem } from '@/models/user';
 
-async function getUserCart(userId: string) {
-    const cart = await getCart(userId);
-    return cart;
-}
+function MyCart() {
+    const { user, myCart, updateMyCart } = useGlobalContext();
 
-async function MyCart() {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user) {
-        redirect('/auth/login');
-    } else {
+    async function removeItemFromCart(id: string) {
         try {
-            const cart = await getUserCart(session.user.id);
-
-            return (
-                <div className='flex flex-col w-full'>
-                    <div className='flex flex-row bg-white rounded-sm px-4 py-2 mb-4 items-center text-base uppercase text-gray-500'>
-                        <Input type='checkbox' className='mr-4 scale-125' />
-                        <h5>Chọn tất cả (2 sản phẩm)</h5>
-                    </div>
-                    {cart != null &&
-                        cart.CartItem.map(item => <CartItem key={item.id} item={item} />)}
-                </div>
-            );
+            await fetch(`/api/user/cart/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            await updateMyCart?.();
         } catch (error) {
-            redirect('/auth/login');
+            console.log(error);
         }
     }
+
+    if (!user) {
+        redirect('/auth/login');
+    }
+
+    return (
+        <div className='flex flex-col w-full'>
+            <div className='flex flex-row bg-white rounded-sm px-4 py-2 mb-4 items-center text-base uppercase text-gray-800'>
+                <h5>Giỏ hàng của bạn bao gồm {myCart?.CartItem.length} sản phẩm</h5>
+            </div>
+            {myCart != null &&
+                myCart?.CartItem.map((item: FullCartItem, key: number) => (
+                    <div key={key}>
+                        <CartItem
+                            item={item}
+                            removeItemFromCart={() => removeItemFromCart(item.id)}
+                        />
+                        <hr />
+                    </div>
+                ))}
+        </div>
+    );
 }
 
 export default MyCart;

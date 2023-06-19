@@ -348,3 +348,20 @@ export async function removeProductFromCart(userId: string, cardItemId: string) 
 
     return user.cart;
 }
+
+export async function listUsers(page: number, perPage: number) {
+    const users = await prisma.user.findMany({
+        skip: (page - 1) * perPage,
+        take: perPage,
+        include: {
+            addresses: true,
+            image: true,
+        },
+    });
+    return users;
+}
+
+export async function numberOfUsers() {
+    const users = await prisma.user.count();
+    return users;
+}

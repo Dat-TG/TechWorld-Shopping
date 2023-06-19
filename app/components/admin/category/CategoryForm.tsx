@@ -3,7 +3,7 @@
 import { Category } from '@prisma/client';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Notify } from 'notiflix';
+import { Loading, Notify } from 'notiflix';
 import { useRouter } from 'next/navigation';
 
 interface Props {
@@ -27,6 +27,7 @@ function CategoryForm(props: Props) {
     });
     const onSubmit = async (data: Data) => {
         setProgressing(true);
+        Loading.dots();
         console.log(data);
         if (props.mode === 'add') {
             try {
@@ -36,7 +37,7 @@ function CategoryForm(props: Props) {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        name: data.name.charAt(0).toUpperCase()+data.name.slice(1),
+                        name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
                     }),
                 });
                 const json = await res.json();
@@ -81,6 +82,7 @@ function CategoryForm(props: Props) {
             }
         }
         setProgressing(false);
+        Loading.remove();
     };
     return (
         <>
@@ -139,7 +141,9 @@ function CategoryForm(props: Props) {
                             </button>
                             <div className='px-6 py-6 lg:px-8 w-full'>
                                 <div className='mb-4 border-b border-gray-200 dark:border-gray-700 text-center text-lg font-semibold py-2'>
-                                    {props.mode === 'add' ? 'Thêm Danh Mục Mới' : 'Cập nhật Danh Mục'}
+                                    {props.mode === 'add'
+                                        ? 'Thêm Danh Mục Mới'
+                                        : 'Cập nhật Danh Mục'}
                                 </div>
                                 <form
                                     className='space-y-6 w-full'

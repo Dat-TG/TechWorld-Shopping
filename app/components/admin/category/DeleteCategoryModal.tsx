@@ -1,7 +1,7 @@
 'use client';
 import { Category } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { Notify } from 'notiflix';
+import { Loading, Notify } from 'notiflix';
 
 interface Props {
     Category: Category;
@@ -12,6 +12,7 @@ interface Props {
 export default function DeleteCategoryModal({ Category, className, showing, setShowing }: Props) {
     const router = useRouter();
     const deleteCategory = async (id: string) => {
+        Loading.dots();
         try {
             const res = await fetch(`/api/category/${id}`, {
                 method: 'DELETE',
@@ -26,6 +27,7 @@ export default function DeleteCategoryModal({ Category, className, showing, setS
             console.log(error);
             Notify.failure('Xóa danh mục không thành công');
         }
+        Loading.remove();
     };
     return (
         <div className={className + (showing ? ' relative' : ' hidden') + ' z-10 '}>

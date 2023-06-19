@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { statusOrder } from '../../constrains';
 import Link from 'next/link';
+import { defaultStatus } from '../../Constant';
 
 interface OrderItemProp {
     enableDeleteModel?: boolean;
@@ -42,7 +42,7 @@ function OrderItem(props: OrderItemProp) {
                         !updateStatus ? 'hidden' : 'absolute'
                     } absolute z-10 bg-white w-32 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                 >
-                    {statusOrder.map((status, key) => {
+                    {defaultStatus.statusOrder.map((status, key) => {
                         return (
                             <div
                                 key={key}

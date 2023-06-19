@@ -9,6 +9,9 @@ import { FullProduct } from '@/models/product';
 import { CurrencyFormatter } from '@/utils/formatter';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import CarouselThumbnail from './CarouselThumbnail';
+import { defaultValue } from '../Constant';
+import { useGlobalContext } from '@/app/context/GlobalContext';
+import { Loading, Notify } from 'notiflix';
 
 interface Props {
     product: FullProduct;
@@ -16,8 +19,35 @@ interface Props {
 }
 
 function ProductDetail({ product, similarProducts }: Props) {
+    const { user, updateMyCart } = useGlobalContext();
     const [quantity, setQuantity] = React.useState<number>(1);
     const [imgSelect, setImgSelect] = React.useState<number>(0);
+
+    async function addToCart() {
+        Loading.dots();
+        const data = {
+            userId: user?.id,
+            productId: product.id,
+            quantity: quantity,
+        };
+
+        await fetch('/api/user/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        await updateMyCart?.();
+        Loading.remove();
+        Notify.info('Thêm sản phẩm vào giỏ hàng thành công', {
+            position: 'center-center',
+            timeout: 2000,
+            clickToClose: true,
+            width: '450px',
+            fontSize: '20px',
+        });
+    }
 
     return (
         <>
@@ -25,10 +55,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                 <div className='flex flex-col'>
                     <div style={{ height: '450px' }} className='mb-4'>
                         <Image
-                            src={
-                                product?.attachments[imgSelect]?.path ??
-                                'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                            }
+                            src={product?.attachments[imgSelect]?.path ?? defaultValue.image}
                             alt='Image'
                             className='mr-4 rounded-md'
                             width={400}
@@ -98,11 +125,12 @@ function ProductDetail({ product, similarProducts }: Props) {
 
                     <div className='flex flex-row mt-12 items-center'>
                         <InputQuantity
+                            label='Số lượng'
                             quantity={quantity}
                             setQuantity={setQuantity}
                             max={product.quantity}
                         />
-                        <div className='text-gray-600'>{product.quantity} sản phẩm có sẵn</div>
+                        <div className='ml-8 text-gray-600'>{product.quantity} sản phẩm có sẵn</div>
                     </div>
                     <div className='flex flex-row items-center mt-12'>
                         {product.quantity == 0 ? (
@@ -114,7 +142,10 @@ function ProductDetail({ product, similarProducts }: Props) {
                             </Button>
                         ) : (
                             <>
-                                <Button className='border-amber-600 px-4 py-3 font-normal mr-8 flex flex-row items-center text-amber-800 bg-amber-100 hover:bg-amber-50'>
+                                <Button
+                                    onClick={addToCart}
+                                    className='border-amber-600 px-4 py-3 font-normal mr-8 flex flex-row items-center text-amber-800 bg-amber-100 hover:bg-amber-50'
+                                >
                                     <i className='bi bi-cart-plus text-xl pr-2'></i>
                                     <div className='text-xl'>Thêm Vào Giỏ Hàng</div>
                                 </Button>

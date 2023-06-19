@@ -3,8 +3,6 @@ import { Category } from '@prisma/client';
 import Link from 'next/link';
 import DeleteCategoryButton from './DeleteCategoryButton';
 import CategoryForm from './CategoryForm';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 async function getAllCategories() {
     const res = await listCategories();
@@ -32,8 +30,7 @@ function toNonAccentVietnamese(str: string) {
     return str;
 }
 
-export default async function AllCategories() {
-    const session = await getServerSession(authOptions);
+export default async function AllCategories({ role }: { role: string }) {
     const listCategories = await getAllCategories();
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
     const listCategoriesAlphabet = [] as Array<Array<Category>>;
@@ -54,9 +51,7 @@ export default async function AllCategories() {
                     <Link
                         key={data}
                         href={
-                            session?.user.role === 'ADMIN'
-                                ? `/admin/category#${data}`
-                                : `/category/all#${data}`
+                            role === 'ADMIN' ? `/admin/category#${data}` : `/category/all#${data}`
                         }
                         className={
                             listCategoriesAlphabet[data.charCodeAt(0) - 'A'.charCodeAt(0)].length >
@@ -69,7 +64,7 @@ export default async function AllCategories() {
                     </Link>
                 ))}
             </div>
-            {session?.user.role === 'ADMIN' && (
+            {role === 'ADMIN' && (
                 <div className='mt-10'>
                     <CategoryForm mode='add' />
                 </div>
@@ -86,19 +81,15 @@ export default async function AllCategories() {
                                         <div key={data.id} className='flex space-x-2 group'>
                                             <Link
                                                 href={`/category/${data.slug}`}
-                                                target={
-                                                    session?.user.role === 'ADMIN'
-                                                        ? '_blank'
-                                                        : '_self'
-                                                }
+                                                target={role === 'ADMIN' ? '_blank' : '_self'}
                                                 className='mb-3 hover:text-amber-500'
                                             >
                                                 {data.name}
                                             </Link>
-                                            {session?.user.role === 'ADMIN' && (
+                                            {role === 'ADMIN' && (
                                                 <CategoryForm mode='update' data={data} />
                                             )}
-                                            {session?.user.role === 'ADMIN' && (
+                                            {role === 'ADMIN' && (
                                                 <DeleteCategoryButton Category={data} />
                                             )}
                                         </div>

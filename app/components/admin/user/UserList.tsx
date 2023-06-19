@@ -1,12 +1,17 @@
-'use client';
+import React from 'react';
+import UserPagination from './UserPagination';
+import { listUsers } from '@/models/user';
+import { Loading } from 'notiflix';
 
-import React, { useState } from 'react';
-import DeleteOrderModel from '../order/DeleteOrderModel';
-import UserItem from './UserItem';
+interface Props {
+    totalUsers: number;
+    perPage: number;
+    page: number;
+}
 
-function UserList() {
-    const [enableDeleteModel, setEnableDeleteModel] = useState(false);
-    return (
+async function UserList(props: Props) {
+    const usersList = await listUsers(props.page, props.perPage);
+    return usersList ? (
         <div className='flex flex-col min-w-full justify-between mb-16'>
             <div className='flex items-center justify-between'>
                 <div>
@@ -16,7 +21,7 @@ function UserList() {
                         </h2>
 
                         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
-                            240 tài khoản
+                            {props.totalUsers} tài khoản
                         </span>
                     </div>
                 </div>
@@ -49,77 +54,23 @@ function UserList() {
                 </div>
             </div>
 
-            <div className='flex flex-col mt-6'>
-                <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
-                    <div className='inline-block min-w-full py-2 align-middle md:px-6 lg:px-8'>
-                        <div className='overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg'>
-                            <table className='min-w-full divide-y divide-gray-200 dark:divide-gray-700'>
-                                <thead className='bg-gray-50 dark:bg-gray-800'>
-                                    <tr>
-                                        <th
-                                            scope='col'
-                                            className='py-3.5 px-4 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
-                                        >
-                                            <button className='flex items-center gap-x-3 focus:outline-none'>
-                                                <span>UserID</span>
-                                            </button>
-                                        </th>
-
-                                        <th
-                                            scope='col'
-                                            className='px-12 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
-                                        >
-                                            Tên
-                                        </th>
-
-                                        <th
-                                            scope='col'
-                                            className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
-                                        >
-                                            SĐT
-                                        </th>
-
-                                        <th
-                                            scope='col'
-                                            className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
-                                        >
-                                            Email
-                                        </th>
-
-                                        <th
-                                            scope='col'
-                                            className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
-                                        >
-                                            Địa chỉ
-                                        </th>
-                                        <th scope='col' className='relative py-3.5 px-4'>
-                                            <span className='sr-only'>Edit</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
-                                    <UserItem />
-                                </tbody>
-                            </table>
-                            <DeleteOrderModel
-                                enableDeleteModel={enableDeleteModel}
-                                setEnableDeleteModel={setEnableDeleteModel}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <UserPagination usersList={usersList} />
 
             <div className='mt-6 sm:flex sm:items-center sm:justify-between '>
                 <div className='text-sm text-gray-500 dark:text-gray-400'>
                     Trang{' '}
-                    <span className='font-medium text-gray-700 dark:text-gray-100'>1 trên 10</span>
+                    <span className='font-medium text-gray-700 dark:text-gray-100'>
+                        {props.page} trên {Math.ceil(props.totalUsers / props.perPage)}
+                    </span>
                 </div>
 
                 <div className='flex items-center mt-4 gap-x-4 sm:mt-0'>
                     <a
-                        href='#'
-                        className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
+                        href={props.page > 1 ? `/admin/user/${props.page - 1}` : '#'}
+                        className={
+                            'flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800' +
+                            (props.page <= 1 ? ' cursor-not-allowed disabled' : '')
+                        }
                     >
                         <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -140,8 +91,17 @@ function UserList() {
                     </a>
 
                     <a
-                        href='#'
-                        className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
+                        href={
+                            props.page < Math.ceil(props.totalUsers / props.perPage)
+                                ? `/admin/user/${props.page + 1}`
+                                : '#'
+                        }
+                        className={
+                            'flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800' +
+                            (props.page >= Math.ceil(props.totalUsers / props.perPage)
+                                ? ' cursor-not-allowed disabled'
+                                : '')
+                        }
                     >
                         <span>Sau</span>
 
@@ -163,6 +123,8 @@ function UserList() {
                 </div>
             </div>
         </div>
+    ) : (
+        Loading.hourglass()
     );
 }
 

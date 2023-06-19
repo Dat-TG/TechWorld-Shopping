@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import DeleteProductModal from './DeleteProductModal';
 import { FullProduct } from '@/models/product';
+import { defaultValue } from '../Constant';
 
 interface Props {
     className?: string;
@@ -18,10 +19,9 @@ export default function ProductCardAdmin({ className, product }: Props) {
                 className
             }
         >
-            <Image
-                alt='poster'
+            <Image alt='poster'
                 src={
-                    product.attachments[0]?.path ??
+                    product.attachments[0]?.path ?? defaultValue.image
                     'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
                 }
                 className='w-1/2 h-fit self-center'

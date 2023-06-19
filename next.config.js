@@ -14,6 +14,7 @@ const nextConfig = {
             'robohash.org',
             'cdn.tgdd.vn',
             'img.tgdd.vn',
+            'bizweb.dktcdn.net',
         ],
     },
 };

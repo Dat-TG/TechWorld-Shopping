@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FullProduct } from '@/models/product';
+import { CurrencyFormatter } from '@/utils/formatter';
 
 interface Props {
     product: FullProduct;
@@ -15,18 +16,25 @@ export default function ProductCard({ product }: Props) {
             >
                 <div className='max-w-md mx-auto'>
                     <div className='bg-white shadow-md border border-gray-200 rounded-lg max-w-xs'>
-                    <div className={'h-52 flex flex-col w-full '+(product.attachments[0]?.path?'justify-between':'justify-center')}>
-                        <Image
-                            className='rounded-t-lg overflow-hidden '
-                            src={
-                                product.attachments[0]?.path ??
-                                'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+                        <div
+                            className={
+                                'h-52 flex flex-col w-full ' +
+                                (product.attachments[0]?.path
+                                    ? 'justify-between'
+                                    : 'justify-center')
                             }
-                            alt={product.name}
-                            width={400}
-                            height={200}
-                        />
-                       </div>
+                        >
+                            <Image
+                                className='rounded-t-lg overflow-hidden '
+                                src={
+                                    product.attachments[0]?.path ??
+                                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+                                }
+                                alt={product.name}
+                                width={400}
+                                height={200}
+                            />
+                        </div>
                         <div className='p-5'>
                             <div>
                                 <h5
@@ -40,22 +48,16 @@ export default function ProductCard({ product }: Props) {
                             </div>
                             <div className='font-light'>
                                 <span className='font-normal line-through text-sm'>
-                                    {Intl.NumberFormat('vi-VN', {
-                                        style: 'currency',
-                                        currency: 'VND',
-                                    }).format(product.price)}
+                                    {CurrencyFormatter.format(product.price)}
                                 </span>{' '}
                                 -{product.sale * 100}%
                             </div>
                             <div className='text-amber-500 font-bold text-md'>
-                                {Intl.NumberFormat('vi-VN', {
-                                    style: 'currency',
-                                    currency: 'VND',
-                                }).format(Math.round(product.price * (1 - product.sale)))}
+                                {CurrencyFormatter.format(
+                                    Math.round(product.price * (1 - product.sale)),
+                                )}
                             </div>
-                            <div className='text-sm'>
-                            Đã bán {product.sold}
-                            </div>
+                            <div className='text-sm'>Đã bán {product.sold}</div>
                             <div className='flex flex-row  w-28 items-center justify-between text-sm mt-2'>
                                 <i className='bi bi-star-fill text-amber-500'></i>
                                 <i className='bi bi-star-fill text-amber-500'></i>

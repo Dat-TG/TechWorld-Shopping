@@ -3,6 +3,7 @@
 import { Attachment } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react';
+import { defaultValue } from '../Constant';
 
 interface CarouselThumbnailProps {
     imgSelect: number;
@@ -37,16 +38,12 @@ function CarouselThumbnail(props: CarouselThumbnailProps) {
             {/* Right Arrow */}
 
             {props.attachments?.map((attachment, index) => {
-                console.log(length, index, current, current + 5);
                 if (length < 5 || (length > 5 && index >= current && index <= current + 5))
                     return (
                         <Image
                             onMouseEnter={() => props.setImgSelect(index)}
                             key={index}
-                            src={
-                                attachment?.path ??
-                                'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                            }
+                            src={attachment?.path ?? defaultValue.image}
                             alt='Image'
                             width={80}
                             height={80}

@@ -15,9 +15,9 @@ function OrderList() {
                             Quản lý đơn hàng
                         </h2>
 
-                        <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
+                        <p className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
                             240 đơn đặt hàng
-                        </span>
+                        </p>
                     </div>
                 </div>
             </div>

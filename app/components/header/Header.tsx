@@ -5,7 +5,8 @@ import UserButtons from './UserButtons';
 import CartHover from './CartHover';
 import Image from 'next/image';
 
-export default function Header() {
+export default async function Header() {
+
     return (
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>

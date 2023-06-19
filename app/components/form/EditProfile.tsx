@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { UserWithImage } from '@/models/user';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Notify } from 'notiflix';
+import { Block, Loading, Notify } from 'notiflix';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -38,6 +38,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
         },
     });
     const onSubmit = async (data: Data) => {
+        Loading.dots();
         try {
             const res = await fetch('/api/user', {
                 method: 'PATCH',
@@ -53,6 +54,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
             });
             const json = await res.json();
             if (json.message === 'success') {
+                Loading.remove();
                 Notify.success('Cập nhật thông tin thành công', {
                     clickToClose: true,
                 });
@@ -67,15 +69,18 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                 });
                 router.refresh();
             } else {
+                Loading.remove();
                 Notify.failure(json.message);
             }
         } catch (error) {
             console.log(error);
+            Loading.remove();
             Notify.failure('Cập nhật thất bại');
         }
     };
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        Block.standard('.image');
         if (e.target.files?.length) {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -86,6 +91,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
 
             reader.readAsDataURL(file);
         }
+        Block.remove('.image');
     };
 
     useEffect(() => {
@@ -255,7 +261,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                     <input
                         id='image'
                         onChange={e => handleImageChange(e)}
-                        className='hidden'
+                        className='hidden image'
                         type='file'
                         accept='image/*'
                     />

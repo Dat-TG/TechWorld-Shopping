@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import cloudinary from 'cloudinary';
 
 cloudinary.v2.config({
