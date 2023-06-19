@@ -6,9 +6,9 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "eslint src/**/*.{js,jsx,ts,tsx,json}",
-        "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
-        "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
+        "lint": "eslint app/**/*.{js,jsx,ts,tsx,json}",
+        "lint:fix": "eslint --fix app/**/*.{js,jsx,ts,tsx,json}",
+        "format": "prettier --write app/**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc"
     },
     "dependencies": {
         "@headlessui/react": "^1.7.15",
@@ -22,7 +22,7 @@
         "bootstrap-icons": "^1.10.5",
         "cloudinary": "^1.27.1",
         "eslint": "^8.42.0",
-        "eslint-config-next": "13.4.2",
+        "eslint-config-next": "^13.4.2",
         "jquery": "^3.7.0",
         "next": "13.4.2",
         "next-auth": "^4.22.1",

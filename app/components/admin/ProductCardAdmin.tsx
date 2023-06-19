@@ -19,11 +19,9 @@ export default function ProductCardAdmin({ className, product }: Props) {
                 className
             }
         >
-            <Image alt='poster'
-                src={
-                    product.attachments[0]?.path ?? defaultValue.image
-                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
-                }
+            <Image
+                alt='poster'
+                src={product.attachments[0]?.path ?? defaultValue.image}
                 className='w-1/2 h-fit self-center'
             ></Image>
 

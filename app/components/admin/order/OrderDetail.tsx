@@ -2,8 +2,7 @@
 
 import React, { useState } from 'react';
 import Input from '../../widgets/input/Input';
-import { statusOrder } from '../../Constant';
-import CartItem from '../../myCart/CartItem';
+import { defaultStatus } from '../../Constant';
 import Button from '../../widgets/button/Button';
 
 function OrderDetail() {
@@ -47,7 +46,7 @@ function OrderDetail() {
                                 !updateStatus ? 'hidden' : 'absolute'
                             } absolute z-10 bg-white w-32 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                         >
-                            {statusOrder.map((status, key) => {
+                            {defaultStatus.statusOrder.map((status, key) => {
                                 return (
                                     <div
                                         key={key}
