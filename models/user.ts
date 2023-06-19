@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import bcrypt from 'bcrypt';
 import prisma from '../libs/prismadb';
 import {
@@ -239,4 +240,40 @@ export async function searchUser(key: string) {
         },
     });
     return users;
+}
+
+export async function removeUser(userId: string) {
+    await prisma.user.delete({
+        where: {
+            id: userId,
+        },
+    });
+    await prisma.address.deleteMany({
+        where: {
+            userId: userId,
+        },
+    });
+}
+
+export async function updateAdminRight(id: string) {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id,
+        },
+    });
+
+    if (!user) {
+        throw UserNotFound;
+    }
+
+    const newUser = await prisma.user.update({
+        where: {
+            id: id,
+        },
+        data: {
+            role: user.role === 'ADMIN' ? 'USER' : 'ADMIN',
+        },
+    });
+
+    return newUser;
 }

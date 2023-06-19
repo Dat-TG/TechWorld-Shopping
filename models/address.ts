@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import prisma from '../libs/prismadb';
 
 export async function listAddresses(userId?: string) {
