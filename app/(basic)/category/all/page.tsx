@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function Page() {
     return (
-        <div className='w-full'>
-            <AllCategories />
+        <div className='w-full my-20'>
+            <AllCategories role='USER'/>
         </div>
     );
 }

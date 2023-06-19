@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FullProduct } from '@/models/product';
-import { defaultValue } from '../Constant';
 import { CurrencyFormatter } from '@/utils/formatter';
 
 interface Props {
@@ -26,8 +25,11 @@ export default function ProductCard({ product }: Props) {
                             }
                         >
                             <Image
-                                className='rounded-t-lg'
-                                src={product.attachments[0]?.path ?? defaultValue.image}
+                                className='rounded-t-lg overflow-hidden '
+                                src={
+                                    product.attachments[0]?.path ??
+                                    'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+                                }
                                 alt={product.name}
                                 width={400}
                                 height={200}

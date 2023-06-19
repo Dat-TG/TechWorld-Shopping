@@ -7,6 +7,8 @@ import { CurrencyFormatter } from '@/utils/formatter';
 import { defaultValue } from '../Constant';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import React from 'react';
+import Link from 'next/link';
+import { Loading } from 'notiflix';
 
 interface CartItemProps {
     item: FullCartItem;
@@ -33,9 +35,11 @@ function CartItem({ item, removeItemFromCart }: CartItemProps) {
         return false;
     }
 
-    async function removeItem(){
+    async function removeItem() {
+        Loading.dots();
         await removeItemFromCart();
         setRemove(false);
+        Loading.remove();
     }
 
     return (
@@ -49,7 +53,12 @@ function CartItem({ item, removeItemFromCart }: CartItemProps) {
                 className='mr-4 rounded-md'
             />
             <div className='flex flex-col mr-4 flex-1 justify-between'>
-                <h3 className='font-semibold text-base uppercase mb-2'>{item.Product.name}</h3>
+                <Link
+                    href={`/product/${item.Product.slug}`}
+                    className='font-semibold text-base uppercase mb-2 hover:text-amber-500'
+                >
+                    {item.Product.name}
+                </Link>
                 <p className='font-medium text-sm text-gray-500'>
                     Danh mục: {item.Product.category?.name}
                 </p>

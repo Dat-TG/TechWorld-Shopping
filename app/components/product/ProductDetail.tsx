@@ -11,6 +11,7 @@ import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import CarouselThumbnail from './CarouselThumbnail';
 import { defaultValue } from '../Constant';
 import { useGlobalContext } from '@/app/context/GlobalContext';
+import { Loading, Notify } from 'notiflix';
 
 interface Props {
     product: FullProduct;
@@ -18,11 +19,12 @@ interface Props {
 }
 
 function ProductDetail({ product, similarProducts }: Props) {
-    const {user, updateMyCart} = useGlobalContext();
+    const { user, updateMyCart } = useGlobalContext();
     const [quantity, setQuantity] = React.useState<number>(1);
     const [imgSelect, setImgSelect] = React.useState<number>(0);
 
     async function addToCart() {
+        Loading.dots();
         const data = {
             userId: user?.id,
             productId: product.id,
@@ -37,6 +39,14 @@ function ProductDetail({ product, similarProducts }: Props) {
             body: JSON.stringify(data),
         });
         await updateMyCart?.();
+        Loading.remove();
+        Notify.info('Thêm sản phẩm vào giỏ hàng thành công', {
+            position: 'center-center',
+            timeout: 2000,
+            clickToClose: true,
+            width: '450px',
+            fontSize: '20px',
+        });
     }
 
     return (

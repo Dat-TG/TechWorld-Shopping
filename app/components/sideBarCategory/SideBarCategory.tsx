@@ -21,7 +21,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
             {/* Category */}
             <div className='flex flex-row w-5/6 items-center mb-2 text-md font-bold border-b border-solid border-gray-700'>
                 <i className='bi bi-list-task mr-2 text-lg py-4  text-left'></i>
-                <span>Tất cả danh mục</span>
+                <Link href={'/category/all'}>Tất cả danh mục</Link>
             </div>
             {categories.slice(0, numberOfCategories).map((category: Category) => (
                 <Link
@@ -91,7 +91,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     placeholder='₫ TỪ'
                     min={0}
                     defaultValue={parseInt(params.get('min') || '0')}
-                    onChange={(event) => {
+                    onChange={event => {
                         setMin(parseInt(event.target.value));
                     }}
                 />
@@ -102,7 +102,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     placeholder='₫ ĐẾN'
                     min={0}
                     defaultValue={parseInt(params.get('max') || '0')}
-                    onChange={(event) => {
+                    onChange={event => {
                         setMax(parseInt(event.target.value));
                     }}
                 />

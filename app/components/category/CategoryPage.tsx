@@ -112,7 +112,7 @@ export default function CategoryPage({
     5: Khoảng giá
     */
     return (
-        <div className='flex flex-row mt-4 mx-5 w-fit'>
+        <div className='flex flex-row mt-4 mx-5 w-fit space-x-4'>
             <div className='w-1/6'>
                 <SideBarCategory categories={categories} />
             </div>

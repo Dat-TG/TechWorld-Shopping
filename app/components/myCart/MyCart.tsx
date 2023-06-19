@@ -25,7 +25,7 @@ function MyCart() {
     if (!user) {
         redirect('/auth/login');
     }
-    
+
     return (
         <div className='flex flex-col w-full'>
             <div className='flex flex-row bg-white rounded-sm px-4 py-2 mb-4 items-center text-base uppercase text-gray-800'>
