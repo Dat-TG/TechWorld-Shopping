@@ -4,5 +4,5 @@ export const defaultStatus = {
 };
 
 export const defaultValue = {
-    image: '/images/empty-cart.webp"',
+    image: '/images/empty-cart.webp',
 };
