@@ -7,10 +7,16 @@ import { useGlobalContext } from '@/app/context/GlobalContext';
 import Button from '../widgets/button/Button';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Loading } from 'notiflix';
+import { usePathname } from 'next/navigation';
 
 function CartPage() {
+    const pathname = usePathname();
+    if (pathname.includes('/cart')) {
+        Loading.dots();
+    }
     const { myCart } = useGlobalContext();
-
+    Loading.remove();
     if (myCart == null || myCart?.CartItem.length == 0) {
         return (
             <div className='h-fit w-full my-32 flex flex-col items-center justify-center'>
