@@ -8,6 +8,7 @@ import {
     CartItem,
     Category,
     Product,
+    Role,
     User,
 } from '@prisma/client';
 import crypto from 'crypto';
@@ -363,5 +364,34 @@ export async function listUsers(page: number, perPage: number) {
 
 export async function numberOfUsers() {
     const users = await prisma.user.count();
+    return users;
+}
+
+export async function searchUser(key: string) {
+    let enumkey = [] as Role[];
+    if (key === 'ADMIN') enumkey = [Role.ADMIN];
+    else if (key === 'USER') enumkey = [Role.USER];
+    const users = await prisma.user.findMany({
+        where: {
+            OR: [
+                {
+                    email: { contains: key, mode: 'insensitive' },
+                },
+                {
+                    name: { contains: key, mode: 'insensitive' },
+                },
+                {
+                    phone: { contains: key, mode: 'insensitive' },
+                },
+                {
+                    role: { in: enumkey },
+                },
+            ],
+        },
+        include: {
+            addresses: true,
+            image: true,
+        },
+    });
     return users;
 }
