@@ -14,7 +14,7 @@ export default function CategoryCard({ name, img, className, sold }: Props) {
                 className
             }
         >
-            {img && <Image src={img} className='w-1/2 h-fit self-center' alt='poster' />}
+            {img && <Image src={img} className='w-1/2 h-fit self-center' alt='poster' width={1000} height={1000}/>}
             {name && <p className='font-semibold text-center text-md'>{name}</p>}
             {sold && (
                 <div>

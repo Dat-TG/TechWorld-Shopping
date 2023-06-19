@@ -255,6 +255,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                     alt='avatar'
                     src={image || '/images/logo.png'}
                     className='w-36 rounded-full outline outline-8 outline-amber-500'
+                    width={1000} height={1000}
                 ></Image>
                 <label className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'>
                     Chọn Ảnh

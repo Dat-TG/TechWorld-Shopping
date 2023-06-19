@@ -32,7 +32,12 @@ export default function Suggest({ filter }: { filter: Array<Filter> }) {
                                     ' rounded-xl px-4 py-4 w-72 h-20'
                                 }
                             >
-                                <Image alt='icon' src={icon} className='w-14 h-14'></Image>
+                                <Image
+                                    alt='icon'
+                                    src={icon}
+                                    className='w-14 h-14'
+                                    width={1000} height={1000}
+                                ></Image>
                                 <p className='ms-4 text-lg'>{name}</p>
                             </div>
                         </Link>

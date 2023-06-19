@@ -15,6 +15,8 @@ export const metadata = {
 export default function Page() {
     return (
         <>
+            {' '}
+            {/*
             <div className='w-full h-full mb-0 group'>
                 <BgCarousel slides={mainCarousel} />
             </div>
@@ -40,6 +42,7 @@ export default function Page() {
             />
             <Suggest filter={listFilterSuggest} />
             <Trending />
+            */}
         </>
     );
 }

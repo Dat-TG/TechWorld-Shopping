@@ -16,8 +16,9 @@ export default function OrderBox({ className }: Props) {
                 <div className='w-1/5 bg white outline outline-1'>
                     <Image
                         alt='poster'
-                        src='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
+                        src='/images/admin/iphone-14-pro-max-den-thumb-600x600.jpg'
                         className='w-fit h-fit'
+                        width={1000} height={1000}
                     ></Image>
                 </div>
                 <div className='w-3/5 ms-4'>

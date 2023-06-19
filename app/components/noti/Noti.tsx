@@ -10,8 +10,9 @@ export default function Noti({ className }: Props) {
         >
             <Image
                 alt='poster'
-                src='https://cdn.sforum.vn/sforum/wp-content/uploads/2023/05/vivo-v27e-30.jpg'
+                src='/images/vivo-v27e-30.jpg'
                 className='w-1/5 h-fit rounded-xl self-center'
+                width={1000} height={1000}
             ></Image>
             <div className='w-4/5 flex flex-col justify-between'>
                 <p

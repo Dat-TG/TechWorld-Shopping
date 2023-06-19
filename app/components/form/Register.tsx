@@ -86,6 +86,7 @@ export default function Register() {
                         className='w-44 sm:w-48 md:w-72 mb-2'
                         src='/images/logo.png'
                         alt='TechWorld'
+                        width={1000} height={1000}
                     />
                     <p className='text-3xl font-sans font-bold'>TechWorld</p>
                     <br></br>

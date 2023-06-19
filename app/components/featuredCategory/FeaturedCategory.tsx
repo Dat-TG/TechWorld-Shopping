@@ -18,6 +18,7 @@ export default function FeaturedCategory({ list }: { list: Array<Data> }) {
                                 alt='poster'
                                 src={img}
                                 className='w-fit h-fit hover:opacity-50'
+                                width={1000} height={1000}
                             ></Image>
                             <div className='flex justify-center mt-2 hover:text-orange-500'>
                                 <p className='text-center max-w-fit'>{name}</p>

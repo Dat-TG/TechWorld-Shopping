@@ -23,6 +23,7 @@ export default function ProductCardAdmin({ className, product }: Props) {
                 alt='poster'
                 src={product.attachments[0]?.path ?? defaultValue.image}
                 className='w-1/2 h-fit self-center'
+                width={1000} height={1000}
             ></Image>
 
             <p className='font-semibold text-center text-md'>{product.name}</p>

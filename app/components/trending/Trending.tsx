@@ -9,8 +9,9 @@ export default function Trending() {
                 <div className='flex flex-col justify-around items-center rounded-xl bg-white px-4 py-4 w-72 h-96'>
                     <Image
                         alt='poster'
-                        src='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
+                        src='/images/admin/iphone-14-pro-max-den-thumb-600x600.jpg'
                         className='w-fit h-fit'
+                        width={1000} height={1000}
                     ></Image>
                     <p>Điện thoại</p>
                     <Link href='' className='font-medium text-blue-500 text-center'>
@@ -20,8 +21,9 @@ export default function Trending() {
                 <div className='flex flex-col justify-around items-center rounded-xl bg-white px-4 py-4 w-72 h-96'>
                     <Image
                         alt='poster'
-                        src='https://vn.store.asus.com/media/catalog/product/cache/31a3e9bc5cea0340b4f268573c7bdbfd/g/6/g634jz-n4029w.png'
+                        src='/images/g634jz-n4029w.png'
                         className='w-fit h-fit'
+                        width={1000} height={1000}
                     ></Image>
                     <p>Laptop Gaming</p>
                     <Link href='' className='font-medium text-blue-500 text-center'>
@@ -31,8 +33,9 @@ export default function Trending() {
                 <div className='flex flex-col justify-around items-center rounded-xl bg-white px-4 py-4 w-72 h-96'>
                     <Image
                         alt='poster'
-                        src='https://cdn.tgdd.vn/Products/Images/54/75430/tai-nghe-sony-mdr-zx110ap-thumbnew-600x600.jpg'
+                        src='/images/tai-nghe-sony-mdr-zx110ap-thumbnew-600x600.jpg'
                         className='w-fit h-fit'
+                        width={1000} height={1000}
                     ></Image>
                     <p>Tai nghe</p>
                     <Link href='' className='font-medium text-blue-500 text-center'>
@@ -42,8 +45,9 @@ export default function Trending() {
                 <div className='flex flex-col justify-around items-center rounded-xl bg-white px-4 py-4 w-72 h-96'>
                     <Image
                         alt='poster'
-                        src='https://cdn.tgdd.vn/Products/Images/7077/289799/apple-watch-se-2022-lte-40mm-trang-kem-thumbnew-600x600.jpg'
+                        src='/images/apple-watch-se-2022-lte-40mm-trang-kem-thumbnew-600x600.jpg'
                         className='w-fit h-fit'
+                        width={1000} height={1000}
                     ></Image>
                     <p>Đồng hồ thông minh</p>
                     <Link href='' className='font-medium text-blue-500 text-center'>

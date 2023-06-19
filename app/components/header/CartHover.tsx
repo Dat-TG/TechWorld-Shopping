@@ -52,7 +52,7 @@ export default function CartHover() {
                     <div className='flex flex-col items-center justify-center w-80 h-56'>
                         <Image
                             src={
-                                'https://bizweb.dktcdn.net/100/320/202/themes/714916/assets/empty-cart.png?1650292912948'
+                                '/images/empty-cart.webp'
                             }
                             width={250}
                             height={250}

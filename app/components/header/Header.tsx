@@ -11,7 +11,7 @@ export default async function Header() {
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>
                 <Link href='/' className='flex items-center me-6'>
-                    <Image src='/images/logo.png' className='h-8 mr-3' alt='TechWorld Logo' />
+                    <Image src='/images/logo.png' className='h-8 mr-3 w-8' alt='TechWorld Logo' width={1000} height={1000}/>
                     <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>
                         TechWorld
                     </span>

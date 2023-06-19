@@ -32,6 +32,7 @@ export default function Carousel({ slides }: { slides: Array<Data> }) {
                         alt='poster'
                         src={slides[currentIndex].url}
                         className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
+                        width={1000} height={1000}
                     ></Image>
                 </Link>
                 <Link href={slides[currentIndex].href} className='w-full mx-2'>
@@ -39,6 +40,7 @@ export default function Carousel({ slides }: { slides: Array<Data> }) {
                         alt='poster'
                         src={slides[currentIndex + 1].url}
                         className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
+                        width={1000} height={1000}
                     ></Image>
                 </Link>
             </div>

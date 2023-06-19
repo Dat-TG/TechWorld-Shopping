@@ -293,7 +293,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                                 >
                                     X
                                 </div>
-                                <Image alt='attachment' src={attachment} />
+                                <Image alt='attachment' src={attachment} width={1000} height={1000}/>
                             </span>
                         ))}
                     </div>

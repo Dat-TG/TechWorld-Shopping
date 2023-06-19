@@ -16,7 +16,7 @@ export default function BgCarousel({ slides }: { slides: Array<Data> }) {
                 <div key={key}>
                     <Link href={href}>
                         <div>
-                            <Image alt='carousel' src={url} className='h-96'></Image>
+                            <Image alt='carousel' src={url} className='h-96' width={1000} height={1000}></Image>
                         </div>
                     </Link>
                 </div>

@@ -6,7 +6,7 @@ import Button from '../widgets/button/Button';
 export default function PromotionBox({ banner, bg }: { banner: string; bg: string }) {
     return (
         <div className={['rounded-2xl', bg, 'mb-10'].join(' ')}>
-            <Image alt='banner' src={banner} className='w-full h-28'></Image>
+            <Image alt='banner' src={banner} className='w-full h-28' width={1000} height={1000}></Image>
             <Carousel
                 showThumbs={false}
                 infiniteLoop={true}
