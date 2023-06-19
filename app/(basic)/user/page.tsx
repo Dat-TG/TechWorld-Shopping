@@ -1,6 +1,6 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import Profile from '@/app/components/profile/profile';
-import { UserWithImage, getUser } from '@/models/user';
+import Profile from '@/app/components/profile/Profile';
+import { getUser } from '@/models/user';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 

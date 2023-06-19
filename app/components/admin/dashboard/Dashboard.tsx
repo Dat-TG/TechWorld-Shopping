@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Time from '../Time';
 
 export default function Dashboard() {
@@ -10,17 +11,18 @@ export default function Dashboard() {
             <div className='grid grid-cols-3 gap-10'>
                 <div className='flex justify-between w-full bg-white px-5 py-3 rounded-md col-span-2'>
                     <div className='flex flex-col justify-center items-center space-y-3 w-min h-fit'>
-                        <img src='/images/logo.png' className='w-full h-fit'></img>
+                        <Image alt='logo' src='/images/logo.png' className='w-full h-fit'></Image>
                         <p className='font-bold w-fit'>TechWorld</p>
                     </div>
                     <div className='flex flex-col w-full items-center justify-around'>
                         <p className='font-bold'>Báo Cáo Tài Chính Năm 2022</p>
                         <div className='flex justify-around items-center space-x-4'>
                             <div className='flex space-x-2 items-center'>
-                                <img
+                                <Image
+                                    alt='revenue'
                                     src='https://www.revenued.com/wp-content/uploads/2023/05/Revenue-Based-Financing.png'
                                     className='w-12 h-12'
-                                ></img>
+                                ></Image>
                                 <div className='flex flex-col justify-center'>
                                     <p className='text-md font-bold'>9,567,236k VND</p>
                                     <p className='text-sm'>Doanh thu</p>
@@ -32,10 +34,11 @@ export default function Dashboard() {
                             </div>
 
                             <div className='flex space-x-2 items-center'>
-                                <img
+                                <Image
+                                    alt='cost'
                                     src='https://cdn-icons-png.flaticon.com/512/5501/5501375.png'
                                     className='w-12 h-12'
-                                ></img>
+                                ></Image>
                                 <div className='flex flex-col justify-center'>
                                     <p className='text-md font-bold'>3,965,866k VND</p>
                                     <p className='text-sm'>Chi phí</p>
@@ -47,10 +50,11 @@ export default function Dashboard() {
                             </div>
 
                             <div className='flex space-x-2 items-center'>
-                                <img
+                                <Image
+                                    alt='order'
                                     src='https://cdn-icons-png.flaticon.com/512/3500/3500833.png'
                                     className='w-12 h-12'
-                                ></img>
+                                ></Image>
                                 <div className='flex flex-col justify-center'>
                                     <p className='text-md font-bold'>720,239</p>
                                     <p className='text-sm'>Đơn đặt hàng</p>
@@ -64,10 +68,11 @@ export default function Dashboard() {
                     </div>
                 </div>
                 <div className='col-span-1 flex justify-around items-center bg-white rounded-md'>
-                    <img
+                    <Image
+                        alt='profit'
                         src='https://cdn-icons-png.flaticon.com/512/950/950607.png'
                         className='w-20 h-20'
-                    ></img>
+                    ></Image>
                     <div className='flex flex-col justify-center'>
                         <p className='text-lg'>Lợi nhuận</p>
                         <p className='text-xl font-bold'>5,601,370k VND</p>
@@ -79,33 +84,37 @@ export default function Dashboard() {
                 </div>
                 <div className='col-span-2 bg-white rounded-md px-5 py-10 grid grid-cols-2 gap-10'>
                     <div className='flex flex-col justify-around items-center'>
-                        <img
+                        <Image
+                            alt='product'
                             src='https://cdn.tgdd.vn/Products/Images/42/251192/iphone-14-pro-max-den-thumb-600x600.jpg'
                             className='w-32 h-32'
-                        ></img>
+                        ></Image>
                         <p className='text-xl font-bold'>15,999 Sản phẩm</p>
                     </div>
                     <div className='flex flex-col justify-around items-center'>
-                        <img
+                        <Image
+                            alt='category'
                             src='https://btech.com/cdn-cgi/image/quality=50,format=auto/media/wysiwyg/minicash-info/mc-top-image2.png'
                             className='w-32 h-32'
-                        ></img>
+                        ></Image>
                         <p className='text-xl font-bold'>30 Danh mục ngành hàng</p>
                     </div>
 
                     <div className='flex flex-col justify-around items-center'>
-                        <img
+                        <Image
+                            alt='user'
                             src='https://cdn-icons-png.flaticon.com/512/74/74577.png'
                             className='w-32 h-32'
-                        ></img>
+                        ></Image>
                         <p className='text-xl font-bold'>102,123 Người dùng</p>
                     </div>
 
                     <div className='flex flex-col justify-around items-center'>
-                        <img
+                        <Image
+                            alt='review'
                             src='https://reviewinc.com/wp-content/uploads/2022/11/ReviewInc-frames_Online-Review-Management-Curate-your-online-Reputation.webp'
                             className='w-50 h-32'
-                        ></img>
+                        ></Image>
                         <p className='text-xl font-bold'>12,445 Lượt đánh giá</p>
                     </div>
                 </div>
@@ -137,10 +146,11 @@ export default function Dashboard() {
                         </select>
                     </div>
                     <div className='flex space-x-2 items-center'>
-                        <img
+                        <Image
+                            alt='revenue'
                             src='https://www.revenued.com/wp-content/uploads/2023/05/Revenue-Based-Financing.png'
                             className='w-12 h-12'
-                        ></img>
+                        ></Image>
                         <div className='flex flex-col justify-center'>
                             <p className='text-md font-bold'>567,236k VND</p>
                             <p className='text-sm'>Doanh thu</p>
@@ -152,10 +162,11 @@ export default function Dashboard() {
                     </div>
 
                     <div className='flex space-x-2 items-center'>
-                        <img
+                        <Image
+                            alt='cost'
                             src='https://cdn-icons-png.flaticon.com/512/5501/5501375.png'
                             className='w-12 h-12'
-                        ></img>
+                        ></Image>
                         <div className='flex flex-col justify-center'>
                             <p className='text-md font-bold'>65,866k VND</p>
                             <p className='text-sm'>Chi phí</p>
@@ -167,10 +178,11 @@ export default function Dashboard() {
                     </div>
 
                     <div className='flex space-x-2 items-center'>
-                        <img
+                        <Image
+                            alt='order'
                             src='https://cdn-icons-png.flaticon.com/512/3500/3500833.png'
                             className='w-12 h-12'
-                        ></img>
+                        ></Image>
                         <div className='flex flex-col justify-center'>
                             <p className='text-md font-bold'>20,239</p>
                             <p className='text-sm'>Đơn đặt hàng</p>
@@ -182,10 +194,11 @@ export default function Dashboard() {
                     </div>
 
                     <div className='flex space-x-2 items-center'>
-                        <img
+                        <Image
+                            alt='profit'
                             src='https://cdn-icons-png.flaticon.com/512/950/950607.png'
                             className='w-12 h-12'
-                        ></img>
+                        ></Image>
                         <div className='flex flex-col justify-center'>
                             <p className='text-md font-bold'>601,370k VND</p>
                             <p className='text-sm'>Lợi nhuận</p>

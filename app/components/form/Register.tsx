@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -19,11 +20,11 @@ export default function Register() {
 
     const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
     function toggleRetypePasswordVisibility() {
-        setIsRetypePasswordVisible((prevState) => !prevState);
+        setIsRetypePasswordVisible(prevState => !prevState);
     }
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible((prevState) => !prevState);
+        setIsPasswordVisible(prevState => !prevState);
     }
     const [registering, setRegistering] = useState(false);
     type Data = {
@@ -81,7 +82,7 @@ export default function Register() {
         <>
             <div className='flex justify-evenly items-center h-screen'>
                 <div className='w-fit flex flex-col justify-center items-center'>
-                    <img
+                    <Image
                         className='w-44 sm:w-48 md:w-72 mb-2'
                         src='/images/logo.png'
                         alt='TechWorld'

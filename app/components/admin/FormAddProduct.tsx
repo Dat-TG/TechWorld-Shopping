@@ -1,8 +1,9 @@
 'use client';
+import Image from 'next/image';
 import { FullProduct } from '@/models/product';
 import { Brand, Category } from '@prisma/client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from './Time';
 
@@ -40,9 +41,9 @@ export default function FormAddProduct({ product, submit }: Props) {
     }, []);
 
     useEffect(() => {
-        const atm = product?.attachments?.map((attachment) => attachment.path);
+        const atm = product?.attachments?.map(attachment => attachment.path);
         setAttachments(() => [...(atm ?? [])]);
-    }, []);
+    }, [product?.attachments]);
 
     const {
         register,
@@ -52,14 +53,14 @@ export default function FormAddProduct({ product, submit }: Props) {
         mode: 'all',
     });
 
-    function handleOnChange(changeEvent: any) {
+    function handleOnChange(changeEvent: ChangeEvent<HTMLInputElement>) {
         if (!changeEvent.target.files) return;
 
-        for (const file of changeEvent.target.files) {
+        for (const file of Array.from(changeEvent.target.files)) {
             const reader = new FileReader();
 
             reader.onload = function (onLoadEvent) {
-                setAttachments((attachments) => [
+                setAttachments(attachments => [
                     ...attachments,
                     onLoadEvent.target?.result as string,
                 ]);
@@ -193,7 +194,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                                         value={product?.category?.id}
                                     >
                                         <option value=''>Chọn một danh mục</option>
-                                        {categories.map((category) => (
+                                        {categories.map(category => (
                                             <option key={category.id} value={category.id}>
                                                 {category.name}
                                             </option>
@@ -220,7 +221,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                                         value={product?.brand?.id}
                                     >
                                         <option value=''>Thương hiệu</option>
-                                        {brands.map((brand) => (
+                                        {brands.map(brand => (
                                             <option key={brand.id} value={brand.id}>
                                                 {brand.name}
                                             </option>
@@ -292,7 +293,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                                 >
                                     X
                                 </div>
-                                <img src={attachment} />
+                                <Image alt='attachment' src={attachment} />
                             </span>
                         ))}
                     </div>

@@ -11,7 +11,7 @@ export async function GET(request: Request) {
         const products = await listProducts(categorySlug, brandSlug);
 
         return NextResponse.json({ message: 'success', data: products });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error getting all products', getErrorMessage(error));
 
         return NextResponse.json(
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
             attachments,
         );
         return NextResponse.json({ message: 'success', data: product });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error creating product', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -73,14 +73,14 @@ export async function POST(request: Request) {
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
-                return NextResponse.json({ message: `Product already exists` }, { status: 400 });
+                return NextResponse.json({ message: 'Product already exists' }, { status: 400 });
             }
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid category or brand` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid category or brand' }, { status: 400 });
             }
             if (error.code === 'P2025') {
                 return NextResponse.json(
-                    { message: `Category or brand not found` },
+                    { message: 'Category or brand not found' },
                     { status: 400 },
                 );
             }

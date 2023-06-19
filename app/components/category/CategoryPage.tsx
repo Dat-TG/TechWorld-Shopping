@@ -38,7 +38,7 @@ export default function CategoryPage({
         setTotalPage(arr.length);
         arr = arr[page - 1];
         setArray(arr);
-    }, [params]);
+    }, [params, page, productsFilter]);
     useEffect(() => {
         switch (filter) {
             case 0:
@@ -102,7 +102,7 @@ export default function CategoryPage({
                 break;
         }
         setTotalPage(Math.ceil(productsFilter.length / numberOfProductsPerPage));
-    }, [filter, page]);
+    }, [filter, page, params, pathname, products, productsFilter.length, router]);
     /* filter for products:
     0: none
     1: Mới nhất

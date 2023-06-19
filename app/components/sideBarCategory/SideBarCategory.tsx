@@ -15,7 +15,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
     const pathname = usePathname();
     useEffect(() => {
         if (numberOfCategories >= categories.length) setSeeMore(false);
-    }, [numberOfCategories]);
+    }, [numberOfCategories, categories.length]);
     return (
         <div className='flex flex-col items-start justify-start w-52 mr-4'>
             {/* Category */}
@@ -92,7 +92,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     placeholder='₫ TỪ'
                     min={0}
                     defaultValue={parseInt(params.get('min') || '0')}
-                    onChange={(event) => {
+                    onChange={event => {
                         setMin(parseInt(event.target.value));
                     }}
                 />
@@ -103,7 +103,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     placeholder='₫ ĐẾN'
                     min={0}
                     defaultValue={parseInt(params.get('max') || '0')}
-                    onChange={(event) => {
+                    onChange={event => {
                         setMax(parseInt(event.target.value));
                     }}
                 />

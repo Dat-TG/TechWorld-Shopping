@@ -12,6 +12,8 @@ const nextConfig = {
             'res.cloudinary.com',
             'upload.wikimedia.org',
             'robohash.org',
+            'cdn.tgdd.vn',
+            'img.tgdd.vn',
         ],
     },
 };

@@ -1,10 +1,11 @@
 'use client';
 
+import Image from 'next/image';
 import { UserWithImage } from '@/models/user';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Notify } from 'notiflix';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function EditProfile({ user }: { user: UserWithImage }) {
@@ -74,8 +75,8 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
         }
     };
 
-    const handleImageChange = (e: any) => {
-        if (e.target.files.length) {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
             const file = e.target.files[0];
             const reader = new FileReader();
 
@@ -92,7 +93,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
         setPhone(user.phone);
         setEmail(user.email || '');
         setImage(user.image?.path || '');
-    }, []);
+    }, [user.name, user.phone, user.email, user.image?.path]);
 
     return (
         <div className='flex justify-around'>
@@ -115,7 +116,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                                 })}
                                 type='text'
                                 value={name}
-                                onChange={(event) => {
+                                onChange={event => {
                                     setName(event.target.value);
                                 }}
                                 aria-invalid={errors.name ? 'true' : 'false'}
@@ -153,7 +154,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                                 })}
                                 aria-invalid={errors.phone ? 'true' : 'false'}
                                 required
-                                onChange={(event) => {
+                                onChange={event => {
                                     setPhone(event.target.value);
                                 }}
                                 className={
@@ -204,7 +205,7 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                                 })}
                                 type='email'
                                 aria-invalid={errors.email ? 'true' : 'false'}
-                                onChange={(event) => {
+                                onChange={event => {
                                     setEmail(event.target.value);
                                 }}
                                 className={
@@ -244,15 +245,16 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
                 </div>
             </form>
             <div className='w-1/3 flex flex-col items-center justify-center'>
-                <img
+                <Image
+                    alt='avatar'
                     src={image || '/images/logo.png'}
                     className='w-36 rounded-full outline outline-8 outline-amber-500'
-                ></img>
+                ></Image>
                 <label className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'>
                     Chọn Ảnh
                     <input
                         id='image'
-                        onChange={(e) => handleImageChange(e)}
+                        onChange={e => handleImageChange(e)}
                         className='hidden'
                         type='file'
                         accept='image/*'

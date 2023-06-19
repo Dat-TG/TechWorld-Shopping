@@ -26,7 +26,7 @@ export async function PATCH(request: Request) {
             message: 'success',
             data: user,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error changing user password', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -38,16 +38,16 @@ export async function PATCH(request: Request) {
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid userId` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid userId' }, { status: 400 });
             }
         }
 
         if (error === UserNotFound) {
-            return NextResponse.json({ message: `User not found` }, { status: 400 });
+            return NextResponse.json({ message: 'User not found' }, { status: 400 });
         }
 
         if (error === InvalidCredentials) {
-            return NextResponse.json({ message: `Incorrect password` }, { status: 400 });
+            return NextResponse.json({ message: 'Incorrect password' }, { status: 400 });
         }
 
         return NextResponse.json(

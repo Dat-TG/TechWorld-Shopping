@@ -16,7 +16,6 @@ interface Props {
 
 const Breadcrumbs = ({ product }: Props) => {
     const [breadcrumbs, setBreadcrumbs] = useState<Array<Breadcrumbs>>();
-    console.log(product);
 
     useEffect(() => {
         const pathArray = new Array<Breadcrumbs>();
@@ -29,7 +28,7 @@ const Breadcrumbs = ({ product }: Props) => {
         pathArray.push({ breadcrumb: product.name, href: `/product/${product.slug}` });
 
         setBreadcrumbs(pathArray);
-    }, []);
+    }, [product.category?.name, product.name, product.slug, product.category?.slug]);
 
     if (!breadcrumbs) {
         return null;

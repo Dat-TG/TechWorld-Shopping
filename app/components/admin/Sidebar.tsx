@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import Link from 'next/link';
 import CollapsableSidebarItem from './CollapsableSidebarItem';
 import { usePathname } from 'next/navigation';
@@ -10,7 +10,7 @@ export default function Sidebar() {
         <div className='w-1/5 flex flex-col justify-start items-center  mr-10 min-h-screen'>
             <div className='bg-white w-full h-full flex flex-col px-5 py-5 space-y-3 shadow-lg'>
                 <div className='flex items-center space-x-5'>
-                    <img className='w-20 h-20' src='/images/logo.png'></img>
+                    <Image alt='logo' className='w-20 h-20' src='/images/logo.png'></Image>
                     <p className='font-bold text-md sm:text-md md:text-lg'>TechWorld Admin</p>
                 </div>
                 <Link

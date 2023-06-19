@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -77,7 +78,11 @@ function ProductCard({ imgPath, name, price }: ProductCardProps) {
     return (
         <div className='cursor-pointer w-full h-full px-2 py-1 flex justify-between space-x-3 items-center hover:bg-gray-100 focus:bg-gray-100'>
             {imgPath && (
-                <img src={imgPath} className='w-16 h-16 outline outline-1 outline-gray-700' />
+                <Image
+                    alt='poster'
+                    src={imgPath}
+                    className='w-16 h-16 outline outline-1 outline-gray-700'
+                />
             )}
             {name && <p className='text-sm font-semibold text-ellipsis overflow-hidden'>{name}</p>}
             {price && <p className='text-sm text-amber-500 font-semibold'>{price}đ</p>}

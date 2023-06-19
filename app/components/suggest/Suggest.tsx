@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import Button from '../widgets/button/Button';
 import ListProduct from '../product/ListProduct';
 import Link from 'next/link';
@@ -31,7 +32,7 @@ export default function Suggest({ filter }: { filter: Array<Filter> }) {
                                     ' rounded-xl px-4 py-4 w-72 h-20'
                                 }
                             >
-                                <img src={icon} className='w-14 h-14'></img>
+                                <Image alt='icon' src={icon} className='w-14 h-14'></Image>
                                 <p className='ms-4 text-lg'>{name}</p>
                             </div>
                         </Link>

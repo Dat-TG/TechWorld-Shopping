@@ -46,7 +46,7 @@ function AddressForm(props: Props) {
                 })[0]?.code || '',
             );
         }
-    }, []);
+    }, [props.data?.area, props.dataProvince, props.mode]);
     useEffect(() => {
         if (province === '') return;
         fetch(
@@ -85,7 +85,7 @@ function AddressForm(props: Props) {
                 })[0]?.code || '',
             );
         }
-    }, [dataDistrict, dataVillage]);
+    }, [dataDistrict, dataVillage, district, props.data?.area, props.mode, village]);
     const router = useRouter();
     const [opeing, setOpening] = useState(false);
     const [progressing, setProgressing] = useState(false);
@@ -100,7 +100,6 @@ function AddressForm(props: Props) {
     const {
         register,
         handleSubmit,
-        setValue,
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
@@ -335,7 +334,7 @@ function AddressForm(props: Props) {
                                             >
                                                 <option value=''>Chọn tỉnh thành</option>
                                                 {props.dataProvince &&
-                                                    props.dataProvince.map((data, index) => (
+                                                    props.dataProvince.map(data => (
                                                         <option
                                                             key={data.code}
                                                             value={data.code}
@@ -362,7 +361,7 @@ function AddressForm(props: Props) {
                                                 <option value=''>Chọn quận huyện</option>
                                                 {province !== '' &&
                                                     dataDistrict &&
-                                                    dataDistrict.map((data, index) => (
+                                                    dataDistrict.map(data => (
                                                         <option
                                                             key={data.code}
                                                             value={data.code}
@@ -388,7 +387,7 @@ function AddressForm(props: Props) {
                                                 <option value=''>Chọn phường xã</option>
                                                 {district !== '' &&
                                                     dataVillage &&
-                                                    dataVillage.map((data, index) => (
+                                                    dataVillage.map(data => (
                                                         <option
                                                             key={data.code}
                                                             value={data.code}

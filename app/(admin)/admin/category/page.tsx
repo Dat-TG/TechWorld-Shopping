@@ -1,4 +1,3 @@
-import AllProduct from '@/app/components/admin/AllProduct';
 import AllCategories from '@/app/components/admin/category/AllCategory';
 
 export const metadata = {

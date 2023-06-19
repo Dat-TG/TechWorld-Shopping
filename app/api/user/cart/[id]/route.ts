@@ -42,7 +42,7 @@ export async function PATCH(
             message: 'success',
             data: cart,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error changing product quantity from cart', getErrorMessage(error));
 
         if (error instanceof SyntaxError) {
@@ -54,10 +54,10 @@ export async function PATCH(
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid CardItem Id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid CardItem Id' }, { status: 400 });
             }
             if (error.code === 'P2025') {
-                return NextResponse.json({ message: `CardItem not found` }, { status: 400 });
+                return NextResponse.json({ message: 'CardItem not found' }, { status: 400 });
             }
         }
 
@@ -74,14 +74,7 @@ export async function PATCH(
  * DELETE /api/user/cart/:id
  * Remove a product from cart of current user
  */
-export async function DELETE(
-    request: Request,
-    {
-        params,
-    }: {
-        params: { id: string };
-    },
-) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     try {
         const session = await getServerSession(authOptions);
         if (!session || !session.user) {
@@ -98,15 +91,15 @@ export async function DELETE(
             message: 'success',
             data: cart,
         });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error removing product from cart', getErrorMessage(error));
 
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2023') {
-                return NextResponse.json({ message: `Invalid CardItem Id` }, { status: 400 });
+                return NextResponse.json({ message: 'Invalid CardItem Id' }, { status: 400 });
             }
             if (error.code === 'P2017') {
-                return NextResponse.json({ message: `CardItem not found` }, { status: 400 });
+                return NextResponse.json({ message: 'CardItem not found' }, { status: 400 });
             }
         }
 

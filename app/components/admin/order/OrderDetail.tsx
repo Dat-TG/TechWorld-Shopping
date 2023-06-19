@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Input from '../../widgets/input/Input';
 import { statusOrder } from '../../constrains';
-import CartItem from '../../myCart/CartItem';
 import Button from '../../widgets/button/Button';
 
 function OrderDetail() {
@@ -111,10 +110,10 @@ function OrderDetail() {
                 </div>
                 <hr className='mb-6' />
                 <div className='flex flex-row justify-between'></div>
+                {/* <CartItem enableCheckbox={false} />
                 <CartItem enableCheckbox={false} />
                 <CartItem enableCheckbox={false} />
-                <CartItem enableCheckbox={false} />
-                <CartItem enableCheckbox={false} />
+                <CartItem enableCheckbox={false} /> */}
                 <hr />
                 <div className='my-3 text-base flex flex-row justify-between'>
                     <div className='font-semibold text-xl pl-4'>Tổng cộng:</div>

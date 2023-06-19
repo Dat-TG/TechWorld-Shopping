@@ -1,7 +1,7 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 import OrderBox from './OrderBox';
 
 export default function Order() {
@@ -11,11 +11,11 @@ export default function Order() {
     useEffect(() => {
         const indexx = params.get('index');
         setIndex(indexx !== null ? parseInt(indexx) : 0);
-    }, []);
+    }, [params]);
     const { register, handleSubmit } = useForm({
         mode: 'onSubmit',
     });
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: FieldValues) => {
         console.log(data);
     };
     return (

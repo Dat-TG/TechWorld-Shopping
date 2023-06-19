@@ -3,11 +3,11 @@ import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request) {
+export async function GET() {
     try {
         const categories = await listCategories();
         return NextResponse.json({ message: 'success', data: categories });
-    } catch (error: any) {
+    } catch (error) {
         console.log('Error getting all categories', getErrorMessage(error));
 
         return NextResponse.json(
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         }
         if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === 'P2002') {
-                return NextResponse.json({ message: `Category already exists` }, { status: 400 });
+                return NextResponse.json({ message: 'Category already exists' }, { status: 400 });
             }
         }
 
