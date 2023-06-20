@@ -77,6 +77,32 @@ export async function listProducts(categorySlug?: string, brandSlug?: string) {
     return products;
 }
 
+export async function listProductsForPagination(
+    page: number,
+    perPage: number,
+    categorySlug?: string,
+    brandSlug?: string,
+) {
+    const products = await prisma.product.findMany({
+        skip: (page - 1) * perPage,
+        take: perPage,
+        where: {
+            category: {
+                slug: categorySlug != null ? categorySlug : undefined,
+            },
+            brand: {
+                slug: brandSlug != null ? brandSlug : undefined,
+            },
+        },
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+        },
+    });
+    return products;
+}
+
 export async function createProduct(
     name: string,
     quantity: number,
@@ -213,4 +239,9 @@ export async function deleteProduct(id: string) {
         },
     });
     return product;
+}
+
+export async function numberOfProducts() {
+    const products = await prisma.product.count();
+    return products;
 }

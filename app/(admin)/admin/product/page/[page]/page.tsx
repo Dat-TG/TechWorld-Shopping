@@ -6,14 +6,16 @@ export const metadata = {
     icons: '/images/logo.png',
 };
 
-export const revalidate = 0;
-
-export default async function Page() {
+export default async function Page({ params }: { params: { page: string } }) {
     const perPage = 8;
     const totalProducts = await numberOfProducts();
     return (
         <div className='w-full'>
-            <AllProduct page={1} perPage={perPage} totalProducts={totalProducts} />
+            <AllProduct
+                page={parseInt(params.page)}
+                perPage={perPage}
+                totalProducts={totalProducts}
+            />
         </div>
     );
 }
