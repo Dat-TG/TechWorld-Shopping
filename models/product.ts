@@ -3,6 +3,8 @@ import prisma from '../libs/prismadb';
 import { createAttachments, deleteAttachments } from './attachment';
 import { Attachment, Brand, Category, Product } from '@prisma/client';
 import { FullCartItem } from './user';
+import { deleteCartItemsByProductId } from './cart';
+import { deleteReviewsByProductId } from './review';
 
 export type FullProduct = Product & {
     category: Category | null;
@@ -72,6 +74,11 @@ export async function listProducts(categorySlug?: string, brandSlug?: string) {
             attachments: true,
             brand: true,
             category: true,
+            Reviews: {
+                select: {
+                    rating: true,
+                },
+            },
         },
     });
     return products;
@@ -211,6 +218,17 @@ export async function deleteProduct(id: string) {
         where: {
             id: id,
         },
+        include: {
+            attachments: true,
+        },
     });
+
+    if (!product) {
+        throw ProductNotFound;
+    }
+
+    deleteCartItemsByProductId(product.id);
+    deleteReviewsByProductId(product.id);
+
     return product;
 }

@@ -1,3 +1,4 @@
+import { CartItem } from '@prisma/client';
 import prisma from '../libs/prismadb';
 import { NotEnoughQuantity, ProductNotFound } from './product';
 import { UserNotFound } from './user';
@@ -160,4 +161,14 @@ export async function removeProductFromCart(userId: string, cartItemId: string) 
     });
 
     return cartItem.cart.CartItem.find(item => item.id === cartItemId);
+}
+
+export async function deleteCartItemsByProductId(productId: string) {
+    const cartItems = await prisma.cartItem.deleteMany({
+        where: {
+            productId: productId,
+        },
+    });
+
+    return cartItems;
 }

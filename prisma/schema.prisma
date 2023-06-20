@@ -47,6 +47,7 @@ model Product {
     categoryId  String?       @db.ObjectId
     brand       Brand?        @relation(fields: [brandId], references: [id])
     brandId     String?       @db.ObjectId
+    deleted     Boolean       @default(false)
     CartItem    CartItem[]
     InvoiceItem InvoiceItem[]
     Reviews     Review[]

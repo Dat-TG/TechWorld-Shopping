@@ -100,3 +100,11 @@ export async function deleteReview(id: string, userId: string) {
         },
     });
 }
+
+export async function deleteReviewsByProductId(productId: string) {
+    return await prisma.review.deleteMany({
+        where: {
+            productId: productId,
+        },
+    });
+}
