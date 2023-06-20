@@ -5,7 +5,7 @@ import { Brand, Category } from '@prisma/client';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import Time from './Time';
+import Time from '../Time';
 
 export interface Data {
     name: string;

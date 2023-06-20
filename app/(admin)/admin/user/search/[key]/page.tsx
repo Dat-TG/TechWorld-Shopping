@@ -1,7 +1,6 @@
-import UserList from '@/app/components/admin/user/UserList';
 import UserPagination from '@/app/components/admin/user/UserPagination';
 import UserSearchBar from '@/app/components/admin/user/UserSearchBar';
-import { numberOfUsers, searchUser } from '@/models/user';
+import { searchUser } from '@/models/user';
 import Link from 'next/link';
 
 export const metadata = {

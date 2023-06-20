@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import DeleteProductModal from './DeleteProductModal';
 import { FullProduct } from '@/models/product';
-import { defaultValue } from '../Constant';
+import { defaultValue } from '../../Constant';
 
 interface Props {
     className?: string;

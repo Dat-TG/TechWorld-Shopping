@@ -84,6 +84,32 @@ export async function listProducts(categorySlug?: string, brandSlug?: string) {
     return products;
 }
 
+export async function listProductsForPagination(
+    page: number,
+    perPage: number,
+    categorySlug?: string,
+    brandSlug?: string,
+) {
+    const products = await prisma.product.findMany({
+        skip: (page - 1) * perPage,
+        take: perPage,
+        where: {
+            category: {
+                slug: categorySlug != null ? categorySlug : undefined,
+            },
+            brand: {
+                slug: brandSlug != null ? brandSlug : undefined,
+            },
+        },
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+        },
+    });
+    return products;
+}
+
 export async function createProduct(
     name: string,
     quantity: number,
@@ -231,4 +257,63 @@ export async function deleteProduct(id: string) {
     deleteReviewsByProductId(product.id);
 
     return product;
+}
+
+export async function numberOfProducts(categorySlug?: string) {
+    const products = await prisma.product.count({
+        where: {
+            category: {
+                slug: { equals: categorySlug },
+            },
+        },
+    });
+    return products;
+}
+
+export async function searchProduct(key: string) {
+    const value = parseInt(key);
+    const users = await prisma.product.findMany({
+        where: {
+            OR: [
+                {
+                    name: { contains: key, mode: 'insensitive' },
+                },
+                {
+                    category: { name: { contains: key, mode: 'insensitive' } },
+                },
+                {
+                    brand: {
+                        name: { contains: key, mode: 'insensitive' },
+                    },
+                },
+                {
+                    description: {
+                        contains: key,
+                        mode: 'insensitive',
+                    },
+                },
+                {
+                    price: {
+                        equals: Number.isNaN(value) ? undefined : value,
+                    },
+                },
+                {
+                    quantity: {
+                        equals: Number.isNaN(value) ? undefined : value,
+                    },
+                },
+                {
+                    sold: {
+                        equals: Number.isNaN(value) ? undefined : value,
+                    },
+                },
+            ],
+        },
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+        },
+    });
+    return users;
 }
