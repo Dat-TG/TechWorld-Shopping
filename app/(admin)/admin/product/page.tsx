@@ -5,6 +5,8 @@ export const metadata = {
     icons: '/images/logo.png',
 };
 
+export const revalidate = 0;
+
 export default function Page() {
     return (
         <div className='w-full'>
