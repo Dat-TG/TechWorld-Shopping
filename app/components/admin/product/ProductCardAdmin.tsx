@@ -4,6 +4,7 @@ import { useState } from 'react';
 import DeleteProductModal from './DeleteProductModal';
 import { FullProduct } from '@/models/product';
 import { defaultValue } from '../../Constant';
+import { RatingFormatter } from '@/utils/formatter';
 
 interface Props {
     className?: string;
@@ -12,6 +13,9 @@ interface Props {
 export default function ProductCardAdmin({ className, product }: Props) {
     const [showingDeleteModal, setShowingDeleteModal] = useState(false);
     if (product == null) return <div></div>;
+    const rating = product.Reviews.length
+        ? product.Reviews.reduce((a, b) => a + b.rating, 0) / product.Reviews.length
+        : 5;
     return (
         <div
             className={
@@ -23,7 +27,8 @@ export default function ProductCardAdmin({ className, product }: Props) {
                 alt='poster'
                 src={product.attachments[0]?.path ?? defaultValue.image}
                 className='w-1/2 h-fit self-center'
-                width={1000} height={1000}
+                width={1000}
+                height={1000}
             ></Image>
 
             <p className='font-semibold text-center text-md'>{product.name}</p>
@@ -55,7 +60,7 @@ export default function ProductCardAdmin({ className, product }: Props) {
             <div>
                 <span className='font-semibold'>Đánh giá: </span>
                 <span>
-                    {'TODO '}
+                    {RatingFormatter.format(rating)}
                     <span className='text-yellow-500'>
                         <i className='bi bi-star-fill'></i>
                     </span>

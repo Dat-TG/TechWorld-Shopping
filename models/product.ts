@@ -1,7 +1,7 @@
 import { toSlug } from '@/utils/helper';
 import prisma from '../libs/prismadb';
 import { createAttachments, deleteAttachments } from './attachment';
-import { Attachment, Brand, Category, Product } from '@prisma/client';
+import { Attachment, Brand, Category, Product, Review } from '@prisma/client';
 import { FullCartItem } from './user';
 import { deleteCartItemsByProductId } from './cart';
 import { deleteReviewsByProductId } from './review';
@@ -10,6 +10,14 @@ export type FullProduct = Product & {
     category: Category | null;
     brand: Brand | null;
     attachments: Attachment[];
+    Reviews: (Review & {
+        User: {
+            id: string;
+            name: string | null;
+            email: string | null;
+            image: Attachment | null;
+        };
+    })[];
 };
 
 export type MyCart = {
@@ -55,6 +63,18 @@ export async function getProductBySlug(slug: string) {
             attachments: true,
             brand: true,
             category: true,
+            Reviews: {
+                include: {
+                    User: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            image: true,
+                        },
+                    },
+                },
+            },
         },
     });
     return product;
@@ -75,8 +95,15 @@ export async function listProducts(categorySlug?: string, brandSlug?: string) {
             brand: true,
             category: true,
             Reviews: {
-                select: {
-                    rating: true,
+                include: {
+                    User: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            image: true,
+                        },
+                    },
                 },
             },
         },
@@ -105,6 +132,18 @@ export async function listProductsForPagination(
             attachments: true,
             brand: true,
             category: true,
+            Reviews: {
+                include: {
+                    User: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            image: true,
+                        },
+                    },
+                },
+            },
         },
     });
     return products;
@@ -313,6 +352,18 @@ export async function searchProduct(key: string) {
             attachments: true,
             brand: true,
             category: true,
+            Reviews: {
+                include: {
+                    User: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            image: true,
+                        },
+                    },
+                },
+            },
         },
     });
     return users;

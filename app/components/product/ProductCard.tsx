@@ -8,6 +8,9 @@ interface Props {
 }
 
 export default function ProductCard({ product }: Props) {
+    const numberOfReviews = product.Reviews.length;
+    // TODO: add product rating
+    // const rating = numberOfReviews ? product.Reviews.reduce((a, b) => a + b.rating, 0) / numberOfReviews : 5;
     return (
         <div className='pb-6 w-full'>
             <Link
@@ -64,7 +67,7 @@ export default function ProductCard({ product }: Props) {
                                 <i className='bi bi-star-fill text-amber-500'></i>
                                 <i className='bi bi-star-fill text-amber-500'></i>
                                 <i className='bi bi-star-fill text-amber-500'></i>
-                                <div className='text-md font-normal'>512</div>
+                                <div className='text-md font-normal'>{numberOfReviews}</div>
                             </div>
                         </div>
                     </div>

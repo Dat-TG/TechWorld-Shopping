@@ -76,7 +76,9 @@ export default async function AllProduct(props: Props) {
                     <Link
                         href={
                             props.page > 1
-                                ? `/admin/product/page/${props.page - 1}/${props.categorySlug || ''}`
+                                ? `/admin/product/page/${props.page - 1}/${
+                                      props.categorySlug || ''
+                                  }`
                                 : `/admin/product/page/1/${props.categorySlug || ''}`
                         }
                     >
@@ -100,7 +102,9 @@ export default async function AllProduct(props: Props) {
                     <Link
                         href={
                             props.page < Math.ceil(props.totalProducts / props.perPage)
-                                ? `/admin/product/page/${props.page + 1}/${props.categorySlug || ''}`
+                                ? `/admin/product/page/${props.page + 1}/${
+                                      props.categorySlug || ''
+                                  }`
                                 : `/admin/product/page/${props.page}/${props.categorySlug || ''}`
                         }
                     >

@@ -6,7 +6,7 @@ import Button from '../widgets/button/Button';
 import Review from './Review';
 import ListProduct from './ListProduct';
 import { FullProduct } from '@/models/product';
-import { CurrencyFormatter } from '@/utils/formatter';
+import { CurrencyFormatter, RatingFormatter } from '@/utils/formatter';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import CarouselThumbnail from './CarouselThumbnail';
 import { defaultValue } from '../Constant';
@@ -49,6 +49,11 @@ function ProductDetail({ product, similarProducts }: Props) {
         });
     }
 
+    const numberOfReviews = product.Reviews.length;
+    const rating = numberOfReviews
+        ? product.Reviews.reduce((a, b) => a + b.rating, 0) / numberOfReviews
+        : 5;
+
     return (
         <>
             <div className='p-4 bg-slate-50 flex flex-row'>
@@ -78,7 +83,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                     <h2 className='font-semibold text-2xl tracking-wider '>{product.name}</h2>
                     <div className='flex flex-row text-lg my-2'>
                         <span className='text-amber-600 font-bold text-base mr-2 border-amber-600 border-b'>
-                            4.5
+                            {RatingFormatter.format(rating)}
                         </span>
                         <div className='text-amber-500 w-28 flex flex-row justify-between'>
                             <i className='bi bi-star-fill'></i>
@@ -92,7 +97,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                         </span>
                         <p className='font-normal text-lg text-gray-500'>
                             <span className='text-black font-semibold text-xl mr-2 border-black border-b'>
-                                22k
+                                {numberOfReviews}
                             </span>
                             Đánh giá
                         </p>
