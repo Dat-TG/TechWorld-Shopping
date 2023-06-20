@@ -1,4 +1,5 @@
-import AllProduct from '@/app/components/admin/AllProduct';
+
+import AllProduct from '@/app/components/admin/product/AllProduct';
 import { numberOfProducts } from '@/models/product';
 
 export const metadata = {

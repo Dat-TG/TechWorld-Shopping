@@ -1,4 +1,4 @@
-import AddProduct from '@/app/components/admin/AddProduct';
+import AddProduct from '@/app/components/admin/product/AddProduct';
 
 export const metadata = {
     title: 'Thêm sản phẩm mới | Admin site | TechWorld',

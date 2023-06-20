@@ -1,6 +1,7 @@
 import { listProductsForPagination } from '@/models/product';
 import ProductCardAdmin from './ProductCardAdmin';
 import Link from 'next/link';
+import ProductSearchBar from './ProductSearchBar';
 
 interface Props {
     totalProducts: number;
@@ -25,6 +26,8 @@ export default async function AllProduct(props: Props) {
                     </div>
                 </div>
             </div>
+
+            <ProductSearchBar />
 
             <div className='flex justify-end space-x-5'>
                 <select

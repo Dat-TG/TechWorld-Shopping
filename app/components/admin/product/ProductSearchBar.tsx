@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-export default function UserSearchBar() {
+export default function ProductSearchBar() {
     const router = useRouter();
     return (
         <>
@@ -29,11 +29,11 @@ export default function UserSearchBar() {
                         onKeyUp={event => {
                             if (event.key == 'Enter') {
                                 // console.log(event.currentTarget.value);
-                                router.push(encodeURI(`/admin/user/search/${event.currentTarget.value}`));
+                                router.push(encodeURI(`/admin/product/search/${event.currentTarget.value}`));
                             }
                         }}
                         type='text'
-                        placeholder='Tìm tài khoản'
+                        placeholder='Tìm sản phẩm'
                         className='block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
                     />
                 </div>

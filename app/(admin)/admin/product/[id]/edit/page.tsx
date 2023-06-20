@@ -1,4 +1,4 @@
-import EditProduct from '@/app/components/admin/EditProduct';
+import EditProduct from '@/app/components/admin/product/EditProduct';
 
 export const metadata = {
     title: 'Admin site | TechWorld',

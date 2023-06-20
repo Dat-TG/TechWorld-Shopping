@@ -245,3 +245,51 @@ export async function numberOfProducts() {
     const products = await prisma.product.count();
     return products;
 }
+
+export async function searchProduct(key: string) {
+    const value = parseInt(key);
+    const users = await prisma.product.findMany({
+        where: {
+            OR: [
+                {
+                    name: { contains: key, mode: 'insensitive' },
+                },
+                {
+                    category: { name: { contains: key, mode: 'insensitive' } },
+                },
+                {
+                    brand: {
+                        name: { contains: key, mode: 'insensitive' },
+                    },
+                },
+                {
+                    description: {
+                        contains: key,
+                        mode: 'insensitive',
+                    },
+                },
+                {
+                    price: {
+                        equals: Number.isNaN(value) ? undefined : value,
+                    },
+                },
+                {
+                    quantity: {
+                        equals: Number.isNaN(value) ? undefined : value,
+                    },
+                },
+                {
+                    sold: {
+                        equals: Number.isNaN(value) ? undefined : value,
+                    },
+                },
+            ],
+        },
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+        },
+    });
+    return users;
+}
