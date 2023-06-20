@@ -2,16 +2,19 @@ import { listProductsForPagination } from '@/models/product';
 import ProductCardAdmin from './ProductCardAdmin';
 import Link from 'next/link';
 import ProductSearchBar from './ProductSearchBar';
+import { listCategoriesAlphabet } from '@/models/category';
+import SelectCategory from './SelectCategory';
 
 interface Props {
     totalProducts: number;
     perPage: number;
     page: number;
+    categorySlug?: string;
 }
 
 export default async function AllProduct(props: Props) {
-    const products = await listProductsForPagination(props.page, props.perPage);
-
+    const products = await listProductsForPagination(props.page, props.perPage, props.categorySlug);
+    const categories = await listCategoriesAlphabet();
     return (
         <div className='space-y-5 flex flex-col justify-start my-5'>
             <div className='flex items-center justify-between'>
@@ -30,16 +33,7 @@ export default async function AllProduct(props: Props) {
             <ProductSearchBar />
 
             <div className='flex justify-end space-x-5'>
-                <select
-                    defaultValue={'DEFAULT'}
-                    className='w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                >
-                    <option value='DEFAULT'>Phân loại</option>
-                    <option value='US'>Tất cả</option>
-                    <option value='CA'>Điện thoại</option>
-                    <option value='FR'>Laptop</option>
-                    <option value='DE'>Tai nghe</option>
-                </select>
+                <SelectCategory categories={categories} slug={props.categorySlug} />
 
                 <select
                     defaultValue={'DEFAULT'}
@@ -82,8 +76,8 @@ export default async function AllProduct(props: Props) {
                     <Link
                         href={
                             props.page > 1
-                                ? `/admin/product/page/${props.page - 1}`
-                                : '/admin/product/page/1'
+                                ? `/admin/product/page/${props.page - 1}/${props.categorySlug || ''}`
+                                : `/admin/product/page/1/${props.categorySlug || ''}`
                         }
                     >
                         <button className='inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>
@@ -106,8 +100,8 @@ export default async function AllProduct(props: Props) {
                     <Link
                         href={
                             props.page < Math.ceil(props.totalProducts / props.perPage)
-                                ? `/admin/product/page/${props.page + 1}`
-                                : `/admin/product/page/${props.page}`
+                                ? `/admin/product/page/${props.page + 1}/${props.categorySlug || ''}`
+                                : `/admin/product/page/${props.page}/${props.categorySlug || ''}`
                         }
                     >
                         <button className='inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>

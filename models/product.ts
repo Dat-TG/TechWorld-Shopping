@@ -241,8 +241,14 @@ export async function deleteProduct(id: string) {
     return product;
 }
 
-export async function numberOfProducts() {
-    const products = await prisma.product.count();
+export async function numberOfProducts(categorySlug?: string) {
+    const products = await prisma.product.count({
+        where: {
+            category: {
+                slug: { equals: categorySlug },
+            },
+        },
+    });
     return products;
 }
 
