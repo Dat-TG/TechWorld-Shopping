@@ -5,6 +5,7 @@ import { Attachment, Brand, Category, Product, Review } from '@prisma/client';
 import { FullCartItem } from './user';
 import { deleteCartItemsByProductId } from './cart';
 import { deleteReviewsByProductId } from './review';
+import { SortingOptions } from '@/app/components/Constant';
 
 export type FullProduct = Product & {
     category: Category | null;
@@ -116,13 +117,14 @@ export async function listProductsForPagination(
     perPage: number,
     categorySlug?: string,
     brandSlug?: string,
+    sortingOption?: string,
 ) {
     const products = await prisma.product.findMany({
         skip: (page - 1) * perPage,
         take: perPage,
         where: {
             category: {
-                slug: categorySlug != null ? categorySlug : undefined,
+                slug: categorySlug != null && categorySlug != 'DEFAULT' ? categorySlug : undefined,
             },
             brand: {
                 slug: brandSlug != null ? brandSlug : undefined,
@@ -144,6 +146,17 @@ export async function listProductsForPagination(
                     },
                 },
             },
+        },
+        orderBy: {
+            sold: sortingOption === SortingOptions.Hot ? 'desc' : undefined,
+            price:
+                sortingOption === SortingOptions.PriceASC
+                    ? 'asc'
+                    : sortingOption === SortingOptions.PriceDSC
+                    ? 'desc'
+                    : undefined,
+            createdAt: sortingOption === SortingOptions.Create ? 'desc' : undefined,
+            updatedAt: sortingOption === SortingOptions.Recent ? 'desc' : undefined,
         },
     });
     return products;
@@ -356,6 +369,7 @@ export async function numberOfProducts(categorySlug?: string) {
             category: {
                 slug: { equals: categorySlug },
             },
+            deleted: false,
         },
     });
     return products;

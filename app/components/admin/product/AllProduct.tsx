@@ -4,16 +4,24 @@ import Link from 'next/link';
 import ProductSearchBar from './ProductSearchBar';
 import { listCategoriesAlphabet } from '@/models/category';
 import SelectCategory from './SelectCategory';
+import SelectSortOption from './SelectSortOption';
 
 interface Props {
     totalProducts: number;
     perPage: number;
     page: number;
     categorySlug?: string;
+    option?: string;
 }
 
 export default async function AllProduct(props: Props) {
-    const products = await listProductsForPagination(props.page, props.perPage, props.categorySlug);
+    const products = await listProductsForPagination(
+        props.page,
+        props.perPage,
+        props.categorySlug,
+        undefined,
+        props.option,
+    );
     const categories = await listCategoriesAlphabet();
     return (
         <div className='space-y-5 flex flex-col justify-start my-5'>
@@ -33,18 +41,12 @@ export default async function AllProduct(props: Props) {
             <ProductSearchBar />
 
             <div className='flex justify-end space-x-5'>
-                <SelectCategory categories={categories} slug={props.categorySlug} />
-
-                <select
-                    defaultValue={'DEFAULT'}
-                    className='w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                >
-                    <option value='DEFAULT'>Sắp xếp theo</option>
-                    <option value='US'>Bán chạy</option>
-                    <option value='CA'>Giá: Cao đến thấp</option>
-                    <option value='FR'>Giá: Thấp đến cao</option>
-                    <option value='DE'>Thời gian mở bán</option>
-                </select>
+                <SelectCategory
+                    categories={categories}
+                    slug={props.categorySlug}
+                    sortingOption={props.option}
+                />
+                <SelectSortOption category={props.categorySlug} option={props.option} />
             </div>
             <div className='grid grid-cols-4 gap-10'>
                 {products.map(product => (

@@ -16,6 +16,7 @@ export default async function Page({ params }: { params: { page: string[] } }) {
                 perPage={perPage}
                 totalProducts={totalProducts}
                 categorySlug={params.page[1]}
+                option={params.page[2]}
             />
         </div>
     );

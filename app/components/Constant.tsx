@@ -4,5 +4,13 @@ export const defaultStatus = {
 };
 
 export const defaultValue = {
-    image: '/images/empty-cart.webp',
+    image: '/images/Image_not_available.png',
+};
+
+export const SortingOptions = {
+    Hot: 'hottest',
+    PriceASC: 'price-asc',
+    PriceDSC: 'price-dsc',
+    Recent: 'recently',
+    Create: 'created'
 };
