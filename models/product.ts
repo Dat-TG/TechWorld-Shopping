@@ -278,6 +278,58 @@ export async function updateProduct(
     return newProduct;
 }
 
+export async function increaseProductQuantity(id: string, quantity: number) {
+    return await prisma.product.update({
+        where: {
+            id: id,
+        },
+        data: {
+            quantity: {
+                increment: quantity,
+            },
+        },
+    });
+}
+
+export async function decreaseProductQuantity(id: string, quantity: number) {
+    return await prisma.product.update({
+        where: {
+            id: id,
+        },
+        data: {
+            quantity: {
+                decrement: quantity,
+            },
+        },
+    });
+}
+
+export async function increaseProductSold(id: string, quantity: number) {
+    return await prisma.product.update({
+        where: {
+            id: id,
+        },
+        data: {
+            sold: {
+                increment: quantity,
+            },
+        },
+    });
+}
+
+export async function decreaseProductSold(id: string, quantity: number) {
+    return await prisma.product.update({
+        where: {
+            id: id,
+        },
+        data: {
+            sold: {
+                decrement: quantity,
+            },
+        },
+    });
+}
+
 export async function deleteProduct(id: string) {
     const product = await prisma.product.delete({
         where: {

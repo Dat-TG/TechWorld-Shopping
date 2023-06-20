@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { InvalidStatus, updateInvoice } from '@/models/invoice';
+import { InvalidStatus, InvoiceNotFound, updateInvoice } from '@/models/invoice';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
@@ -43,7 +43,11 @@ export async function PATCH(request: Request, { params }: { params: { id: string
         }
 
         if (error === InvalidStatus) {
-            return NextResponse.json({ message: 'Invalid status' }, { status: 400 });
+            return NextResponse.json({ message: getErrorMessage(error) }, { status: 400 });
+        }
+
+        if (error === InvoiceNotFound) {
+            return NextResponse.json({ message: getErrorMessage(error) }, { status: 400 });
         }
 
         return NextResponse.json(
