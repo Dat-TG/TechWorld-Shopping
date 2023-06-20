@@ -11,9 +11,8 @@ import { CurrencyFormatter } from '@/utils/formatter';
 
 export default function CartHover() {
     const { myCart } = useGlobalContext();
-
     const [isHovering, setIsHovering] = useState(false);
-    const totalProductInCart = myCart?.CartItem?.length ?? 0;
+    const totalProductInCart = myCart?.CartItem?.length;
 
     const handleMouseOver = () => {
         setIsHovering(true);
@@ -25,6 +24,7 @@ export default function CartHover() {
     return (
         <>
             <Link
+                id='.carticon'
                 href='/cart'
                 className='relative block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-white md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                 aria-current='page'
@@ -37,7 +37,7 @@ export default function CartHover() {
                         totalProductInCart == 0 ? 'hidden' : 'absolute'
                     } top-0 text-xs translate-x-0 -right-3 w-fit h-fit px-2 text-center bg-red-600 text-white rounded-xl`}
                 >
-                    {totalProductInCart}
+                    {totalProductInCart != undefined ? totalProductInCart : '...'}
                 </div>
             </Link>
 
@@ -48,12 +48,10 @@ export default function CartHover() {
                 onMouseOver={handleMouseOver}
                 onMouseOut={handleMouseOut}
             >
-                {totalProductInCart == 0 ? (
+                {totalProductInCart == undefined ? (
                     <div className='flex flex-col items-center justify-center w-80 h-56'>
                         <Image
-                            src={
-                                '/images/empty-cart.webp'
-                            }
+                            src={'/images/empty-cart.webp'}
                             width={250}
                             height={250}
                             alt='Empty'

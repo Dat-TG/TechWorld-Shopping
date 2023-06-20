@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { UserWithImage } from '@/models/user';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Block, Loading, Notify } from 'notiflix';
+import { Loading, Notify } from 'notiflix';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -80,7 +80,6 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
     };
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-        Block.standard('.image');
         if (e.target.files?.length) {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -91,7 +90,6 @@ export default function EditProfile({ user }: { user: UserWithImage }) {
 
             reader.readAsDataURL(file);
         }
-        Block.remove('.image');
     };
 
     useEffect(() => {

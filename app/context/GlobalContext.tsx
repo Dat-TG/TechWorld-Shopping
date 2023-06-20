@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { MyCart } from '@/models/product';
 import { User } from 'next-auth';
+import { usePathname } from 'next/navigation';
+import { Loading } from 'notiflix';
 interface ContextProps {
     user?: User;
     myCart?: MyCart;
@@ -17,13 +19,20 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
     const session = useSession();
     const [myCart, setMyCart] = useState<MyCart>();
     const [user, setUser] = useState<User>();
+    const pathname = usePathname();
 
     React.useEffect(() => {
+        if (pathname.includes('/cart')) {
+            Loading.dots();
+        }
         if (session.status == 'authenticated') {
             setUser(session?.data?.user);
             updateMyCart();
         }
-    }, [session.data?.user, session.status]);
+        if (pathname.includes('/cart')) {
+            Loading.remove();
+        }
+    }, [session.data?.user, session.status, pathname]);
 
     async function updateMyCart() {
         try {

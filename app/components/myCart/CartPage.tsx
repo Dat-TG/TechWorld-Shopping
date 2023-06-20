@@ -8,31 +8,30 @@ import Button from '../widgets/button/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Loading } from 'notiflix';
-import { usePathname } from 'next/navigation';
 
 function CartPage() {
-    const pathname = usePathname();
-    if (pathname.includes('/cart')) {
-        Loading.dots();
-    }
     const { myCart } = useGlobalContext();
-    Loading.remove();
     if (myCart == null || myCart?.CartItem.length == 0) {
         return (
             <div className='h-fit w-full my-32 flex flex-col items-center justify-center'>
-                <Image
-                    src={'/images/empty_cart.png'}
-                    width={200}
-                    height={200}
-                    alt='Empty cart'
-                    className={'mb-4'}
-                />
-                <h1>Không có sản phẩm nào trong giỏ hàng. Bắt đầu mua sắm thôi nào !</h1>
-                <Link href='/'>
-                    <Button className='bg-amber-400 px-20 py-3 mt-4 hover:bg-amber-300'>
-                        Về trang chính
-                    </Button>
-                </Link>
+                {myCart != null && (
+                    <>
+                        {' '}
+                        <Image
+                            src={'/images/empty_cart.png'}
+                            width={200}
+                            height={200}
+                            alt='Empty cart'
+                            className={'mb-4'}
+                        />
+                        <h1>Không có sản phẩm nào trong giỏ hàng. Bắt đầu mua sắm thôi nào !</h1>
+                        <Link href='/'>
+                            <Button className='bg-amber-400 px-20 py-3 mt-4 hover:bg-amber-300'>
+                                Về trang chính
+                            </Button>
+                        </Link>
+                    </>
+                )}
             </div>
         );
     }

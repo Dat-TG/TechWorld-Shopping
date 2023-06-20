@@ -50,7 +50,7 @@ export default function ProductCard({ product }: Props) {
                                 <span className='font-normal line-through text-sm'>
                                     {CurrencyFormatter.format(product.price)}
                                 </span>{' '}
-                                -{product.sale * 100}%
+                                -{Math.floor(product.sale * 100)}%
                             </div>
                             <div className='text-amber-500 font-bold text-md'>
                                 {CurrencyFormatter.format(

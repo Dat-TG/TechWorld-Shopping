@@ -133,7 +133,7 @@ export async function changeProductQuantityInCart(cartItemId: string, quantity: 
 export async function removeProductFromCart(userId: string, cartItemId: string) {
     const cartItem = await prisma.user.update({
         where: {
-            id: cartItemId,
+            id: userId,
         },
         data: {
             cart: {
