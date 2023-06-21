@@ -45,8 +45,13 @@ export default async function AllProduct(props: Props) {
                     categories={categories}
                     slug={props.categorySlug}
                     sortingOption={props.option}
+                    isSearching={false}
                 />
-                <SelectSortOption category={props.categorySlug} option={props.option} />
+                <SelectSortOption
+                    category={props.categorySlug}
+                    option={props.option}
+                    isSearching={false}
+                />
             </div>
             <div className='grid grid-cols-4 gap-10'>
                 {products.map(product => (
@@ -78,10 +83,12 @@ export default async function AllProduct(props: Props) {
                     <Link
                         href={
                             props.page > 1
-                                ? `/admin/product/page/${props.page - 1}/${
-                                      props.categorySlug || ''
-                                  }`
-                                : `/admin/product/page/1/${props.categorySlug || ''}`
+                                ? `/admin/product?page=${props.page - 1}&category=${
+                                      props.categorySlug || 'DEFAULT'
+                                  }&sort=${props.option || 'DEFAULT'}`
+                                : `/admin/product?page=1&category=${
+                                      props.categorySlug || 'DEFAULT'
+                                  }&sort=${props.option || 'DEFAULT'}`
                         }
                     >
                         <button className='inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>
@@ -104,10 +111,12 @@ export default async function AllProduct(props: Props) {
                     <Link
                         href={
                             props.page < Math.ceil(props.totalProducts / props.perPage)
-                                ? `/admin/product/page/${props.page + 1}/${
-                                      props.categorySlug || ''
-                                  }`
-                                : `/admin/product/page/${props.page}/${props.categorySlug || ''}`
+                                ? `/admin/product?page=${props.page + 1}&category=${
+                                      props.categorySlug || 'DEFAULT'
+                                  }&sort=${props.option || 'DEFAULT'}`
+                                : `/admin/product?page=${props.page}&category=${
+                                      props.categorySlug || 'DEFAULT'
+                                  }&sort=${props.option || 'DEFAULT'}`
                         }
                     >
                         <button className='inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-800 border-0 border-l border-gray-700 rounded-r hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'>

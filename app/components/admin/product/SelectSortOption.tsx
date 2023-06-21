@@ -5,9 +5,13 @@ import { SortingOptions } from '../../Constant';
 export default function SelectSortOption({
     option,
     category,
+    keyword,
+    isSearching,
 }: {
     option?: string;
     category?: string;
+    keyword?: string;
+    isSearching: boolean;
 }) {
     const router = useRouter();
     return (
@@ -18,9 +22,13 @@ export default function SelectSortOption({
                 onChange={event => {
                     // console.log(event.currentTarget.value);
                     router.push(
-                        `/admin/product/page/1/${category != undefined ? category : 'DEFAULT'}/${
-                            event.currentTarget.value
-                        }`,
+                        isSearching
+                            ? `/admin/product/search?key=${keyword || ''}&category=${
+                                  category != undefined ? category : 'DEFAULT'
+                              }&sort=${event.currentTarget.value}`
+                            : `/admin/product?page=1&category=${
+                                  category != undefined ? category : 'DEFAULT'
+                              }&sort=${event.currentTarget.value}`,
                     );
                 }}
             >

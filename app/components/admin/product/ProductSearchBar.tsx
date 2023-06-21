@@ -29,7 +29,11 @@ export default function ProductSearchBar() {
                         onKeyUp={event => {
                             if (event.key == 'Enter') {
                                 // console.log(event.currentTarget.value);
-                                router.push(encodeURI(`/admin/product/search/${event.currentTarget.value}`));
+                                router.push(
+                                    encodeURI(
+                                        `/admin/product/search?key=${event.currentTarget.value}&category=DEFAULT&sort=DEFAULT`,
+                                    ),
+                                );
                             }
                         }}
                         type='text'

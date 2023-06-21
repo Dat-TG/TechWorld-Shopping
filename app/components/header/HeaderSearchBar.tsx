@@ -22,8 +22,12 @@ export default function HeaderSearchBar() {
                     }}
                     onKeyUp={event => {
                         if (event.key == 'Enter') {
-                            // console.log(event.currentTarget.value);
-                            router.push(encodeURI(`/search?key=${event.currentTarget.value}`));
+                            // console.log(event.currentTarget.value)
+                            router.push(
+                                encodeURI(
+                                    `/search?key=${event.currentTarget.value}&category=DEFAULT&sort=DEFAULT`,
+                                ),
+                            );
                         }
                     }}
                 />
@@ -31,7 +35,7 @@ export default function HeaderSearchBar() {
                     type='submit'
                     className='absolute right-0 top-0 mt-4 mr-4'
                     onClick={() => {
-                        router.push(encodeURI(`/search?key=${key}`));
+                        router.push(encodeURI(`/search?key=${key}&category=DEFAULT&sort=DEFAULT`));
                     }}
                 >
                     <i className='bi bi-search'></i>
