@@ -19,7 +19,7 @@ export default function ProductCardAdmin({ className, product }: Props) {
     return (
         <div
             className={
-                'bg-white flex flex-col justify-between rounded-xl w-full h-full shadow-xl px-5 py-5 space-y-2 ' +
+                'bg-white flex flex-col justify-between rounded-xl w-full h-full shadow-xl px-5 py-5 space-y-2 overflow-auto ' +
                 className
             }
         >

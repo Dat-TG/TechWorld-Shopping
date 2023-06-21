@@ -1,11 +1,18 @@
 'use client';
+import { Brand, Category } from '@prisma/client';
 import FormAddProduct, { Data } from './FormAddProduct';
 import { useRouter } from 'next/navigation';
+import { Loading, Notify } from 'notiflix';
 import { toast } from 'react-hot-toast';
 
-export default function AddProduct() {
+export default function AddProduct({
+    params,
+}: {
+    params: { categoriesList: Category[]; brandsList: Brand[] };
+}) {
     const router = useRouter();
     const onSumbit = async (product: Data, attachments: string[]) => {
+        Loading.hourglass();
         try {
             const res = await fetch('/api/product', {
                 method: 'POST',
@@ -26,15 +33,22 @@ export default function AddProduct() {
             const json = await res.json();
 
             if (json.message === 'success') {
-                toast.success('Thêm sản phẩm thành công');
+                Notify.success('Thêm sản phẩm thành công', { clickToClose: true });
                 router.push('/admin/product?created=true');
             } else {
-                toast.error(json.message);
+                Notify.failure(json.message);
             }
         } catch (errors) {
-            toast.error('Thêm sản phẩm thất bại');
+            Notify.failure('Thêm sản phẩm thất bại');
             console.log(errors);
         }
+        Loading.remove();
     };
-    return <FormAddProduct submit={onSumbit} />;
+    return (
+        <FormAddProduct
+            submit={onSumbit}
+            brandsList={params.brandsList}
+            categoriesList={params.categoriesList}
+        />
+    );
 }

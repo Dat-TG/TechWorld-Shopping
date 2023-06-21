@@ -1,11 +1,11 @@
 'use client';
-import Image from 'next/image';
 import { FullProduct } from '@/models/product';
 import { Brand, Category } from '@prisma/client';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Time from '../Time';
+import InputImages from './InputImages';
 
 export interface Data {
     name: string;
@@ -20,25 +20,12 @@ export interface Data {
 interface Props {
     product?: FullProduct;
     submit?: (data: Data, attachments: string[]) => void;
+    categoriesList: Category[];
+    brandsList: Brand[];
 }
 
-export default function FormAddProduct({ product, submit }: Props) {
-    const [brands, setBrands] = useState<Brand[]>([]);
-    const [categories, setCategories] = useState<Category[]>([]);
+export default function FormAddProduct({ product, submit, categoriesList, brandsList }: Props) {
     const [attachments, setAttachments] = useState<string[]>([]);
-    useEffect(() => {
-        const fetchBrand = async () => {
-            const res = await fetch('/api/brand');
-            const { data } = await res.json();
-            setBrands(data);
-        };
-        const fetchCategory = async () => {
-            const res = await fetch('/api/category');
-            const { data } = await res.json();
-            setCategories(data);
-        };
-        Promise.all([fetchBrand(), fetchCategory()]);
-    }, []);
 
     useEffect(() => {
         const atm = product?.attachments?.map(attachment => attachment.path);
@@ -51,6 +38,15 @@ export default function FormAddProduct({ product, submit }: Props) {
         formState: { errors },
     } = useForm<Data>({
         mode: 'all',
+        defaultValues: {
+            brand: product?.brandId || undefined,
+            category: product?.categoryId || undefined,
+            description: product?.description || undefined,
+            name: product?.name || undefined,
+            price: product?.price,
+            quantity: product?.quantity,
+            sale: (product?.sale || 0) * 100,
+        },
     });
 
     function handleOnChange(changeEvent: ChangeEvent<HTMLInputElement>) {
@@ -71,17 +67,19 @@ export default function FormAddProduct({ product, submit }: Props) {
     }
 
     const onSubmit = async (data: Data) => {
-        if (submit) submit(data, attachments);
+        if (submit) {
+            submit(data, attachments);
+        }
     };
     return (
         <form className='w-full space-y-5' onSubmit={handleSubmit(onSubmit)}>
             <div className='space-y-5 flex flex-col justify-start mb-5 w-full'>
                 <div className='bg-white font-bold text-lg w-full px-5 py-2 flex justify-between rounded-lg'>
-                    <div>Thêm sản phẩm mới</div>
+                    <div>{product ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm mới'}</div>
                     <Time />
                 </div>
                 <div className='w-full flex justify-between space-x-5'>
-                    <div className='w-1/2 bg-gray-100 px-5 py-5 min-w-1/2'>
+                    <div className='w-1/2 bg-gray-100 px-5 py-5 min-w-1/2 space-y-3'>
                         <div>
                             <label>Tên sản phẩm</label>
                             <div className='mt-2'>
@@ -174,7 +172,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                                     className={
                                         'border border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
                                     }
-                                    defaultValue={(product?.sale ?? 0) * 100}
+                                    defaultValue={(product?.sale || 0) * 100}
                                 />
                                 {errors.sale?.type === 'min' && (
                                     <p role='alert' className='text-sm text-red-500'>
@@ -183,59 +181,64 @@ export default function FormAddProduct({ product, submit }: Props) {
                                 )}
                             </div>
                         </div>
-                        <div>
+                        <div className='category'>
                             <label>Danh mục</label>
-                            {categories.length ? (
-                                <div className='mt-2'>
-                                    <select
-                                        {...register('category', {
-                                            required: true,
-                                        })}
-                                        value={product?.category?.id}
-                                    >
-                                        <option value=''>Chọn một danh mục</option>
-                                        {categories.map(category => (
-                                            <option key={category.id} value={category.id}>
-                                                {category.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.category?.type === 'required' && (
-                                        <p role='alert' className='text-sm text-red-500'>
-                                            Vui lòng chọn danh mục sản phẩm
-                                        </p>
-                                    )}
-                                </div>
-                            ) : (
-                                <p>loading...</p>
-                            )}
+                            <div className={'mt-2'}>
+                                <select
+                                    {...register('category', {
+                                        required: true,
+                                    })}
+                                    defaultValue={product?.category?.id}
+                                    className='px-4 py-2'
+                                >
+                                    <option value=''>Chọn một danh mục</option>
+                                    {categoriesList.map(category => (
+                                        <option
+                                            key={category.id}
+                                            value={category.id}
+                                            className='px-4 py-2'
+                                        >
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.category?.type === 'required' && (
+                                    <p role='alert' className='text-sm text-red-500'>
+                                        Vui lòng chọn danh mục sản phẩm
+                                    </p>
+                                )}
+                            </div>
                         </div>
-                        <div>
+                        <div className='brand'>
                             <label>Thương hiệu</label>
-                            {brands.length ? (
-                                <div className='mt-2'>
-                                    <select
-                                        {...register('brand', {
-                                            required: true,
-                                        })}
-                                        value={product?.brand?.id}
-                                    >
-                                        <option value=''>Thương hiệu</option>
-                                        {brands.map(brand => (
-                                            <option key={brand.id} value={brand.id}>
-                                                {brand.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    {errors.brand?.type === 'required' && (
-                                        <p role='alert' className='text-sm text-red-500'>
-                                            Vui lòng chọn thương hiệu sản phẩm
-                                        </p>
-                                    )}
-                                </div>
-                            ) : (
-                                <p>loading...</p>
-                            )}
+
+                            <div className={'mt-2'}>
+                                <select
+                                    className='px-4 py-2'
+                                    {...register('brand', {
+                                        required: true,
+                                    })}
+                                    defaultValue={product?.brand?.id}
+                                >
+                                    <option value='' className='px-4 py-2'>
+                                        Thương hiệu
+                                    </option>
+                                    {brandsList.map(brand => (
+                                        <option
+                                            key={brand.id}
+                                            value={brand.id}
+                                            className='px-4 py-2'
+                                        >
+                                            {brand.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.brand?.type === 'required' && (
+                                    <p role='alert' className='text-sm text-red-500'>
+                                        Vui lòng chọn thương hiệu sản phẩm
+                                    </p>
+                                )}
+                            </div>
                         </div>
                         <div>
                             <label>Mô tả sản phẩm</label>
@@ -256,7 +259,7 @@ export default function FormAddProduct({ product, submit }: Props) {
                         </div>
                         <button
                             type='submit'
-                            className='bg-blue-500 rounded-md text-white hover:bg-blue-700 px-2 py-2'
+                            className='bg-amber-500 rounded-md text-white hover:bg-amber-700 px-2 py-2'
                         >
                             {product ? 'Lưu' : 'Thêm sản phẩm'}
                         </button>
@@ -271,31 +274,11 @@ export default function FormAddProduct({ product, submit }: Props) {
                     </div>
 
                     <div className='w-1/2'>
-                        <label className='rounded-none outline outline-1 bg-white outline-gray-500 px-2 py-2 mt-5 hover:bg-gray-100'>
-                            Chọn Ảnh
-                            <input
-                                id='image'
-                                onChange={handleOnChange}
-                                className='hidden'
-                                type='file'
-                                name='files[]'
-                                multiple
-                                accept='image/*'
-                            />
-                        </label>
-
-                        {attachments.map((attachment, index) => (
-                            <span key={index}>
-                                <div
-                                    onClick={() =>
-                                        setAttachments(attachments.filter((_, i) => i !== index))
-                                    }
-                                >
-                                    X
-                                </div>
-                                <Image alt='attachment' src={attachment} width={1000} height={1000}/>
-                            </span>
-                        ))}
+                        <InputImages
+                            attachments={attachments}
+                            handleOnChange={handleOnChange}
+                            setAttachments={setAttachments}
+                        />
                     </div>
                 </div>
             </div>
