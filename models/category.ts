@@ -64,3 +64,28 @@ export async function deleteCategory(id: string) {
     });
     return category;
 }
+
+export async function listTrendingCategories() {
+    const products = await prisma.product.groupBy({
+        by: ['categoryId'],
+        _sum: {
+            sold: true,
+        },
+        orderBy: {
+            _sum: {
+                sold: 'desc',
+            },
+        },
+        take: 10,
+    });
+    const categories = [];
+    for (let i = 0; i < products.length; i++) {
+        const res = await prisma.category.findUnique({
+            where: {
+                id: products[i].categoryId || undefined,
+            },
+        });
+        categories.push({ ...res, ...products[i]._sum });
+    }
+    return categories;
+}

@@ -1,4 +1,4 @@
-import Trending from '@/app/components/admin/Trending';
+import Trending from '@/app/components/admin/product/Trending';
 
 export const metadata = {
     title: 'Xu hướng | Admin site | TechWorld',

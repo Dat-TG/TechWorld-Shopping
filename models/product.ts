@@ -434,3 +434,38 @@ export async function searchProduct(key: string) {
     });
     return users;
 }
+
+export async function listTrendingProducts(categorySlug?: string, brandSlug?: string) {
+    const products = await prisma.product.findMany({
+        take: 10,
+        where: {
+            category: {
+                slug: categorySlug != null ? categorySlug : undefined,
+            },
+            brand: {
+                slug: brandSlug != null ? brandSlug : undefined,
+            },
+        },
+        include: {
+            attachments: true,
+            brand: true,
+            category: true,
+            Reviews: {
+                include: {
+                    User: {
+                        select: {
+                            id: true,
+                            name: true,
+                            email: true,
+                            image: true,
+                        },
+                    },
+                },
+            },
+        },
+        orderBy: {
+            sold: 'desc',
+        },
+    });
+    return products;
+}
