@@ -367,7 +367,12 @@ export async function numberOfProducts(categorySlug?: string) {
     const products = await prisma.product.count({
         where: {
             category: {
-                slug: { equals: categorySlug },
+                slug: {
+                    equals:
+                        categorySlug != null && categorySlug != 'DEFAULT'
+                            ? categorySlug
+                            : undefined,
+                },
             },
             deleted: false,
         },
@@ -375,7 +380,7 @@ export async function numberOfProducts(categorySlug?: string) {
     return products;
 }
 
-export async function searchProduct(key: string) {
+export async function searchProduct(key: string, category?: string, option?: string) {
     const value = parseInt(key);
     const users = await prisma.product.findMany({
         where: {
@@ -413,6 +418,20 @@ export async function searchProduct(key: string) {
                     },
                 },
             ],
+            category: {
+                slug: category != null && category != 'DEFAULT' ? category : undefined,
+            },
+        },
+        orderBy: {
+            sold: option === SortingOptions.Hot ? 'desc' : undefined,
+            price:
+                option === SortingOptions.PriceASC
+                    ? 'asc'
+                    : option === SortingOptions.PriceDSC
+                    ? 'desc'
+                    : undefined,
+            createdAt: option === SortingOptions.Create ? 'desc' : undefined,
+            updatedAt: option === SortingOptions.Recent ? 'desc' : undefined,
         },
         include: {
             attachments: true,

@@ -4,14 +4,20 @@ import Notification from './Notification';
 import UserButtons from './UserButtons';
 import CartHover from './CartHover';
 import Image from 'next/image';
+import HeaderSearchBar from './HeaderSearchBar';
 
 export default async function Header() {
-
     return (
         <nav className='bg-amber-400 border-none dark:bg-gray-900 grid grid-rows-2 gap-0'>
             <div className='max-w-screen-xl flex flex-wrap items-center justify-center mx-auto pt-4 pb-2'>
                 <Link href='/' className='flex items-center me-6'>
-                    <Image src='/images/logo.png' className='h-8 mr-3 w-8' alt='TechWorld Logo' width={1000} height={1000}/>
+                    <Image
+                        src='/images/logo.png'
+                        className='h-8 mr-3 w-8'
+                        alt='TechWorld Logo'
+                        width={1000}
+                        height={1000}
+                    />
                     <span className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white'>
                         TechWorld
                     </span>
@@ -39,19 +45,7 @@ export default async function Header() {
                     </svg>
                 </button>
 
-                <div className='pt-2 relative mx-auto text-gray-600 ms-2'>
-                    <input
-                        className='bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none'
-                        type='search'
-                        name='search'
-                        placeholder='Bạn tìm gì...'
-                        autoComplete='off'
-                        style={{ width: '40vw' }}
-                    />
-                    <button type='submit' className='absolute right-0 top-0 mt-4 mr-4'>
-                        <i className='bi bi-search'></i>
-                    </button>
-                </div>
+                <HeaderSearchBar />
 
                 <div className='hidden w-full md:block md:w-auto ms-4' id='navbar-default'>
                     <ul className='flex flex-col items-center p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>

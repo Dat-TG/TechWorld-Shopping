@@ -42,7 +42,7 @@ function CartItem({ item, removeItemFromCart }: CartItemProps) {
     }
 
     return (
-        <div className='flex flex-row bg-white rounded-sm px-4 py-4 justify-between item-center text-base w-full h-32'>
+        <div className='flex flex-row bg-white rounded-sm px-4 py-4 justify-between item-center text-base w-full h-36 overflow-auto'>
             <Image
                 src={item.Product.attachments?.[0]?.path ?? defaultValue.image}
                 width={100}
