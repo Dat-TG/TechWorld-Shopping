@@ -12,6 +12,7 @@ import CarouselThumbnail from './CarouselThumbnail';
 import { defaultValue } from '../Constant';
 import { useGlobalContext } from '@/app/context/GlobalContext';
 import { Loading, Notify } from 'notiflix';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     product: FullProduct;
@@ -22,6 +23,7 @@ function ProductDetail({ product, similarProducts }: Props) {
     const { user, updateMyCart } = useGlobalContext();
     const [quantity, setQuantity] = React.useState<number>(1);
     const [imgSelect, setImgSelect] = React.useState<number>(0);
+    const router = useRouter();
 
     async function addToCart() {
         Loading.dots();
@@ -47,6 +49,12 @@ function ProductDetail({ product, similarProducts }: Props) {
             width: '450px',
             fontSize: '20px',
         });
+    }
+
+    async function buyNow() {
+        await addToCart();
+        router.push('/cart');
+        
     }
 
     const numberOfReviews = product.Reviews.length;
@@ -154,7 +162,10 @@ function ProductDetail({ product, similarProducts }: Props) {
                                     <i className='bi bi-cart-plus text-xl pr-2'></i>
                                     <div className='text-xl'>Thêm Vào Giỏ Hàng</div>
                                 </Button>
-                                <Button className='border-amber-600 px-4 py-3 mr-8 flex flex-row items-center text-white bg-amber-600 hover:bg-amber-500'>
+                                <Button
+                                    onClick={buyNow}
+                                    className='border-amber-600 px-4 py-3 mr-8 flex flex-row items-center text-white bg-amber-600 hover:bg-amber-500'
+                                >
                                     <div className='text-xl'>Mua Ngay</div>
                                 </Button>
                             </>
