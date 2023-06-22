@@ -12,7 +12,7 @@ import { CurrencyFormatter } from '@/utils/formatter';
 export default function CartHover() {
     const { myCart } = useGlobalContext();
     const [isHovering, setIsHovering] = useState(false);
-    const totalProductInCart = myCart?.CartItem?.length;
+    const totalProductInCart = myCart?.CartItem?.length ?? 0;
 
     const handleMouseOver = () => {
         setIsHovering(true);
@@ -37,7 +37,7 @@ export default function CartHover() {
                         totalProductInCart == 0 ? 'hidden' : 'absolute'
                     } top-0 text-xs translate-x-0 -right-3 w-fit h-fit px-2 text-center bg-red-600 text-white rounded-xl`}
                 >
-                    {totalProductInCart != undefined ? totalProductInCart : '...'}
+                    {totalProductInCart}
                 </div>
             </Link>
 
@@ -48,7 +48,7 @@ export default function CartHover() {
                 onMouseOver={handleMouseOver}
                 onMouseOut={handleMouseOut}
             >
-                {totalProductInCart == undefined ? (
+                {totalProductInCart == 0 ? (
                     <div className='flex flex-col items-center justify-center w-80 h-56'>
                         <Image
                             src={'/images/empty-cart.webp'}

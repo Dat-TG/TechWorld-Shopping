@@ -5,6 +5,8 @@ export const defaultStatus = {
 
 export const defaultValue = {
     image: '/images/Image_not_available.png',
+    outOfStock: 'Sản phẩm đã hết hàng',
+    setQuantityMoreInStock: 'Số lượng sản phẩm vượt quá số lượng tồn kho'
 };
 
 export const SortingOptions = {

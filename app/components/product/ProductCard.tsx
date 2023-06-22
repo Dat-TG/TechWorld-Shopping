@@ -12,20 +12,16 @@ export default function ProductCard({ product }: Props) {
     // TODO: add product rating
     // const rating = numberOfReviews ? product.Reviews.reduce((a, b) => a + b.rating, 0) / numberOfReviews : 5;
     return (
-        <div className='pb-6 w-full'>
+        <div className='pb-6 w-full' style={{ maxWidth: '220px' }}>
             <Link
                 href={`/product/${product.slug}`}
                 className='block hover:-translate-y-0.5 ease-out transition duration-30'
             >
                 <div className='max-w-md mx-auto'>
-                    <div className='bg-white shadow-md border border-gray-200 rounded-lg max-w-xs'>
+                    <div className='bg-white shadow-md border border-cagray-200 rounded-lg max-w-xs'>
                         <div
-                            className={
-                                'h-52 flex flex-col w-full ' +
-                                (product.attachments[0]?.path
-                                    ? 'justify-between'
-                                    : 'justify-center')
-                            }
+                            className={'h-40 flex flex-col w-full  justify-center'}
+                            
                         >
                             <Image
                                 className='rounded-t-lg overflow-hidden '
