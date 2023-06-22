@@ -8,7 +8,6 @@ interface Props {
 }
 
 export default function OrderBox({ className, data }: Props) {
-    console.log(data?.InvoicesItem);
     return (
         <div className={`flex flex-col bg-white rounded-md w-full ${className}`}>
             <div className='flex justify-between items-center'>

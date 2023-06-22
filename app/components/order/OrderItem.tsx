@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { CurrencyFormatter } from '@/utils/formatter';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ interface Props {
 
 function OrderItem(props: Props) {
     const product = props.item?.Product;
-    const {user, updateMyCart} = useGlobalContext();
+    const { user, updateMyCart } = useGlobalContext();
     const router = useRouter();
 
     async function addToCart() {
@@ -61,21 +61,19 @@ function OrderItem(props: Props) {
                 </div>
                 <div className='flex-1 ms-4 flex flex-col justify-between'>
                     <div className='flex flex-col '>
-                        <p className='font-semibold text-lg'>{product?.name}</p>
+                        <p className='font-semibold text-lg line-clamp-2'>{product?.name}</p>
                         <p className='text-gray-500'>Phân loại: Silver</p>
                     </div>
                     <p>x{product?.quantity}</p>
                 </div>
 
-                <div className='w-fit flex flex-col justify-center'>
-                    <div className='text-right'>
-                        <span className='text-gray-500 line-through me-1'>
-                            {CurrencyFormatter.format(product?.price)}
-                        </span>
-                        <span className='text-amber-500 text-lg font-semibold'>
-                            {CurrencyFormatter.format(product?.price * (1 - product?.sale))}
-                        </span>
-                    </div>
+                <div className='w-60 flex flex-col justify-center text-right'>
+                    <span className='text-amber-500 text-lg font-semibold'>
+                        {CurrencyFormatter.format(product?.price * (1 - product?.sale))}
+                    </span>
+                    <span className='text-gray-500 line-through me-1'>
+                        {CurrencyFormatter.format(product?.price)}
+                    </span>
                 </div>
             </div>
 

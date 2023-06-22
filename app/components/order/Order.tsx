@@ -1,25 +1,39 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import OrderBox from './OrderBox';
 import { defaultStatus } from '../Constant';
 import { useGlobalContext } from '@/app/context/GlobalContext';
-import { InvoiceItem } from '@prisma/client';
 
 export default function Order() {
     const [index, setIndex] = useState(0);
     const [orders, setOrders] = useState<Array<any>>([]);
+    const [ordersFilter, setOrdersFilter] = useState<Array<any>>([]);
     const { user } = useGlobalContext();
 
     useEffect(() => {
         async function getOrders() {
             const res = await fetch('/api/invoice');
             const data = await res.json();
-            console.log(data?.data);
             setOrders(data?.data);
-            console.log(data?.data);
+            setOrdersFilter(data?.data);
         }
         getOrders();
     }, [user]);
+
+    useEffect(() => {
+        function filterOrders() {
+            if (index == 0) setOrdersFilter(orders);
+            else
+                setOrdersFilter(
+                    orders.filter(
+                        order => order.status == defaultStatus.statusOrder[index - 1].status,
+                    ),
+                );
+        }
+
+        filterOrders();
+    }, [index]);
 
     return (
         <>
@@ -59,7 +73,7 @@ export default function Order() {
                 </div>
                 <hr className='h-0.5 bg-gray-100 w-full mb-4' />
                 <div className='flex flex-col space-y-5 mt-4 w-full'>
-                    {orders.map((order: any, key: number) => {
+                    {ordersFilter.map((order: any, key: number) => {
                         return <OrderBox data={order} key={key} />;
                     })}
                 </div>
