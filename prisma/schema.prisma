@@ -54,15 +54,16 @@ model Product {
 }
 
 model Attachment {
-    id        String         @id @default(auto()) @map("_id") @db.ObjectId
-    name      String
-    type      AttachmentType
-    path      String
-    createdAt DateTime       @default(now())
-    updatedAt DateTime       @updatedAt
-    product   Product?       @relation(fields: [productId], references: [id])
-    productId String?        @db.ObjectId
-    User      User[]
+    id         String         @id @default(auto()) @map("_id") @db.ObjectId
+    name       String
+    type       AttachmentType
+    path       String
+    createdAt  DateTime       @default(now())
+    updatedAt  DateTime       @updatedAt
+    product    Product?       @relation(fields: [productId], references: [id])
+    productId  String?        @db.ObjectId
+    User       User[]
+    Carousel   Carousel[]
 }
 
 model Category {
@@ -153,6 +154,14 @@ model Address {
     Invoice   Invoice[]
 
     @@unique([id, userId])
+}
+
+model Carousel {
+    id          String              @id @default(auto()) @map("_id") @db.ObjectId
+    image       Attachment?         @relation(fields: [imageId], references: [id])
+    imageId     String?             @db.ObjectId
+    url         String
+    main        Boolean    
 }
 
 type VerificationToken {

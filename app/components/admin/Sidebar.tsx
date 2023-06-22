@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import CollapsableSidebarItem from './CollapsableSidebarItem';
 import { usePathname } from 'next/navigation';
+import CollapsableSidebarCarousel from './CollapsableSidebarCarousel';
 
 export default function Sidebar() {
     const pathName = usePathname();
@@ -10,7 +11,13 @@ export default function Sidebar() {
         <div className='w-1/5 flex flex-col justify-start items-center  mr-10 min-h-screen'>
             <div className='bg-white w-full h-full flex flex-col px-5 py-5 space-y-3 shadow-lg'>
                 <div className='flex items-center space-x-5'>
-                    <Image alt='logo' className='w-20 h-20' src='/images/logo.png' width={1000} height={1000}></Image>
+                    <Image
+                        alt='logo'
+                        className='w-20 h-20'
+                        src='/images/logo.png'
+                        width={1000}
+                        height={1000}
+                    ></Image>
                     <p className='font-bold text-md sm:text-md md:text-lg'>TechWorld Admin</p>
                 </div>
                 <Link
@@ -59,6 +66,7 @@ export default function Sidebar() {
                     <i className='bi bi-people'></i>
                     <p className='text-md'>Khách hàng</p>
                 </Link>
+                <CollapsableSidebarCarousel />
                 <Link
                     href='/'
                     className={

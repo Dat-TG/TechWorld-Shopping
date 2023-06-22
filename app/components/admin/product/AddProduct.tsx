@@ -3,7 +3,6 @@ import { Brand, Category } from '@prisma/client';
 import FormAddProduct, { Data } from './FormAddProduct';
 import { useRouter } from 'next/navigation';
 import { Loading, Notify } from 'notiflix';
-import { toast } from 'react-hot-toast';
 
 export default function AddProduct({
     params,

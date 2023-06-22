@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Attachment, AttachmentType } from '@prisma/client';
 import prisma from '../libs/prismadb';
 import cloudinary from '@/libs/cloudinary';
