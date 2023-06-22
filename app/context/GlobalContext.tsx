@@ -11,6 +11,8 @@ interface ContextProps {
     myCart?: MyCart;
     setMyCart?: React.Dispatch<React.SetStateAction<MyCart | undefined>>;
     updateMyCart?: () => Promise<void>;
+    removeAllCart?: () => void;
+    isOutOfStock?: boolean;
 }
 
 const GlobalContext = createContext<ContextProps>({});
@@ -19,6 +21,7 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
     const session = useSession();
     const [myCart, setMyCart] = useState<MyCart>();
     const [user, setUser] = useState<User>();
+    const [isOutOfStock, setIsOutOfStock] = useState(false);
     const pathname = usePathname();
 
     React.useEffect(() => {
@@ -44,9 +47,28 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
             });
             const data = await res.json();
             setMyCart(data?.data);
+            checkOutOfStock();
         } catch (error) {
             console.log(error);
         }
+    }
+
+    function checkOutOfStock() {
+        const products = myCart?.CartItem ?? [];
+        for(let i = 0 ; i < products.length; i ++ ) {
+            if(products[i].quantity > products[i].Product.quantity) {
+                setIsOutOfStock(true);
+                return;
+            }
+        }
+        setIsOutOfStock(false);
+    }
+
+    async function removeAllCart() {
+        setMyCart({
+            id: myCart?.id ?? '',
+            CartItem: [],
+        });
     }
 
     return (
@@ -56,6 +78,8 @@ export const GlobalContextProvider = ({ children }: { children: React.ReactNode 
                 myCart: myCart,
                 setMyCart: setMyCart,
                 updateMyCart: updateMyCart,
+                removeAllCart: removeAllCart,
+                isOutOfStock: isOutOfStock
             }}
         >
             {children}

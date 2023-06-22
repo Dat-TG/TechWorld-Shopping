@@ -47,6 +47,7 @@ function InputQuantity(props: InputQuantityProps) {
                 if (props.disableInputText) {
                     setIsLoading(true);
                     const result = await props.updateQuantity?.(props.quantity - 1);
+                    await updateMyCart?.();
                     if (result) props.setQuantity(props.quantity - 1);
                     setIsLoading(false);
                 } else {
@@ -82,8 +83,10 @@ function InputQuantity(props: InputQuantityProps) {
             </div>
             <Button
                 onClick={decreaseQuantity}
-                className={`${soldOut || isLoading ? 'bg-gray-100' : 'bg-white'} text-base px-4`}
-                disable={soldOut || isLoading}
+                className={`${
+                    soldOut || isLoading || props.quantity <= 1 ? 'bg-gray-100' : 'bg-white'
+                } text-base px-4`}
+                disable={soldOut || isLoading || props.quantity <= 1}
             >
                 -
             </Button>
@@ -98,8 +101,10 @@ function InputQuantity(props: InputQuantityProps) {
             />
             <Button
                 onClick={increaseQuantity}
-                className={`${soldOut || isLoading ? 'bg-gray-100' : 'bg-white'} text-base px-4`}
-                disable={soldOut || isLoading}
+                className={`${
+                    soldOut || isLoading || props.quantity == props.max ? 'bg-gray-100' : 'bg-white'
+                } text-base px-4`}
+                disable={soldOut || isLoading || props.quantity == props.max}
             >
                 +
             </Button>
