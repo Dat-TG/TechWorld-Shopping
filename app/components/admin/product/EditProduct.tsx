@@ -2,7 +2,6 @@
 import FormAddProduct, { Data } from './FormAddProduct';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
 import { Block, Loading, Notify } from 'notiflix';
 import { Brand, Category } from '@prisma/client';
 

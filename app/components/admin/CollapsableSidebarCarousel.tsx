@@ -15,7 +15,7 @@ export default function CollapsableSidebarCarousel() {
                 } rounded-xl flex py-3 px-3 cursor-pointer justify-between`}
             >
                 <div className='flex space-x-3'>
-                    <i className='bi bi-robot'></i>
+                    <i className='bi bi-images'></i>
                     <p className='text-md'>Ảnh bìa</p>
                 </div>
                 <i
@@ -29,7 +29,7 @@ export default function CollapsableSidebarCarousel() {
                         pathName == '/admin/carousel' ? 'bg-gray-200' : 'hover:bg-gray-200'
                     } rounded-xl flex py-3 px-3 space-x-3 cursor-pointer mb-3 `}
                 >
-                    <i className='bi bi-grid-fill'></i>
+                    <i className='bi bi-yelp'></i>
                     <p className='text-md'>Xem ảnh bìa</p>
                 </Link>
                 <Link

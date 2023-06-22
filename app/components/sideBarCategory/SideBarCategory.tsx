@@ -90,7 +90,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     className='border-black flex-2 w-20 px-2 py-2 rounded-sm text-sm'
                     placeholder='₫ TỪ'
                     min={0}
-                    defaultValue={parseInt(params.get('min') || '')}
+                    defaultValue={parseInt(params.get('min') || '0') || undefined}
                     onChange={event => {
                         setMin(parseInt(event.target.value));
                     }}
@@ -101,7 +101,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     className='border-black flex-2 w-20 px-2 py-2 rounded-sm text-sm'
                     placeholder='₫ ĐẾN'
                     min={0}
-                    defaultValue={parseInt(params.get('max') || '')}
+                    defaultValue={parseInt(params.get('max') || '') || undefined}
                     onChange={event => {
                         setMax(parseInt(event.target.value));
                     }}

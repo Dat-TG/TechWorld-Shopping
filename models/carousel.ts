@@ -19,6 +19,9 @@ export async function getCarousel(id: string) {
         where: {
             id: id,
         },
+        include: {
+            image: true
+        }
     });
     return res;
 }

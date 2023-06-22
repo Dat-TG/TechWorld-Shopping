@@ -14,6 +14,7 @@ export default function CategoryPageInput({
     return (
         <>
             <input
+                key={`page${page}`}
                 type='number'
                 defaultValue={page}
                 onKeyUp={event => {

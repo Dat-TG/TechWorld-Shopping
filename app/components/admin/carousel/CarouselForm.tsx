@@ -14,11 +14,11 @@ export interface Data {
 
 interface Props {
     carousel?: FullCarousel;
-    submit?: (data: Data, attachments: string[]) => void;
+    submit?: (data: Data, attachments: string) => void;
 }
 
 export default function CarouselForm({ carousel, submit }: Props) {
-    const [attachments, setAttachments] = useState<string[]>([]);
+    const [attachments, setAttachments] = useState<string>(carousel?.image?.path || '');
 
     const {
         register,
@@ -41,10 +41,7 @@ export default function CarouselForm({ carousel, submit }: Props) {
             const reader = new FileReader();
 
             reader.onload = function (onLoadEvent) {
-                setAttachments(attachments => [
-                    ...attachments,
-                    onLoadEvent.target?.result as string,
-                ]);
+                setAttachments(onLoadEvent.target?.result as string);
             };
 
             reader.readAsDataURL(file);
@@ -131,29 +128,22 @@ export default function CarouselForm({ carousel, submit }: Props) {
                                 accept='image/*'
                             />
                         </label>
-
-                        {attachments.map((attachment, index) => (
-                            <span key={index}>
-                                <div className='relative my-5'>
-                                    <Image
-                                        alt='attachment'
-                                        src={attachment}
-                                        width={1000}
-                                        height={1000}
-                                    />
-                                    <div
-                                        onClick={() =>
-                                            setAttachments(
-                                                attachments.filter((_, i) => i !== index),
-                                            )
-                                        }
-                                        className='absolute z-10 left-1 top-1 cursor-pointer text-4xl hover:text-amber-500'
-                                    >
-                                        <i className='bi bi-x-circle'></i>
-                                    </div>
+                        {attachments && (
+                            <div className='relative my-5'>
+                                <Image
+                                    alt='attachment'
+                                    src={attachments}
+                                    width={1000}
+                                    height={1000}
+                                />
+                                <div
+                                    onClick={() => setAttachments('')}
+                                    className='absolute z-10 left-1 top-1 cursor-pointer text-4xl hover:text-amber-500'
+                                >
+                                    <i className='bi bi-x-circle'></i>
                                 </div>
-                            </span>
-                        ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

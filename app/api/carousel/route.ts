@@ -39,10 +39,10 @@ export async function POST(request: Request) {
             );
         }
         if (main) {
-            const carousel = await createCarousel(attachments[0], url, true);
+            const carousel = await createCarousel(attachments, url, true);
             return NextResponse.json({ message: 'success', data: carousel });
         } else {
-            const carousel = await createCarousel(attachments[0], url, false);
+            const carousel = await createCarousel(attachments, url, false);
             return NextResponse.json({ message: 'success', data: carousel });
         }
     } catch (error) {
