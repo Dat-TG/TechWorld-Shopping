@@ -118,6 +118,8 @@ export async function listProductsForPagination(
     categorySlug?: string,
     brandSlug?: string,
     sortingOption?: string,
+    min?: number,
+    max?: number,
 ) {
     const products = await prisma.product.findMany({
         skip: (page - 1) * perPage,
@@ -128,6 +130,10 @@ export async function listProductsForPagination(
             },
             brand: {
                 slug: brandSlug != null ? brandSlug : undefined,
+            },
+            price: {
+                gte: min == undefined || Number.isNaN(min) ? undefined : min,
+                lte: min == undefined || Number.isNaN(max) ? undefined : max,
             },
         },
         include: {
@@ -363,7 +369,7 @@ export async function deleteProduct(id: string) {
     return product;
 }
 
-export async function numberOfProducts(categorySlug?: string) {
+export async function numberOfProducts(categorySlug?: string, min?: number, max?: number) {
     const products = await prisma.product.count({
         where: {
             category: {
@@ -375,6 +381,10 @@ export async function numberOfProducts(categorySlug?: string) {
                 },
             },
             deleted: false,
+            price: {
+                gte: Number.isNaN(min) ? undefined : min,
+                lte: Number.isNaN(max) ? undefined : max,
+            },
         },
     });
     return products;

@@ -10,7 +10,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
     const [numberOfCategories, setNumberOfCategories] = useState(Math.min(10, categories.length));
     const [seeMore, setSeeMore] = useState(numberOfCategories < categories.length ? true : false);
     const [min, setMin] = useState(0);
-    const [max, setMax] = useState(0);
+    const [max, setMax] = useState(Infinity);
     const params = useSearchParams();
     const pathname = usePathname();
     useEffect(() => {
@@ -90,7 +90,7 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     className='border-black flex-2 w-20 px-2 py-2 rounded-sm text-sm'
                     placeholder='₫ TỪ'
                     min={0}
-                    defaultValue={parseInt(params.get('min') || '0')}
+                    defaultValue={parseInt(params.get('min') || '')}
                     onChange={event => {
                         setMin(parseInt(event.target.value));
                     }}
@@ -101,19 +101,23 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
                     className='border-black flex-2 w-20 px-2 py-2 rounded-sm text-sm'
                     placeholder='₫ ĐẾN'
                     min={0}
-                    defaultValue={parseInt(params.get('max') || '0')}
+                    defaultValue={parseInt(params.get('max') || '')}
                     onChange={event => {
                         setMax(parseInt(event.target.value));
                     }}
                 />
             </div>
             <div className='w-full flex justify-between'>
-                <Link href={pathname + '?filter=5&min=' + min + '&max=' + max}>
+                <Link
+                    href={`${pathname}?sort=${
+                        params.get('sort') || 'DEFAULT'
+                    }&page=1&min=${min}&max=${max}`}
+                >
                     <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
                         Áp dụng
                     </Button>
                 </Link>
-                <Link href={pathname}>
+                <Link href={`${pathname}`}>
                     <Button className='bg-amber-600 hover:bg-amber-700 text-white w-full mt-4'>
                         Xóa bộ lọc
                     </Button>
@@ -121,18 +125,6 @@ function SideBarCategory({ categories }: { categories: Category[] }) {
             </div>
 
             <hr className='w-full bg-amber-500 mt-4' />
-            {/* Status */}
-            {/* <div className='font-light text-base mb-4 mt-2'>Tình trạng</div>
-            <div className='flex flex-col justify-start w-full'>
-                <div className='flex flex-row items-center justify-start mb-2'>
-                    <Input type='radio' defaultValue='old' name='status' />
-                    <div className='ml-2 text-base font-medium'>Đã qua sử dụng</div>
-                </div>
-                <div className='flex flex-row items-center justify-start'>
-                    <Input type='radio' defaultValue='new' name='status' />
-                    <div className='ml-2 text-base font-medium'>Hàng mới</div>
-                </div>
-            </div> */}
         </div>
     );
 }

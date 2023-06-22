@@ -1,32 +1,21 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+
+import { useState } from 'react';
+import { SortingOptions } from '../../Constant';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 
 interface DropDown {
     name: string;
-    options: Array<{ title: string; link: string }>;
+    options: Array<{ value: string; title: string }>;
+    option?: string;
+    category: string;
+    min?: number;
+    max?: number;
 }
 
 export default function DropDown(dropdown: DropDown) {
-    const params = useSearchParams();
-    const [filter, setFilter] = useState(params.get('filter'));
     const [hidden, setHidden] = useState(true);
-    const [choose, setChoose] = useState(
-        filter === '3' ? 'Cao tới thấp' : filter === '4' ? 'Thấp tới cao' : dropdown.name,
-    );
-    useEffect(() => {
-        setFilter(params.get('filter'));
-    }, [params]);
-    useEffect(() => {
-        if (filter === '3') {
-            setChoose('Cao tới thấp');
-        } else if (filter === '4') {
-            setChoose('Thấp tới cao');
-        } else {
-            setChoose(dropdown.name);
-        }
-    }, [filter, dropdown.name]);
+    const [choose, setChoose] = useState(dropdown.name);
     return (
         <div
             className={'relative inline-block text-left'}
@@ -38,7 +27,8 @@ export default function DropDown(dropdown: DropDown) {
                     type='button'
                     className={
                         'inline-flex w-40 justify-between items-center px-4 py-2 text-sm font-medium border border-solid border-transparent rounded shadow-md' +
-                        (filter === '3' || filter === '4'
+                        (dropdown.option == SortingOptions.PriceASC ||
+                        dropdown.option == SortingOptions.PriceDSC
                             ? ' bg-amber-700 text-white'
                             : ' bg-white')
                     }
@@ -72,15 +62,19 @@ export default function DropDown(dropdown: DropDown) {
                 tabIndex={-1}
             >
                 <div className='py-1' role='none'>
-                    {dropdown.options.map((option: { title: string; link: string }) => (
-                        <Link
-                            href={option.link}
-                            key={option.link}
+                    {dropdown.options.map((data, index) => (
+                        <div
+                            key={index}
                             className='text-gray-700 block px-4 py-2 text-sm hover:text-amber-700 hover:font-medium'
                             role='menuitem'
                         >
-                            {option.title}
-                        </Link>
+                            <Link
+                                onClick={() => setChoose(data.title)}
+                                href={`/category/${dropdown.category}?sort=${data.value}&min=${dropdown.min}&max=${dropdown.max}&page=1`}
+                            >
+                                {data.title}
+                            </Link>
+                        </div>
                     ))}
                 </div>
             </div>
