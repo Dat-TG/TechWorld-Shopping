@@ -101,7 +101,7 @@ function ProductCard({ item }: ProductCardProps) {
                 className='w-16 h-16 outline outline-1 rounded-sm outline-gray-700'
             />
 
-            <p className='w-48 text-xs font-semibold text-ellipsis overflow-hidden flex-1'>
+            <p className='w-48 text-xs font-semibold text-ellipsis overflow-hidden flex-1 line-clamp-2 h-8'>
                 {product.name}
             </p>
             <div className='flex flex-col items-right text-right w-fit'>

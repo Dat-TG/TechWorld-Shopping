@@ -58,7 +58,7 @@ function CartInformation() {
 
         if (data?.message == 'success') {
             Notify.success('Đặt hàng thành công');
-            removeAllCart?.();
+            await removeAllCart?.();
         } else Notify.failure('Đã có lỗi xảy ra');
     }
 
