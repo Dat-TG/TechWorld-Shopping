@@ -1,14 +1,11 @@
 'use client';
+import { FullCarousel } from '@/models/carousel';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { defaultValue } from '../Constant';
 
-type Data = {
-    url: string;
-    href: string;
-};
-
-export default function Carousel({ slides }: { slides: Array<Data> }) {
+export default function Carousel({ slides }: { slides: FullCarousel[] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const prevSlide = () => {
@@ -27,20 +24,22 @@ export default function Carousel({ slides }: { slides: Array<Data> }) {
     return (
         <div className='w-full m-0 mb-10 relative group -translate-x-0 translate-y-[-5%]'>
             <div className={'flex justify-center '}>
-                <Link href={slides[currentIndex].href} className='w-full mx-2'>
+                <Link href={slides[currentIndex].url} className='w-full mx-2'>
                     <Image
                         alt='poster'
-                        src={slides[currentIndex].url}
+                        src={slides[currentIndex].image?.path || defaultValue.image}
                         className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
-                        width={1000} height={1000}
+                        width={1000}
+                        height={1000}
                     ></Image>
                 </Link>
-                <Link href={slides[currentIndex].href} className='w-full mx-2'>
+                <Link href={slides[currentIndex].url} className='w-full mx-2'>
                     <Image
                         alt='poster'
-                        src={slides[currentIndex + 1].url}
+                        src={slides[currentIndex + 1].image?.path || defaultValue.image}
                         className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
-                        width={1000} height={1000}
+                        width={1000}
+                        height={1000}
                     ></Image>
                 </Link>
             </div>

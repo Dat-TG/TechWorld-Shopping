@@ -1,10 +1,10 @@
 import Carousel from '@/app/components/carousel/Carousel';
-import { mainCarousel, promotion, listCat, listFilterSuggest } from '@/models/slides';
 import BgCarousel from '@/app/components/carousel/BgCarousel';
 import PromotionBox from '@/app/components/promotionBox/PromotionBox';
 import FeaturedCategory from '@/app/components/featuredCategory/FeaturedCategory';
 import Suggest from '@/app/components/suggest/Suggest';
 import Trending from '@/app/components/trending/Trending';
+import { listCarousel } from '@/models/carousel';
 
 export const metadata = {
     title: 'TechWord - Điện thoại, Laptop, PC, Đồng hồ, Phụ kiện chính hãng',
@@ -12,15 +12,16 @@ export const metadata = {
 };
 
 // `app/page.tsx` is the UI for the `/` URL
-export default function Page() {
+export default async function Page() {
+    const mainCarousels=await listCarousel(true);
+    const smallCarousels=await listCarousel(false);
     return (
         <>
-            {' '}
-            {/*
             <div className='w-full h-full mb-0 group'>
-                <BgCarousel slides={mainCarousel} />
+                <BgCarousel slides={mainCarousels} />
             </div>
-            <Carousel slides={promotion} />
+            <Carousel slides={smallCarousels} />
+            {/*
             <FeaturedCategory list={listCat} />
             <PromotionBox
                 banner={

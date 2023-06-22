@@ -1,7 +1,5 @@
 import { createCarousel, listCarousel } from '@/models/carousel';
-import { createProduct, listProducts } from '@/models/product';
 import { getErrorMessage } from '@/utils/helper';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
 /**

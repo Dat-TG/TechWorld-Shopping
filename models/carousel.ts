@@ -2,11 +2,14 @@ import { Attachment, AttachmentType, Carousel } from '@prisma/client';
 import prisma from '../libs/prismadb';
 import { createAttachment, deleteAttachment } from './attachment';
 
-export async function listCarousel() {
+export async function listCarousel(main?: boolean) {
     const res = await prisma.carousel.findMany({
+        where: {
+            main: { equals: main },
+        },
         include: {
-            image: true
-        }
+            image: true,
+        },
     });
     return res;
 }

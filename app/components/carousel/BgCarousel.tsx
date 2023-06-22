@@ -1,22 +1,25 @@
 'use client';
+import { FullCarousel } from '@/models/carousel';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { defaultValue } from '../Constant';
 
-type Data = {
-    url: string;
-    href: string;
-};
-
-export default function BgCarousel({ slides }: { slides: Array<Data> }) {
+export default function BgCarousel({ slides }: { slides: FullCarousel[] }) {
     return (
         <Carousel showThumbs={false} showStatus={false} infiniteLoop={true} autoPlay={true}>
-            {slides.map(({ url, href }, key) => (
+            {slides.map((data, key) => (
                 <div key={key}>
-                    <Link href={href}>
+                    <Link href={data.url}>
                         <div>
-                            <Image alt='carousel' src={url} className='h-96' width={1000} height={1000}></Image>
+                            <Image
+                                alt='carousel'
+                                src={data.image?.path || defaultValue.image}
+                                className='h-96'
+                                width={1000}
+                                height={1000}
+                            ></Image>
                         </div>
                     </Link>
                 </div>
