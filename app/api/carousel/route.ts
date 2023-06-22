@@ -41,7 +41,7 @@ export async function POST(request: Request) {
             );
         }
         if (main) {
-            const carousel = await createCarousel(attachments[0], url, main);
+            const carousel = await createCarousel(attachments[0], url, true);
             return NextResponse.json({ message: 'success', data: carousel });
         } else {
             const carousel = await createCarousel(attachments[0], url, false);
