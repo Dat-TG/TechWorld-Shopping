@@ -32,7 +32,7 @@ async function Page({
         ? decodeURI(searchParams?.invoiceItemId as string)
         : 'unknown';
         
-    return product && <Rating product={product} invoiceItemId={invoiceItemId} />;
+    return product && <Rating product={product} invoiceItemId={invoiceItemId} mode='add'/>;
 }
 
 export default Page;

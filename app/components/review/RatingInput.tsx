@@ -5,6 +5,7 @@ import { ratingText } from '../Constant';
 import { useForm } from 'react-hook-form';
 import { Loading, Notify } from 'notiflix';
 import { useRouter } from 'next/navigation';
+import { Review } from '@prisma/client';
 
 interface Data {
     // invoiceItemId, rating, message
@@ -13,40 +14,85 @@ interface Data {
     message: string;
 }
 
-export default function RatingInput({ invoiceItemId }: { invoiceItemId: string }) {
+export default function RatingInput({
+    invoiceItemId,
+    review,
+    mode,
+}: {
+    invoiceItemId?: string;
+    review?: Review;
+    mode: string;
+}) {
     const router = useRouter();
-    const [rate, setRate] = useState(0);
-    const [realRate, setRealRate] = useState(0);
+    const [rate, setRate] = useState(review?.rating || 0);
+    const [realRate, setRealRate] = useState(review?.rating || 0);
     const [text, setText] = useState('');
     const { register, handleSubmit } = useForm<Data>({
         mode: 'onSubmit',
+        defaultValues: {
+            rating: review?.rating || 0,
+            message: review?.comment || '',
+            invoiceItemId: invoiceItemId || '',
+        },
     });
     const onSubmit = async (data: Data) => {
-        data.rating = realRate;
-        data.invoiceItemId = invoiceItemId;
-        console.log(data);
-        try {
-            Loading.dots();
-            const res = await fetch('/api/review', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-            const json = await res.json();
-            Loading.remove();
-            if (json.message === 'success') {
-                Notify.success('Đánh giá thành công', {
-                    clickToClose: true,
+        if (mode == 'add') {
+            data.rating = realRate;
+            data.invoiceItemId = invoiceItemId || '';
+            console.log(data);
+            try {
+                Loading.dots();
+                const res = await fetch('/api/review', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
                 });
-                router.replace('/user/invoice');
-            } else {
-                Notify.failure(json.message);
+                const json = await res.json();
+                Loading.remove();
+                if (json.message === 'success') {
+                    Notify.success('Đánh giá thành công', {
+                        clickToClose: true,
+                    });
+                    router.replace('/user/invoice');
+                } else {
+                    Notify.failure(json.message);
+                }
+            } catch (error) {
+                console.log(error);
+                Notify.failure('Đánh giá không thành công');
             }
-        } catch (error) {
-            console.log(error);
-            Notify.failure('Đánh giá không thành công');
+        }
+        if (mode == 'update') {
+            data.rating = realRate;
+            console.log(data);
+            try {
+                Loading.dots();
+                const res = await fetch(`/api/review/${review?.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        rating: data.rating,
+                        message: data.message,
+                    }),
+                });
+                const json = await res.json();
+                Loading.remove();
+                if (json.message === 'success') {
+                    Notify.success('Cập nhật đánh giá thành công', {
+                        clickToClose: true,
+                    });
+                    router.replace('/user/invoice');
+                } else {
+                    Notify.failure(json.message);
+                }
+            } catch (error) {
+                console.log(error);
+                Notify.failure('Cập nhật đánh giá không thành công');
+            }
         }
     };
     return (
@@ -159,6 +205,7 @@ export default function RatingInput({ invoiceItemId }: { invoiceItemId: string }
                 className='resize-vertical px-2 py-2 w-full mt-5 outline outline-1'
                 placeholder='Bạn nghĩ gì về sản phẩm này?'
                 rows={5}
+                defaultValue={review?.comment || ''}
             ></textarea>
             <button
                 className='mt-5 w-full px-5 py-2 flex justify-center bg-amber-500 hover:bg-amber-700 text-white text-md'

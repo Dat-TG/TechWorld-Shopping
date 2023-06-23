@@ -29,7 +29,7 @@ export type MyCart = {
 export const ProductNotFound = new Error('Product not found');
 export const NotEnoughQuantity = new Error('Not enough quantity');
 
-export async function getProduct(id: string) {
+export async function getProduct(id?: string) {
     const product = await prisma.product.findFirst({
         where: {
             id: id,

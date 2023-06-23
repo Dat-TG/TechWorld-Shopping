@@ -22,8 +22,8 @@ export async function PATCH(request: Request, { params }: { params: { id: string
             return NextResponse.json({ message: 'Missing id' }, { status: 400 });
         }
         const { rating, comment } = await request.json();
-        if (!rating || !comment) {
-            return NextResponse.json({ message: 'Missing rating or comment' }, { status: 400 });
+        if (!rating) {
+            return NextResponse.json({ message: 'Missing rating' }, { status: 400 });
         }
         const review = await updateReview(id, session.user.id, rating, comment);
         return NextResponse.json({ message: 'success', data: review });

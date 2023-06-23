@@ -27,6 +27,15 @@ export async function getReviewOfUserAboutProduct(productId:string, userId: stri
     return review;
 }
 
+export async function getReviewById(id: string) {
+    const review = await prisma.review.findFirst({
+        where: {
+            id: id
+        },
+    });
+    return review;
+}
+
 export async function createReview(
     userId: string,
     invoiceItemId: string,

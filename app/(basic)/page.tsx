@@ -5,6 +5,7 @@ import FeaturedCategory from '@/app/components/featuredCategory/FeaturedCategory
 import Suggest from '@/app/components/suggest/Suggest';
 import Trending from '@/app/components/trending/Trending';
 import { listCarousel } from '@/models/carousel';
+import { listCat } from '@/models/slides';
 
 export const metadata = {
     title: 'TechWord - Điện thoại, Laptop, PC, Đồng hồ, Phụ kiện chính hãng',
@@ -21,8 +22,8 @@ export default async function Page() {
                 <BgCarousel slides={mainCarousels} />
             </div>
             <Carousel slides={smallCarousels} />
-            {/*
             <FeaturedCategory list={listCat} />
+            {/*
             <PromotionBox
                 banner={
                     'https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2023/05/campaign/knockout-desk-1200x120.png'

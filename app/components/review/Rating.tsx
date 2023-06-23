@@ -2,13 +2,16 @@ import { FullProduct } from '@/models/product';
 import Image from 'next/image';
 import Link from 'next/link';
 import RatingInput from './RatingInput';
+import { Review } from '@prisma/client';
 
 interface Props {
     product: FullProduct;
-    invoiceItemId: string;
+    invoiceItemId?: string;
+    mode: string;
+    review?: Review;
 }
 
-export default function Rating({ product, invoiceItemId }: Props) {
+export default function Rating({ product, invoiceItemId, mode, review }: Props) {
     return (
         <>
             <div className='mx-10 my-10 bg-white rounded-xl px-10 py-5 flex'>
@@ -31,7 +34,7 @@ export default function Rating({ product, invoiceItemId }: Props) {
                     </div>
                 </div>
                 <div className='w-1/2'>
-                    <RatingInput invoiceItemId={invoiceItemId} />
+                    <RatingInput invoiceItemId={invoiceItemId} mode={mode} review={review} />
                 </div>
             </div>
         </>
