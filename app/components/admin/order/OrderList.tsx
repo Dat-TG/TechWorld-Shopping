@@ -1,11 +1,30 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderItem from './OrderItem';
 import DeleteOrderModel from './DeleteOrderModel';
+import { Invoice } from '@prisma/client';
+import { defaultStatus } from '../../Constant';
 
-function OrderList() {
+interface Props {
+    orders: Array<Invoice>;
+}
+
+function OrderList(props: Props) {
     const [enableDeleteModel, setEnableDeleteModel] = useState(false);
+    const [filter, setFilter] = useState<Array<Invoice>>(props.orders);
+    const [filterType, setFilterType] = useState(0);
+
+    useEffect(() => {
+        if (filterType != 0) {
+            setFilter(
+                props.orders.filter(
+                    o => o.status == defaultStatus.statusOrder[filterType - 1].status,
+                ),
+            );
+        } else setFilter(props.orders);
+    }, [filterType, props.orders]);
+
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
             <div className='flex items-center justify-between'>
@@ -16,7 +35,7 @@ function OrderList() {
                         </h2>
 
                         <p className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
-                            240 đơn đặt hàng
+                            {props.orders.length} đơn đặt hàng
                         </p>
                     </div>
                 </div>
@@ -24,23 +43,19 @@ function OrderList() {
 
             <div className='mt-6 flex items-center justify-between '>
                 <div className='inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700'>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300'>
-                        Tất cả
-                    </button>
-
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Chưa duyệt
-                    </button>
-
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đang vận chuyển
-                    </button>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đã giao
-                    </button>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đã hủy
-                    </button>
+                    <select
+                        onChange={e => setFilterType(parseInt(e.target.value))}
+                        className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 outline-none'
+                    >
+                        <option value={0}>Tất cả</option>
+                        {defaultStatus.statusOrder.map((s, key: number) => {
+                            return (
+                                <option key={key} value={key + 1}>
+                                    {s.message}
+                                </option>
+                            );
+                        })}
+                    </select>
                 </div>
 
                 <div className='relative flex items-center mt-4 md:mt-0'>
@@ -64,6 +79,16 @@ function OrderList() {
                     <input
                         type='text'
                         placeholder='Search'
+                        onChange={e =>
+                            setFilter(
+                                props.orders.filter(
+                                    o =>
+                                        o.id.includes(e.target.value) &&
+                                        o.status ==
+                                            defaultStatus.statusOrder[filterType - 1].status,
+                                ),
+                            )
+                        }
                         className='block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
                     />
                 </div>
@@ -124,42 +149,16 @@ function OrderList() {
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
+                                    {filter.map((order, key: number) => {
+                                        return (
+                                            <OrderItem
+                                                key={key}
+                                                order={order}
+                                                enableDeleteModel={enableDeleteModel}
+                                                setEnableDeleteModel={setEnableDeleteModel}
+                                            />
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                             <DeleteOrderModel

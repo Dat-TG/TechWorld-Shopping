@@ -3,9 +3,12 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { defaultStatus } from '../../Constant';
+import { defaultStatus, defaultValue } from '../../Constant';
+import { Invoice, InvoiceItem } from '@prisma/client';
+import { CurrencyFormatter } from '@/utils/formatter';
 
 interface OrderItemProp {
+    order?: Invoice;
     enableDeleteModel?: boolean;
     setEnableDeleteModel?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -23,16 +26,21 @@ function OrderItem(props: OrderItemProp) {
         <tr className='hover:bg-slate-100'>
             <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
                 <div>
-                    <h2 className='font-medium text-gray-800 dark:text-white '>#101</h2>
+                    <h2 className='font-medium text-gray-800 dark:text-white w-20 truncate'>
+                        #{props.order?.id}
+                    </h2>
                 </div>
             </td>
             <td className='px-12 py-4 text-sm font-medium whitespace-nowrap'>
                 <button
                     onMouseOver={() => setUpdateStatus(true)}
                     onMouseOut={() => setUpdateStatus(false)}
-                    className='relative inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'
+                    className={`relative inline px-3 py-1 text-sm font-normal rounded-full gap-x-2 ${
+                        defaultStatus.statusOrder.find(o => o.status == props.order?.status)
+                            ?.backgroundColor
+                    }`}
                 >
-                    Pending <i className='bi bi-chevron-down'></i>
+                    {props.order?.status} <i className='bi bi-chevron-down'></i>
                     <div className='w-32 h-12 bg-transparent absolute left-0'></div>
                 </button>
                 <div
@@ -46,7 +54,7 @@ function OrderItem(props: OrderItemProp) {
                         return (
                             <div
                                 key={key}
-                                className='p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'
+                                className={'p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'}
                             >
                                 {s.status}
                             </div>
@@ -54,16 +62,22 @@ function OrderItem(props: OrderItemProp) {
                     })}
                 </div>
             </td>
-            <td className='px-4 py-4 text-sm whitespace-nowrap'>20-12-2002</td>
-            <td className='px-4 py-4 text-sm whitespace-nowrap'>37.000₫</td>
+            <td className='px-4 py-4 text-sm whitespace-nowrap'>
+                {props.order?.createAt.toDateString()}
+            </td>
+            <td className='px-4 py-4 text-sm whitespace-nowrap'>
+                {CurrencyFormatter.format(props.order?.total ?? 0)}
+            </td>
 
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
                 <div className='flex flex-row items-center'>
-                    <Image src={'/images/logo.png'} width={20} height={20} alt='' />
-                    <div className='font-medium pl-2 '>admin</div>
+                    <Image src={defaultValue.avatar} width={20} height={20} alt='' />
+                    <div className='font-medium pl-2 '>{props.order?.userId}</div>
                 </div>
             </td>
-            <td className='px-4 py-4 text-sm text-center whitespace-nowrap'>0123456789</td>
+            <td className='px-4 py-4 text-sm text-center whitespace-nowrap'>
+                {props.order?.userId}
+            </td>
 
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
                 <button

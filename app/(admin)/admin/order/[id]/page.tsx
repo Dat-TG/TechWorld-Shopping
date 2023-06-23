@@ -1,7 +1,7 @@
 import OrderDetail from '@/app/components/admin/order/OrderDetail';
 import React from 'react';
 
-function Page() {
+async function Page() {
     return <OrderDetail />;
 }
 

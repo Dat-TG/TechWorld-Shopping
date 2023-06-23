@@ -34,7 +34,7 @@ function OrderDetail() {
                         <button
                             onMouseOver={() => setUpdateStatus(true)}
                             onMouseOut={() => setUpdateStatus(false)}
-                            className='relative inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'
+                            className='relative inline  px-3 py-1 text-sm font-normal rounded-full  gap-x-2 dark:bg-gray-800'
                         >
                             Pending <i className='bi bi-chevron-down'></i>
                             <div className='w-32 h-12 bg-transparent absolute left-0'></div>
@@ -50,7 +50,7 @@ function OrderDetail() {
                                 return (
                                     <div
                                         key={key}
-                                        className='p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'
+                                        className='p-2 pl-4  hover:bg-slate-200 cursor-pointer border-b'
                                     >
                                         {s.status}
                                     </div>
