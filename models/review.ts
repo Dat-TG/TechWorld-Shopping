@@ -1,8 +1,17 @@
 /* eslint-disable camelcase */
 import prisma from '@/libs/prismadb';
 import { InvoiceNotDelivered, InvoiceNotFound } from './invoice';
-import { Status } from '@prisma/client';
+import { Attachment, Review, Status } from '@prisma/client';
 import { Unauthorized } from './user';
+
+export type FullReview = Review & {
+    User: {
+        id: string;
+        name: string | null;
+        email: string | null;
+        image: Attachment | null;
+    };
+};
 
 export const ReviewNotFound = new Error('Review not found');
 
@@ -17,7 +26,7 @@ export async function listReviews(userId?: string) {
     });
 }
 
-export async function getReviewOfUserAboutProduct(productId:string, userId: string) {
+export async function getReviewOfUserAboutProduct(productId: string, userId: string) {
     const review = await prisma.review.findFirst({
         where: {
             userId: userId,
@@ -30,7 +39,25 @@ export async function getReviewOfUserAboutProduct(productId:string, userId: stri
 export async function getReviewById(id: string) {
     const review = await prisma.review.findFirst({
         where: {
-            id: id
+            id: id,
+        },
+    });
+    return review;
+}
+
+export async function getReviewByProductId(id: string) {
+    const review = await prisma.review.findMany({
+        where: {
+            productId: id,
+        },
+        include: {
+            User: {
+                select: {
+                    name: true,
+                    image: true,
+                    phone: true,
+                },
+            },
         },
     });
     return review;

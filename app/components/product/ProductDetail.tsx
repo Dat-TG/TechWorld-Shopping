@@ -1,9 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../widgets/button/Button';
-import Review from './Review';
 import ListProduct from './ListProduct';
 import { FullProduct } from '@/models/product';
 import { CurrencyFormatter, RatingFormatter } from '@/utils/formatter';
@@ -11,8 +10,31 @@ import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import CarouselThumbnail from './CarouselThumbnail';
 import { defaultValue } from '../Constant';
 import { useGlobalContext } from '@/app/context/GlobalContext';
-import { Loading, Notify } from 'notiflix';
+import { Block, Loading, Notify } from 'notiflix';
 import { useRouter } from 'next/navigation';
+import ReviewItem from './ReviewItem';
+import { FullReview } from '@/models/review';
+
+function useReview(url: string) {
+    const [review, setReview] = useState(null);
+    useEffect(() => {
+        Block.dots('.review');
+        let ignore = false;
+        fetch(url)
+            .then(response => response.json())
+            .then(json => {
+                if (!ignore) {
+                    setReview(json.data);
+                }
+            })
+            .catch(console.log);
+        Block.remove('.review');
+        return () => {
+            ignore = true;
+        };
+    }, [url]);
+    return review;
+}
 
 interface Props {
     product: FullProduct;
@@ -20,6 +42,8 @@ interface Props {
 }
 
 function ProductDetail({ product, similarProducts }: Props) {
+    const review = useReview(`/api/review/product/${product.id}`);
+    const reviewList = (review || []) as Array<FullReview>;
     const { user, updateMyCart } = useGlobalContext();
     const [quantity, setQuantity] = React.useState<number>(1);
     const [imgSelect, setImgSelect] = React.useState<number>(0);
@@ -54,7 +78,6 @@ function ProductDetail({ product, similarProducts }: Props) {
     async function buyNow() {
         await addToCart();
         router.push('/cart');
-        
     }
 
     const numberOfReviews = product.Reviews.length;
@@ -190,17 +213,17 @@ function ProductDetail({ product, similarProducts }: Props) {
                 <div className='flex flex-row px-5 py-8 border border-amber-300 bg-amber-50'>
                     <div className='flex flex-col items-center justify-center w-40 text-amber-600 text-xl font-medium'>
                         <div className='mb-5'>
-                            <span className='tracking-wide text-3xl '>4.5</span> trên 5
+                            <span className='tracking-wide text-3xl '>{rating}</span> trên 5
                         </div>
                         <div className='flex flex-row w-32 items-center justify-between text-2xl'>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star'></i>
+                            <i className={'bi ' + (rating > 0.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 1.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 2.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 3.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 4.5 ? 'bi-star-fill' : 'bi-star')}></i>
                         </div>
                     </div>
-                    <div className='ml-8 '>
+                    <div className='ml-8'>
                         <Button className='bg-white text-xl mr-5 px-8 py-2 border border-amber-500 text-amber-500'>
                             Tất cả
                         </Button>
@@ -211,10 +234,18 @@ function ProductDetail({ product, similarProducts }: Props) {
                         <Button className='bg-white text-xl mr-5 px-8 py-2'>1 sao</Button>
                     </div>
                 </div>
-
-                <Review />
-                <Review />
-                <Review />
+                <div className='review'>
+                    {reviewList.map(item => (
+                        <ReviewItem
+                            key={item.id}
+                            image={item.User?.image?.path || ''}
+                            reviewText={item.comment}
+                            star={item.rating}
+                            username={item.User?.name || ''}
+                            time={item.createdAt?.toString()||''}
+                        />
+                    ))}
+                </div>
 
                 {/* Pagination */}
                 <div className='flex flex-row items-center justify-end mt-4'>
