@@ -1,10 +1,11 @@
 import { CurrencyFormatter } from '@/utils/formatter';
 import OrderItem from './OrderItem';
 import { defaultStatus } from '../Constant';
+import { InvoiceItemWithProduct, InvoiceWithProducts } from '@/models/invoice';
 
 interface Props {
     className?: string;
-    data?: any;
+    data?: InvoiceWithProducts;
 }
 
 export default function OrderBox({ className, data }: Props) {
@@ -13,16 +14,18 @@ export default function OrderBox({ className, data }: Props) {
             <div className='flex justify-between items-center'>
                 <div className='text-blue-500 cursor-pointer'>ID: #{data?.id}</div>
                 <div className='text-green-500 cursor-pointer font-bold'>
-                    {defaultStatus.statusOrder?.find((s: any) => s.status == data?.status)?.message}
+                    {defaultStatus.statusOrder?.find(s => s.status == data?.status)?.message}
                 </div>
             </div>
             <hr className='bg-amber-500 mt-1 ' />
-            {data?.InvoicesItem.map((item: any, key: number) => {
+            {data?.InvoicesItem.map((item: InvoiceItemWithProduct, key: number) => {
                 return item?.id != null ? (
                     <div key={key}>
-                        <OrderItem item={item} />{' '}
+                        <OrderItem item={item} invoice={data} />{' '}
                     </div>
-                ) : <></>;
+                ) : (
+                    <></>
+                );
             })}
             <hr className='bg-amber-500 my-3 ' />
             <div className='text-base flex flex-row justify-end items-center'>

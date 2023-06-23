@@ -7,9 +7,14 @@ import Button from '../widgets/button/Button';
 import { useGlobalContext } from '@/app/context/GlobalContext';
 import { Notify } from 'notiflix';
 import { useRouter } from 'next/navigation';
+import { InvoiceItemWithProduct } from '@/models/invoice';
+import { Invoice, Status } from '@prisma/client';
+import Link from 'next/link';
+import ReBuyAndReview from './ReBuyAndReview';
 
 interface Props {
-    item?: any;
+    item?: InvoiceItemWithProduct;
+    invoice: Invoice;
 }
 
 function OrderItem(props: Props) {
@@ -20,7 +25,7 @@ function OrderItem(props: Props) {
     async function addToCart() {
         const data = {
             userId: user?.id,
-            productId: product.id,
+            productId: product?.id,
             quantity: props?.item?.quantity,
         };
 
@@ -61,36 +66,50 @@ function OrderItem(props: Props) {
                 </div>
                 <div className='flex-1 ms-4 flex flex-col justify-between'>
                     <div className='flex flex-col '>
-                        <p className='font-semibold text-lg line-clamp-2'>{product?.name}</p>
+                        <Link
+                            href={`/product/${product?.slug}`}
+                            className='font-semibold text-lg line-clamp-2 hover:text-amber-500'
+                        >
+                            {product?.name}
+                        </Link>
                         <p className='text-gray-500'>Phân loại: Silver</p>
                     </div>
-                    <p>x{product?.quantity}</p>
+                    <p>x{props?.item?.quantity}</p>
                 </div>
 
                 <div className='w-60 flex flex-col justify-center text-right'>
                     <span className='text-amber-500 text-lg font-semibold'>
-                        {CurrencyFormatter.format(product?.price * (1 - product?.sale))}
+                        {CurrencyFormatter.format(
+                            (product?.price || 0) * (1 - (product?.sale || 0)),
+                        )}
                     </span>
                     <span className='text-gray-500 line-through me-1'>
-                        {CurrencyFormatter.format(product?.price)}
+                        {CurrencyFormatter.format(product?.price || 0)}
                     </span>
                 </div>
             </div>
-
-            <div className='flex justify-between items-center mt-4'>
-                <p className='text-gray-500 text-sm'>Bạn chưa đánh giá</p>
-                <div className='flex justify-end items-center space-x-5'>
-                    <Button
-                        onClick={buyNow}
-                        className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2 outline outline-1 outline-gray-500'
-                    >
-                        Mua Lại
-                    </Button>
-                    <Button className='rounded-sm bg-white hover:bg-gray-200 px-5 py-2 outline outline-1 outline-gray-500'>
-                        Đánh Giá
-                    </Button>
+            {props.invoice.status === Status.PENDING && (
+                <div className='flex justify-end items-center mt-4'>
+                    <div className='flex justify-end items-center space-x-5'>
+                        <Button
+                            onClick={() => {
+                                /* todo: huy don hang*/
+                            }}
+                            className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2 outline outline-1 outline-gray-500'
+                        >
+                            Hủy
+                        </Button>
+                    </div>
                 </div>
-            </div>
+            )}
+            {props.invoice.status === Status.DELIVERED && (
+                <ReBuyAndReview
+                    buyNow={buyNow}
+                    invoiceItemId={props.item?.id}
+                    productId={product?.id}
+                    productSlug={product?.slug}
+                />
+            )}
         </>
     );
 }

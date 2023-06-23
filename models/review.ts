@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import prisma from '@/libs/prismadb';
 import { InvoiceNotDelivered, InvoiceNotFound } from './invoice';
 import { Status } from '@prisma/client';
@@ -14,6 +15,16 @@ export async function listReviews(userId?: string) {
             Product: true,
         },
     });
+}
+
+export async function getReviewOfUserAboutProduct(productId:string, userId: string) {
+    const review = await prisma.review.findFirst({
+        where: {
+            userId: userId,
+            productId: productId,
+        },
+    });
+    return review;
 }
 
 export async function createReview(
@@ -49,6 +60,16 @@ export async function createReview(
     const productId = invoice.InvoicesItem.find(item => item.id === invoiceItemId)?.productId;
     if (!productId) {
         throw InvoiceNotFound;
+    }
+
+    const review = await prisma.review.findFirst({
+        where: {
+            userId: userId,
+            productId: productId,
+        },
+    });
+    if (review) {
+        throw Error('Bạn đã đánh giá sản phẩm này rồi!');
     }
 
     return await prisma.review.create({

@@ -29,6 +29,14 @@ export type InvoiceWithProducts = Invoice & {
     })[];
 };
 
+export type InvoiceItemWithProduct = InvoiceItem & {
+    Product: Product & {
+        category: Category | null;
+        brand: Brand | null;
+        attachments: Attachment[];
+    }
+}
+
 export const InvoiceNotFound = new Error('Invoice not found');
 export const InvalidStatus = new Error('Invalid status');
 export const InvoiceNotDelivered = new Error('Invoice not delivered');
@@ -37,6 +45,9 @@ export async function listInvoices(userId?: string) {
     return await prisma.invoice.findMany({
         where: {
             userId: userId,
+        },
+        orderBy: {
+            createAt: 'desc'
         },
         include: {
             address: true,
@@ -122,7 +133,7 @@ export async function createInvoice(
     }
 
     let total = 0;
-    let invoiceItems: { productId: string; quantity: number }[] = [];
+    const invoiceItems: { productId: string; quantity: number }[] = [];
     cart.CartItem.forEach(async item => {
         if (item.Product.quantity < item.quantity) {
             throw NotEnoughQuantity;

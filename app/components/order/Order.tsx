@@ -4,19 +4,23 @@ import { useState, useEffect } from 'react';
 import OrderBox from './OrderBox';
 import { defaultStatus } from '../Constant';
 import { useGlobalContext } from '@/app/context/GlobalContext';
+import { Block } from 'notiflix';
+import { InvoiceWithProducts } from '@/models/invoice';
 
 export default function Order() {
     const [index, setIndex] = useState(0);
-    const [orders, setOrders] = useState<Array<any>>([]);
-    const [ordersFilter, setOrdersFilter] = useState<Array<any>>([]);
+    const [orders, setOrders] = useState<Array<InvoiceWithProducts>>([]);
+    const [ordersFilter, setOrdersFilter] = useState<Array<InvoiceWithProducts>>([]);
     const { user } = useGlobalContext();
 
     useEffect(() => {
         async function getOrders() {
+            Block.hourglass('.orderpage');
             const res = await fetch('/api/invoice');
             const data = await res.json();
             setOrders(data?.data);
             setOrdersFilter(data?.data);
+            Block.remove('.orderpage');
         }
         getOrders();
     }, [user]);
@@ -33,11 +37,11 @@ export default function Order() {
         }
 
         filterOrders();
-    }, [index]);
+    }, [index, orders]);
 
     return (
         <>
-            <div className='flex flex-col justify-start items-center w-full'>
+            <div className='flex flex-col justify-start items-center w-full orderpage'>
                 <div className='flex justify-between items-center mt-2 rounded-md w-full text-center'>
                     <div
                         className={
@@ -52,7 +56,7 @@ export default function Order() {
                     >
                         Tất cả
                     </div>
-                    {defaultStatus.statusOrder.map((s: any, key: number) => {
+                    {defaultStatus.statusOrder.map((s, key: number) => {
                         return (
                             <div
                                 key={key + 1}
@@ -73,7 +77,7 @@ export default function Order() {
                 </div>
                 <hr className='h-0.5 bg-gray-100 w-full mb-4' />
                 <div className='flex flex-col space-y-5 mt-4 w-full'>
-                    {ordersFilter.map((order: any, key: number) => {
+                    {ordersFilter.map((order, key: number) => {
                         return <OrderBox data={order} key={key} />;
                     })}
                 </div>

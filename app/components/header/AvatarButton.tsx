@@ -41,10 +41,10 @@ export default function AvatarButton({ user }: { user: User }) {
                 <Link href={'/user'} className='hover:text-amber-500'>
                     Tài khoản của tôi
                 </Link>
-                <Link href={'/user?tab=1'} className='hover:text-amber-500'>
+                <Link href={'/user/invoice'} className='hover:text-amber-500'>
                     Đơn mua
                 </Link>
-                <Link href={'/user?tab=2'} className='hover:text-amber-500'>
+                <Link href={'/user/notification'} className='hover:text-amber-500'>
                     Thông báo
                 </Link>
                 <p

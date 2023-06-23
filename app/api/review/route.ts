@@ -54,9 +54,9 @@ export async function POST(request: Request) {
         }
 
         const { invoiceItemId, rating, message } = await request.json();
-        if (!invoiceItemId || !rating || !message) {
+        if (!invoiceItemId || !rating ) {
             return NextResponse.json(
-                { message: 'Missing invoiceItemId, rating or message' },
+                { message: 'Missing invoiceItemId, or rating' },
                 { status: 400 },
             );
         }

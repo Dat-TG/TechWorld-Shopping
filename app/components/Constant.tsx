@@ -3,7 +3,7 @@ export const defaultStatus = {
         { status: 'PENDING', message: 'Chờ đóng gói' },
         { status: 'PROCESSING', message: 'Chờ giao' },
         { status: 'DELIVERING', message: 'Đang giao' },
-        { status: 'DELIVERD', message: 'Đã giao' },
+        { status: 'DELIVERED', message: 'Đã giao' },
         { status: 'CANCELLED', message: 'Đã hủy' },
         { status: 'RETURNING', message: 'Đang hoàn trả' },
         { status: 'RETURNED', message: 'Đã hoàn trả' },
@@ -25,3 +25,5 @@ export const SortingOptions = {
     Recent: 'recently',
     Create: 'created',
 };
+
+export const ratingText = ['Rất tệ', 'Không hài lòng', 'Bình thường', 'Hài lòng', 'Tuyệt vời'];
