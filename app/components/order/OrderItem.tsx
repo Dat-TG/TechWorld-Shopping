@@ -11,6 +11,7 @@ import { InvoiceItemWithProduct } from '@/models/invoice';
 import { Invoice, Status } from '@prisma/client';
 import Link from 'next/link';
 import ReBuyAndReview from './ReBuyAndReview';
+import { defaultValue } from '../Constant';
 
 interface Props {
     item?: InvoiceItemWithProduct;
@@ -57,7 +58,7 @@ function OrderItem(props: Props) {
                 <div className='w-24'>
                     <Image
                         alt='poster'
-                        src='/images/admin/iphone-14-pro-max-den-thumb-600x600.jpg'
+                        src={product?.attachments?.[0]?.path ?? defaultValue.image}
                         className='w-fit h-fit'
                         width={100}
                         height={100}
@@ -72,7 +73,7 @@ function OrderItem(props: Props) {
                         >
                             {product?.name}
                         </Link>
-                        <p className='text-gray-500'>Phân loại: Silver</p>
+                        <p className='text-gray-500'>Phân loại: {product?.category?.name}</p>
                     </div>
                     <p>x{props?.item?.quantity}</p>
                 </div>

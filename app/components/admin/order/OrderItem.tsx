@@ -42,13 +42,13 @@ function OrderItem(props: OrderItemProp) {
                         !updateStatus ? 'hidden' : 'absolute'
                     } absolute z-10 bg-white w-32 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                 >
-                    {defaultStatus.statusOrder.map((status, key) => {
+                    {defaultStatus.statusOrder.map((s, key) => {
                         return (
                             <div
                                 key={key}
                                 className='p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'
                             >
-                                {status}
+                                {s.status}
                             </div>
                         );
                     })}
