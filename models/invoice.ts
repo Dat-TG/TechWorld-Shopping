@@ -7,7 +7,27 @@ import {
     increaseProductSold,
 } from './product';
 import { UserNotFound } from './user';
-import { Status } from '@prisma/client';
+import {
+    Address,
+    Attachment,
+    Brand,
+    Category,
+    Invoice,
+    InvoiceItem,
+    Product,
+    Status,
+} from '@prisma/client';
+
+export type InvoiceWithProducts = Invoice & {
+    address: Address;
+    InvoicesItem: (InvoiceItem & {
+        Product: Product & {
+            category: Category | null;
+            brand: Brand | null;
+            attachments: Attachment[];
+        };
+    })[];
+};
 
 export const InvoiceNotFound = new Error('Invoice not found');
 export const InvalidStatus = new Error('Invalid status');
@@ -22,7 +42,13 @@ export async function listInvoices(userId?: string) {
             address: true,
             InvoicesItem: {
                 include: {
-                    Product: true,
+                    Product: {
+                        include: {
+                            attachments: true,
+                            category: true,
+                            brand: true,
+                        },
+                    },
                 },
             },
         },
