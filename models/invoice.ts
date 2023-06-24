@@ -30,6 +30,7 @@ export type InvoiceWithProducts = Invoice & {
 };
 
 export type InvoiceItemWithProduct = InvoiceItem & {
+    address: Address;
     Product: Product & {
         category: Category | null;
         brand: Brand | null;
@@ -90,7 +91,7 @@ export async function createInvoice(
         const invoice = await prisma.invoice.create({
             data: {
                 userId: userId,
-                total: product.price * quantity,
+                total: product.price * quantity * (1 - product.sale),
                 addressId: addressId,
                 InvoicesItem: {
                     create: {
@@ -225,19 +226,7 @@ export async function updateInvoice(id: string, status: string) {
                 console.log(item.productId, item.quantity);
                 return increaseProductSold(item.productId, item.quantity);
             });
-
-            const newInvoice = await prisma.invoice.update({
-                where: {
-                    id: id,
-                },
-                data: {
-                    status: {
-                        set: status as Status,
-                    },
-                },
-            });
-
-            return newInvoice;
+            break;
         }
         case Status.CANCELLED: {
             if (invoice.status !== Status.PENDING) {
@@ -247,19 +236,7 @@ export async function updateInvoice(id: string, status: string) {
             invoice.InvoicesItem.forEach(async item => {
                 return increaseProductQuantity(item.productId, item.quantity);
             });
-
-            const newInvoice = await prisma.invoice.update({
-                where: {
-                    id: id,
-                },
-                data: {
-                    status: {
-                        set: status as Status,
-                    },
-                },
-            });
-
-            return newInvoice;
+            break;
         }
         case Status.RETURNING: {
             if (invoice.status !== Status.DELIVERED) {
@@ -271,19 +248,7 @@ export async function updateInvoice(id: string, status: string) {
                 console.log(item.productId, item.quantity);
                 return decreaseProductQuantity(item.productId, item.quantity);
             });
-
-            const newInvoice = await prisma.invoice.update({
-                where: {
-                    id: id,
-                },
-                data: {
-                    status: {
-                        set: status as Status,
-                    },
-                },
-            });
-
-            return newInvoice;
+            break;
         }
         case Status.RETURNED: {
             if (invoice.status !== Status.RETURNING) {
@@ -292,20 +257,7 @@ export async function updateInvoice(id: string, status: string) {
             invoice.InvoicesItem.forEach(async item => {
                 return increaseProductQuantity(item.productId, item.quantity);
             });
-
-            // If status is returned, update product quantity
-            const newInvoice = await prisma.invoice.update({
-                where: {
-                    id: id,
-                },
-                data: {
-                    status: {
-                        set: status as Status,
-                    },
-                },
-            });
-
-            return newInvoice;
+            break;
         }
         default:
             throw InvalidStatus;
@@ -318,6 +270,42 @@ export async function updateInvoice(id: string, status: string) {
         data: {
             status: {
                 set: status as Status,
+            },
+        },
+        include: {
+            address: true,
+            InvoicesItem: {
+                include: {
+                    Product: {
+                        include: {
+                            attachments: true,
+                            category: true,
+                            brand: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
+
+export async function getInvoiceById(id: string) {
+    return await prisma.invoice.findUnique({
+        where: {
+            id: id,
+        },
+        include: {
+            address: true,
+            InvoicesItem: {
+                include: {
+                    Product: {
+                        include: {
+                            attachments: true,
+                            category: true,
+                            brand: true,
+                        },
+                    },
+                },
             },
         },
     });

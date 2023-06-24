@@ -1,21 +1,21 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { defaultStatus } from '../../Constant';
+import { CurrencyFormatter, TimeConverter } from '@/utils/formatter';
+import { InvoiceWithProducts } from '@/models/invoice';
 
 interface OrderItemProp {
+    order?: InvoiceWithProducts;
     enableDeleteModel?: boolean;
     setEnableDeleteModel?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function OrderItem(props: OrderItemProp) {
-    const [updateStatus, setUpdateStatus] = useState(false);
     const [settings, setSettings] = useState(false);
 
     useEffect(() => {
-        setUpdateStatus(false);
         setSettings(false);
     }, []);
 
@@ -23,47 +23,36 @@ function OrderItem(props: OrderItemProp) {
         <tr className='hover:bg-slate-100'>
             <td className='px-4 py-4 text-sm font-medium whitespace-nowrap'>
                 <div>
-                    <h2 className='font-medium text-gray-800 dark:text-white '>#101</h2>
+                    <h2 className='font-medium text-gray-800 dark:text-white w-20 truncate'>
+                        #{props.order?.id}
+                    </h2>
                 </div>
             </td>
-            <td className='px-12 py-4 text-sm font-medium whitespace-nowrap'>
+            <td className='px-8 py-4 w-40 text-sm font-medium whitespace-nowrap'>
                 <button
-                    onMouseOver={() => setUpdateStatus(true)}
-                    onMouseOut={() => setUpdateStatus(false)}
-                    className='relative inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800'
+                    disabled
+                    className={`relative inline px-3 py-1 w-28 text-sm font-normal rounded-full gap-x-2 ${
+                        defaultStatus.statusOrder.find(o => o.status == props.order?.status)
+                            ?.backgroundColor
+                    }`}
                 >
-                    Pending <i className='bi bi-chevron-down'></i>
-                    <div className='w-32 h-12 bg-transparent absolute left-0'></div>
+                    {props.order?.status} 
                 </button>
-                <div
-                    onMouseOver={() => setUpdateStatus(true)}
-                    onMouseOut={() => setUpdateStatus(false)}
-                    className={`${
-                        !updateStatus ? 'hidden' : 'absolute'
-                    } absolute z-10 bg-white w-32 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
-                >
-                    {defaultStatus.statusOrder.map((s, key) => {
-                        return (
-                            <div
-                                key={key}
-                                className='p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'
-                            >
-                                {s.status}
-                            </div>
-                        );
-                    })}
-                </div>
+                
             </td>
-            <td className='px-4 py-4 text-sm whitespace-nowrap'>20-12-2002</td>
-            <td className='px-4 py-4 text-sm whitespace-nowrap'>37.000₫</td>
+            <td className='px-4 py-4 text-sm whitespace-nowrap'>
+                {TimeConverter(`${props.order?.createAt}`).toString()}
+            </td>
+            <td className='px-4 py-4 text-sm whitespace-nowrap'>
+                {CurrencyFormatter.format(props.order?.total ?? 0)}
+            </td>
 
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
-                <div className='flex flex-row items-center'>
-                    <Image src={'/images/logo.png'} width={20} height={20} alt='' />
-                    <div className='font-medium pl-2 '>admin</div>
-                </div>
+                <div className='font-medium pl-2 '>{props.order?.address.name}</div>
             </td>
-            <td className='px-4 py-4 text-sm text-center whitespace-nowrap'>0123456789</td>
+            <td className='px-4 py-4 text-sm text-center whitespace-nowrap'>
+                {props.order?.address.phone}
+            </td>
 
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
                 <button
@@ -95,20 +84,11 @@ function OrderItem(props: OrderItemProp) {
                     } bg-white z-10 w-28 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                 >
                     <Link
-                        href={`/admin/order/${101}`}
+                        href={`/admin/order/${props.order?.id}`}
                         className='block w-full text-left p-2 pl-4 hover:bg-yellow-200 cursor-pointer border-b'
                     >
                         Chỉnh sửa
                     </Link>
-                    <button
-                        onClick={() => {
-                            if (props.setEnableDeleteModel != null)
-                                props.setEnableDeleteModel(!props.enableDeleteModel);
-                        }}
-                        className='block w-full text-left p-2 pl-4 hover:bg-red-200 cursor-pointer border-b'
-                    >
-                        Xóa
-                    </button>
                 </div>
             </td>
         </tr>

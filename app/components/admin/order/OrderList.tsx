@@ -1,11 +1,53 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderItem from './OrderItem';
 import DeleteOrderModel from './DeleteOrderModel';
+import { defaultStatus } from '../../Constant';
+import { InvoiceWithProducts } from '@/models/invoice';
 
-function OrderList() {
+interface Props {
+    orders: any;
+}
+
+function OrderList(props: Props) {
     const [enableDeleteModel, setEnableDeleteModel] = useState(false);
+    const [filter, setFilter] = useState<Array<InvoiceWithProducts>>(props.orders);
+    const [filterType, setFilterType] = useState(0);
+    const [flag, setFlag] = useState(true);
+
+    useEffect(() => {
+        if (filterType != 0) {
+            setFilter(
+                props.orders?.filter(
+                    (o: InvoiceWithProducts) =>
+                        o.status == defaultStatus.statusOrder?.[filterType - 1]?.status,
+                ),
+            );
+        } else setFilter(props.orders);
+    }, [filterType, props.orders]);
+
+    useEffect(() => {
+        // async function updateStatus(id: string, value: number) {
+        //     await fetch('/api/product', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             name: product.name,
+        //             price: Number(product.price),
+        //             quantity: Number(product.quantity),
+        //             sale: Number(product.sale),
+        //             categoryId: product.category,
+        //             brandId: product.brand,
+        //             description: product.description,
+        //             attachments: attachments,
+        //         }),
+        //     });
+        // }
+    }, [flag]);
+
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
             <div className='flex items-center justify-between'>
@@ -16,7 +58,7 @@ function OrderList() {
                         </h2>
 
                         <p className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
-                            240 đơn đặt hàng
+                            {props.orders.length} đơn đặt hàng
                         </p>
                     </div>
                 </div>
@@ -24,23 +66,19 @@ function OrderList() {
 
             <div className='mt-6 flex items-center justify-between '>
                 <div className='inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700'>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300'>
-                        Tất cả
-                    </button>
-
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Chưa duyệt
-                    </button>
-
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đang vận chuyển
-                    </button>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đã giao
-                    </button>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        Đã hủy
-                    </button>
+                    <select
+                        onChange={e => setFilterType(parseInt(e.target.value))}
+                        className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 outline-none'
+                    >
+                        <option value={0}>Tất cả</option>
+                        {defaultStatus.statusOrder.map((s, key: number) => {
+                            return (
+                                <option key={key} value={key + 1}>
+                                    {s.message}
+                                </option>
+                            );
+                        })}
+                    </select>
                 </div>
 
                 <div className='relative flex items-center mt-4 md:mt-0'>
@@ -64,6 +102,18 @@ function OrderList() {
                     <input
                         type='text'
                         placeholder='Search'
+                        onChange={e =>
+                            setFilter(
+                                props.orders.filter(
+                                    (o: InvoiceWithProducts) =>
+                                        o.id.includes(e.target.value) &&
+                                        (filterType == 0 ||
+                                            o.status ==
+                                                defaultStatus.statusOrder?.[filterType - 1]
+                                                    ?.status),
+                                ),
+                            )
+                        }
                         className='block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
                     />
                 </div>
@@ -110,7 +160,7 @@ function OrderList() {
                                             scope='col'
                                             className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
-                                            Người đặt đơn hàng
+                                            Người nhận
                                         </th>
                                         <th
                                             scope='col'
@@ -124,42 +174,16 @@ function OrderList() {
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
-                                    <OrderItem
-                                        enableDeleteModel={enableDeleteModel}
-                                        setEnableDeleteModel={setEnableDeleteModel}
-                                    />
+                                    {filter?.map((o: InvoiceWithProducts, key: number) => {
+                                        return (
+                                            <OrderItem
+                                                key={key}
+                                                order={o}
+                                                enableDeleteModel={enableDeleteModel}
+                                                setEnableDeleteModel={setEnableDeleteModel}
+                                            />
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                             <DeleteOrderModel
@@ -168,59 +192,6 @@ function OrderList() {
                             />
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div className='mt-6 sm:flex sm:items-center sm:justify-between '>
-                <div className='text-sm text-gray-500 dark:text-gray-400'>
-                    Trang{' '}
-                    <span className='font-medium text-gray-700 dark:text-gray-100'>1 trên 10</span>
-                </div>
-
-                <div className='flex items-center mt-4 gap-x-4 sm:mt-0'>
-                    <a
-                        href='#'
-                        className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
-                    >
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth='1.5'
-                            stroke='currentColor'
-                            className='w-5 h-5 rtl:-scale-x-100'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18'
-                            />
-                        </svg>
-
-                        <span>Trước</span>
-                    </a>
-
-                    <a
-                        href='#'
-                        className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
-                    >
-                        <span>Sau</span>
-
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth='1.5'
-                            stroke='currentColor'
-                            className='w-5 h-5 rtl:-scale-x-100'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
-                            />
-                        </svg>
-                    </a>
                 </div>
             </div>
         </div>
