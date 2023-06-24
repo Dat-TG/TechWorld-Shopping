@@ -3,23 +3,23 @@
 import React, { useEffect, useState } from 'react';
 import OrderItem from './OrderItem';
 import DeleteOrderModel from './DeleteOrderModel';
-import { Invoice } from '@prisma/client';
 import { defaultStatus } from '../../Constant';
+import { InvoiceWithProducts } from '@/models/invoice';
 
 interface Props {
-    orders: Array<Invoice>;
+    orders: any;
 }
 
 function OrderList(props: Props) {
     const [enableDeleteModel, setEnableDeleteModel] = useState(false);
-    const [filter, setFilter] = useState<Array<Invoice>>(props.orders);
+    const [filter, setFilter] = useState<Array<InvoiceWithProducts>>(props.orders);
     const [filterType, setFilterType] = useState(0);
 
     useEffect(() => {
         if (filterType != 0) {
             setFilter(
-                props.orders.filter(
-                    o => o.status == defaultStatus.statusOrder[filterType - 1].status,
+                props.orders?.filter(
+                    (o: InvoiceWithProducts) => o.status == defaultStatus.statusOrder?.[filterType - 1]?.status,
                 ),
             );
         } else setFilter(props.orders);
@@ -82,10 +82,12 @@ function OrderList(props: Props) {
                         onChange={e =>
                             setFilter(
                                 props.orders.filter(
-                                    o =>
+                                    (o: InvoiceWithProducts) =>
                                         o.id.includes(e.target.value) &&
-                                        o.status ==
-                                            defaultStatus.statusOrder[filterType - 1].status,
+                                        (filterType == 0 ||
+                                            o.status ==
+                                                defaultStatus.statusOrder?.[filterType - 1]
+                                                    ?.status),
                                 ),
                             )
                         }
@@ -135,7 +137,7 @@ function OrderList(props: Props) {
                                             scope='col'
                                             className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
-                                            Người đặt đơn hàng
+                                            Người nhận
                                         </th>
                                         <th
                                             scope='col'
@@ -149,11 +151,11 @@ function OrderList(props: Props) {
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
-                                    {filter.map((order, key: number) => {
+                                    {filter?.map((o: InvoiceWithProducts, key: number) => {
                                         return (
                                             <OrderItem
                                                 key={key}
-                                                order={order}
+                                                order={o}
                                                 enableDeleteModel={enableDeleteModel}
                                                 setEnableDeleteModel={setEnableDeleteModel}
                                             />
@@ -167,59 +169,6 @@ function OrderList(props: Props) {
                             />
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div className='mt-6 sm:flex sm:items-center sm:justify-between '>
-                <div className='text-sm text-gray-500 dark:text-gray-400'>
-                    Trang{' '}
-                    <span className='font-medium text-gray-700 dark:text-gray-100'>1 trên 10</span>
-                </div>
-
-                <div className='flex items-center mt-4 gap-x-4 sm:mt-0'>
-                    <a
-                        href='#'
-                        className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
-                    >
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth='1.5'
-                            stroke='currentColor'
-                            className='w-5 h-5 rtl:-scale-x-100'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18'
-                            />
-                        </svg>
-
-                        <span>Trước</span>
-                    </a>
-
-                    <a
-                        href='#'
-                        className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
-                    >
-                        <span>Sau</span>
-
-                        <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth='1.5'
-                            stroke='currentColor'
-                            className='w-5 h-5 rtl:-scale-x-100'
-                        >
-                            <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
-                            />
-                        </svg>
-                    </a>
                 </div>
             </div>
         </div>

@@ -1,23 +1,40 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '../../widgets/input/Input';
 import { defaultStatus } from '../../Constant';
 import Button from '../../widgets/button/Button';
+import { InvoiceWithProducts } from '@/models/invoice';
+import CartItem from '../../myCart/CartItem';
+import { CurrencyFormatter } from '@/utils/formatter';
+import Link from 'next/link';
 
-function OrderDetail() {
+interface Props {
+    order: any;
+}
+
+function OrderDetail(props: Props) {
+    const data = props.order as InvoiceWithProducts;
+    const [quantity, setQuantity] = useState(0);
+
+    useEffect(() => {
+        for (let i = 0; i < data.InvoicesItem.length; i++) {
+            setQuantity(quantity + data.InvoicesItem[i].quantity);
+        }
+    }, []);
+
     const [updateStatus, setUpdateStatus] = useState(false);
 
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
             <div className='flex flex-row  items-center justify-between mb-8'>
                 <div className='flex items-center gap-x-3'>
-                    <button>
+                    <Link href='/admin/order'>
                         <i className='bi bi-arrow-left text-lg'></i>
-                    </button>
+                    </Link>
 
                     <h2 className='text-lg font-medium text-gray-800 dark:text-white'>
-                        Đơn hàng #102
+                        Đơn hàng #{data.id}
                     </h2>
                 </div>
                 <div className='flex flex-row'>
@@ -69,7 +86,7 @@ function OrderDetail() {
                             type='text'
                             id='order_name'
                             className=''
-                            defaultValue='Nguyen Van A'
+                            defaultValue={data.address?.name}
                         />
                     </div>
                     <div className='flex flex-col flex-1 px-5'>
@@ -80,14 +97,19 @@ function OrderDetail() {
                             type='text'
                             id='order_phone'
                             className=''
-                            defaultValue='0123456789'
+                            value={data?.address?.phone}
                         />
                     </div>
                     <div className='flex flex-col flex-1 pl-5'>
                         <label htmlFor='order_date' className='font-medium text-base mb-4'>
                             Ngày đặt hàng
                         </label>
-                        <Input type='date' id='order_date' className='' />
+                        <Input
+                            type='date'
+                            id='order_date'
+                            className=''
+                            value={data?.createAt.toISOString().substring(0, 10)}
+                        />
                     </div>
                 </div>
                 <div className='flex flex-col flex-1'>
@@ -98,7 +120,7 @@ function OrderDetail() {
                         type='text'
                         id='order_address'
                         className=''
-                        defaultValue='227 NVC, Q5, TPHCM'
+                        value={data?.address?.address}
                     />
                 </div>
             </div>
@@ -106,18 +128,21 @@ function OrderDetail() {
             <div className='w-full flex bg-white px-6 pb-8 pt-6 rounded-md flex-col'>
                 <div className='flex flex-row justify-between items-center  mb-4'>
                     <h2 className='text-lg font-medium text-gray-800'>Chi tiết đơn hàng</h2>
-                    <div className='text-lg font-medium text-gray-800'>Số lượng: 8</div>
+                    <div className='text-lg font-medium text-gray-800'>Số lượng: {quantity}</div>
                 </div>
                 <hr className='mb-6' />
                 <div className='flex flex-row justify-between'></div>
-                {/* <CartItem enableCheckbox={false} />
-                <CartItem enableCheckbox={false} />
-                <CartItem enableCheckbox={false} />
-                <CartItem enableCheckbox={false} /> */}
+                {data.InvoicesItem.map(item => {
+                    // setQuantity(quantity + item.quantity);
+                    return <CartItem item={item} key={item.id} />;
+                })}
+
                 <hr />
                 <div className='my-3 text-base flex flex-row justify-between'>
                     <div className='font-semibold text-xl pl-4'>Tổng cộng:</div>
-                    <div className='text-xl font-bold text-amber-700 pr-4'>50.000 ₫</div>
+                    <div className='text-xl font-bold text-amber-700 pr-4'>
+                        {CurrencyFormatter.format(data?.total)}
+                    </div>
                 </div>
                 <div />
             </div>

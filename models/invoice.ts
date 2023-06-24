@@ -30,12 +30,13 @@ export type InvoiceWithProducts = Invoice & {
 };
 
 export type InvoiceItemWithProduct = InvoiceItem & {
+    address: Address;
     Product: Product & {
         category: Category | null;
         brand: Brand | null;
         attachments: Attachment[];
-    }
-}
+    };
+};
 
 export const InvoiceNotFound = new Error('Invoice not found');
 export const InvalidStatus = new Error('Invalid status');
@@ -318,6 +319,28 @@ export async function updateInvoice(id: string, status: string) {
         data: {
             status: {
                 set: status as Status,
+            },
+        },
+    });
+}
+
+export async function getInvoiceById(id: string) {
+    return await prisma.invoice.findUnique({
+        where: {
+            id: id,
+        },
+        include: {
+            address: true,
+            InvoicesItem: {
+                include: {
+                    Product: {
+                        include: {
+                            attachments: true,
+                            category: true,
+                            brand: true,
+                        },
+                    },
+                },
             },
         },
     });

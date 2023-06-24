@@ -96,7 +96,7 @@ function OrderItem(props: Props) {
                             onClick={() => {
                                 /* todo: huy don hang*/
                             }}
-                            className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2 outline outline-1 outline-gray-500'
+                            className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2'
                         >
                             Hủy
                         </Button>

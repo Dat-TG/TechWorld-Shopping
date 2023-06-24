@@ -1,14 +1,13 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { defaultStatus, defaultValue } from '../../Constant';
-import { Invoice, InvoiceItem } from '@prisma/client';
+import { defaultStatus } from '../../Constant';
 import { CurrencyFormatter } from '@/utils/formatter';
+import { InvoiceWithProducts } from '@/models/invoice';
 
 interface OrderItemProp {
-    order?: Invoice;
+    order?: InvoiceWithProducts;
     enableDeleteModel?: boolean;
     setEnableDeleteModel?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -70,13 +69,10 @@ function OrderItem(props: OrderItemProp) {
             </td>
 
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
-                <div className='flex flex-row items-center'>
-                    <Image src={defaultValue.avatar} width={20} height={20} alt='' />
-                    <div className='font-medium pl-2 '>{props.order?.userId}</div>
-                </div>
+                <div className='font-medium pl-2 '>{props.order?.address.name}</div>
             </td>
             <td className='px-4 py-4 text-sm text-center whitespace-nowrap'>
-                {props.order?.userId}
+                {props.order?.address.phone}
             </td>
 
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
@@ -109,7 +105,7 @@ function OrderItem(props: OrderItemProp) {
                     } bg-white z-10 w-28 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
                 >
                     <Link
-                        href={`/admin/order/${101}`}
+                        href={`/admin/order/${props.order?.id}`}
                         className='block w-full text-left p-2 pl-4 hover:bg-yellow-200 cursor-pointer border-b'
                     >
                         Chỉnh sửa

@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import { InvalidStatus, InvoiceNotFound, updateInvoice } from '@/models/invoice';
+import { InvalidStatus, InvoiceNotFound, getInvoiceById, updateInvoice } from '@/models/invoice';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
@@ -56,5 +56,23 @@ export async function PATCH(request: Request, { params }: { params: { id: string
                 status: 500,
             },
         );
+    }
+}
+
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    try {
+        const { id } = params;
+        console.log(id);
+        const session = await getServerSession();
+        if (!session || !session.user) {
+            return NextResponse.json({ message: 'Unauthenticated' }, { status: 401 });
+        }
+        if (!id) {
+            return NextResponse.json({ message: 'Missing id' }, { status: 400 });
+        }
+        const invoice = await getInvoiceById(id);
+        return NextResponse.json({ message: 'success', data: invoice });
+    } catch (err) {
+        console.log(err);
     }
 }

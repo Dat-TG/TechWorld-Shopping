@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { FullCartItem } from '@/models/user';
 import { CurrencyFormatter } from '@/utils/formatter';
 import { defaultValue } from '../Constant';
 import InputQuantity from '../widgets/inputQuantity/InputQuantity';
@@ -10,8 +9,8 @@ import Link from 'next/link';
 import { Loading } from 'notiflix';
 
 interface CartItemProps {
-    item: FullCartItem;
-    removeItemFromCart: () => Promise<void>;
+    item: any;
+    removeItemFromCart?: () => Promise<void>;
 }
 
 function CartItem({ item, removeItemFromCart }: CartItemProps) {
@@ -36,7 +35,7 @@ function CartItem({ item, removeItemFromCart }: CartItemProps) {
 
     async function removeItem() {
         Loading.dots();
-        await removeItemFromCart();
+        await removeItemFromCart?.();
         setRemove(false);
         Loading.remove();
     }
