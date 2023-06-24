@@ -1,6 +1,6 @@
 import { numberOfProducts } from '@/models/product';
 import { Metadata } from 'next';
-import { getCategoryBySlug, listCategories } from '@/models/category';
+import { getCategoryBySlug } from '@/models/category';
 import CategoryPage from '@/app/components/category/CategoryPage';
 
 async function Page({

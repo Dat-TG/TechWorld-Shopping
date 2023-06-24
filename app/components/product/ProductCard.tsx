@@ -9,8 +9,9 @@ interface Props {
 
 export default function ProductCard({ product }: Props) {
     const numberOfReviews = product.Reviews.length;
-    // TODO: add product rating
-    // const rating = numberOfReviews ? product.Reviews.reduce((a, b) => a + b.rating, 0) / numberOfReviews : 5;
+    const rating = numberOfReviews
+        ? product.Reviews.reduce((a, b) => a + b.rating, 0) / numberOfReviews
+        : 0;
     return (
         <div className='pb-6 w-full' style={{ maxWidth: '220px' }}>
             <Link
@@ -19,10 +20,7 @@ export default function ProductCard({ product }: Props) {
             >
                 <div className='max-w-md mx-auto'>
                     <div className='bg-white shadow-md border border-cagray-200 rounded-lg max-w-xs'>
-                        <div
-                            className={'h-40 flex flex-col w-full  justify-center'}
-                            
-                        >
+                        <div className={'h-40 flex flex-col w-full  justify-center'}>
                             <Image
                                 className='rounded-t-lg overflow-hidden '
                                 src={
@@ -58,11 +56,36 @@ export default function ProductCard({ product }: Props) {
                             </div>
                             <div className='text-sm'>Đã bán {product.sold}</div>
                             <div className='flex flex-row  w-28 items-center justify-between text-sm mt-2'>
-                                <i className='bi bi-star-fill text-amber-500'></i>
-                                <i className='bi bi-star-fill text-amber-500'></i>
-                                <i className='bi bi-star-fill text-amber-500'></i>
-                                <i className='bi bi-star-fill text-amber-500'></i>
-                                <i className='bi bi-star-fill text-amber-500'></i>
+                                <i
+                                    className={
+                                        'bi text-amber-500 ' +
+                                        (rating > 0.5 ? 'bi-star-fill' : 'bi-star')
+                                    }
+                                ></i>
+                                <i
+                                    className={
+                                        'bi text-amber-500 ' +
+                                        (rating > 1.5 ? 'bi-star-fill' : 'bi-star')
+                                    }
+                                ></i>
+                                <i
+                                    className={
+                                        'bi text-amber-500 ' +
+                                        (rating > 2.5 ? 'bi-star-fill' : 'bi-star')
+                                    }
+                                ></i>
+                                <i
+                                    className={
+                                        'bi text-amber-500 ' +
+                                        (rating > 3.5 ? 'bi-star-fill' : 'bi-star')
+                                    }
+                                ></i>
+                                <i
+                                    className={
+                                        'bi text-amber-500 ' +
+                                        (rating > 4.5 ? 'bi-star-fill' : 'bi-star')
+                                    }
+                                ></i>
                                 <div className='text-md font-normal'>{numberOfReviews}</div>
                             </div>
                         </div>

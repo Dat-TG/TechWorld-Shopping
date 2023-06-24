@@ -64,7 +64,7 @@ export default function RatingInput({
                 Notify.failure('Đánh giá không thành công');
             }
         }
-        if (mode == 'update') {
+        if (mode == 'update' || mode == 'ADMIN') {
             data.rating = realRate;
             console.log(data);
             try {
@@ -77,6 +77,7 @@ export default function RatingInput({
                     body: JSON.stringify({
                         rating: data.rating,
                         message: data.message,
+                        userId: review?.userId,
                     }),
                 });
                 const json = await res.json();
@@ -85,7 +86,7 @@ export default function RatingInput({
                     Notify.success('Cập nhật đánh giá thành công', {
                         clickToClose: true,
                     });
-                    router.replace('/user/invoice');
+                    router.replace(mode == 'update' ? '/user/invoice' : '/admin/review');
                 } else {
                     Notify.failure(json.message);
                 }

@@ -1,5 +1,4 @@
 import { listTrendingProducts } from '@/models/product';
-import CategoryCard from '../CategoryCard';
 import Time from '../Time';
 import ProductCardAdmin from './ProductCardAdmin';
 import { listTrendingCategories } from '@/models/category';

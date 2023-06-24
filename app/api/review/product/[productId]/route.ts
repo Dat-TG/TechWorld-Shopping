@@ -1,12 +1,12 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getReviewOfUserAboutProduct, listReviews } from '@/models/review';
+import { getReviewByProductId, listReviews } from '@/models/review';
 import { getErrorMessage } from '@/utils/helper';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request, { params }: { params: { productId: string } }) {
     try {
+
         const { productId } = params;
         if (!productId) {
             return NextResponse.json({ message: 'Missing id' }, { status: 400 });
@@ -28,16 +28,11 @@ export async function GET(request: Request, { params }: { params: { productId: s
             return NextResponse.json({ message: 'success', data: reviews });
         }
 
-        const review = await getReviewOfUserAboutProduct(productId, session.user.id);
-        return NextResponse.json({ message: 'success', data: review });
+        const reviews = await getReviewByProductId(productId);
+        return NextResponse.json({ message: 'success', data: reviews });
     } catch (error) {
-        console.log('Error getting product', getErrorMessage(error));
+        console.log('Error getting all reviews', getErrorMessage(error));
 
-        if (error instanceof PrismaClientKnownRequestError) {
-            if (error.code === 'P2023') {
-                return NextResponse.json({ message: 'Invalid product id' }, { status: 400 });
-            }
-        }
         return NextResponse.json(
             { message: `Internal Server Error: ${getErrorMessage(error)}` },
             {

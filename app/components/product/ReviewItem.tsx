@@ -6,13 +6,15 @@ interface ReviewProps {
     username?: string;
     star?: number;
     reviewText?: string;
+    time?: string;
 }
 
-function Review({
+function ReviewItem({
     image = '/images/logo.png',
     reviewText = 'Sản phẩm tốt. Rất nên sử dụng để cấp ẩm cho da. Mềm, mịn, mướt da.',
     star = 1,
     username = 'abcxay',
+    time = '12:12:12 12/12/2012',
 }: ReviewProps) {
     return (
         <div className='flex flex-row ml-8 mt-6 border-b py-2'>
@@ -36,11 +38,11 @@ function Review({
                         return <i key={i} className='bi bi-star'></i>;
                     })}
                 </div>
-                <div className='text-sm text-gray-500 mb-4'>2023-01-10 16:14</div>
+                <div className='text-sm text-gray-500 mb-4'>{new Date(time).toLocaleString()}</div>
                 <p className='font-base '>{reviewText}</p>
             </div>
         </div>
     );
 }
 
-export default Review;
+export default ReviewItem;

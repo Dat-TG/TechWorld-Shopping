@@ -90,6 +90,7 @@ function OrderItem(props: Props) {
                     </span>
                 </div>
             </div>
+        
             {props.enableButton != false && (
                 <>
                     {props.invoice?.status === Status.PENDING && (
