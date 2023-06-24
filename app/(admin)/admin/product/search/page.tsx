@@ -2,9 +2,6 @@ import ProductCardAdmin from '@/app/components/admin/product/ProductCardAdmin';
 import ProductSearchBar from '@/app/components/admin/product/ProductSearchBar';
 import SelectCategory from '@/app/components/admin/product/SelectCategory';
 import SelectSortOption from '@/app/components/admin/product/SelectSortOption';
-import HeaderSelectCategory from '@/app/components/header/HeaderSelectCategory';
-import HeaderSelectSortOption from '@/app/components/header/HeaderSelectSortingOption';
-import ProductCard from '@/app/components/product/ProductCard';
 import { listCategoriesAlphabet } from '@/models/category';
 import { searchProduct } from '@/models/product';
 
@@ -14,7 +11,6 @@ export const metadata = {
 };
 
 export default async function Page({
-    params,
     searchParams,
 }: {
     params: { slug: string };

@@ -34,8 +34,8 @@ export type InvoiceItemWithProduct = InvoiceItem & {
         category: Category | null;
         brand: Brand | null;
         attachments: Attachment[];
-    }
-}
+    };
+};
 
 export const InvoiceNotFound = new Error('Invoice not found');
 export const InvalidStatus = new Error('Invalid status');
@@ -47,7 +47,7 @@ export async function listInvoices(userId?: string) {
             userId: userId,
         },
         orderBy: {
-            createAt: 'desc'
+            createAt: 'desc',
         },
         include: {
             address: true,

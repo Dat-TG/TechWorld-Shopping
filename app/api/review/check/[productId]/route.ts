@@ -1,5 +1,4 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { ProductNotFound, deleteProduct, getProduct, updateProduct } from '@/models/product';
 import { getReviewOfUserAboutProduct, listReviews } from '@/models/review';
 import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';

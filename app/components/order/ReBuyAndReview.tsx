@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import Button from '../widgets/button/Button';
 import { useEffect, useState } from 'react';
 import { Block } from 'notiflix';

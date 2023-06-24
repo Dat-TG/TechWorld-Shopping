@@ -3,7 +3,7 @@ import { getErrorMessage } from '@/utils/helper';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { NextResponse } from 'next/server';
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         if (!id) {

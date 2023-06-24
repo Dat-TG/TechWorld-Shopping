@@ -1,5 +1,5 @@
 import ReviewList from '@/app/components/admin/review/ReviewList';
-import { FullReviewWithProduct, listReviews } from '@/models/review';
+import { listReviews } from '@/models/review';
 
 export const metadata = {
     title: 'Quản lý đánh giá | Admin site | TechWorld',

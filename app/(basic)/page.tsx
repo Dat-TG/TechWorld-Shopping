@@ -1,9 +1,9 @@
 import Carousel from '@/app/components/carousel/Carousel';
 import BgCarousel from '@/app/components/carousel/BgCarousel';
-import PromotionBox from '@/app/components/promotionBox/PromotionBox';
+// import PromotionBox from '@/app/components/promotionBox/PromotionBox';
 import FeaturedCategory from '@/app/components/featuredCategory/FeaturedCategory';
-import Suggest from '@/app/components/suggest/Suggest';
-import Trending from '@/app/components/trending/Trending';
+// import Suggest from '@/app/components/suggest/Suggest';
+// import Trending from '@/app/components/trending/Trending';
 import { listCarousel } from '@/models/carousel';
 import { listCat } from '@/models/slides';
 
@@ -14,8 +14,8 @@ export const metadata = {
 
 // `app/page.tsx` is the UI for the `/` URL
 export default async function Page() {
-    const mainCarousels=await listCarousel(true);
-    const smallCarousels=await listCarousel(false);
+    const mainCarousels = await listCarousel(true);
+    const smallCarousels = await listCarousel(false);
     return (
         <>
             <div className='w-full h-full mb-0 group'>
