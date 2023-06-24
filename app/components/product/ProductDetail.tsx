@@ -41,13 +41,38 @@ interface Props {
     similarProducts: Array<FullProduct>;
 }
 
+const perPage = 10;
+
 function ProductDetail({ product, similarProducts }: Props) {
     const review = useReview(`/api/review/product/${product.id}`);
-    const reviewList = (review || []) as Array<FullReview>;
     const { user, updateMyCart } = useGlobalContext();
     const [quantity, setQuantity] = React.useState<number>(1);
     const [imgSelect, setImgSelect] = React.useState<number>(0);
     const router = useRouter();
+    const [filter, setFilter] = useState(0);
+    const [reviewFilterList, setReviewFilterList] = useState([] as Array<FullReview>);
+    const [page, setPage] = useState(1);
+    const [pageText, setPageText] = useState('1');
+
+    useEffect(() => {
+        let reviewList = (review || []) as Array<FullReview>;
+        if (filter == 0) {
+            setReviewFilterList(reviewList);
+        } else {
+            reviewList = reviewList.filter(function (a) {
+                return a.rating == filter;
+            });
+            setReviewFilterList(reviewList);
+        }
+        if (!reviewList) return;
+        if (page < 1 || page > Math.ceil(reviewList.length / perPage)) return;
+        let arr = [];
+        for (let i = 0; i < reviewList.length; i += perPage) {
+            arr.push(reviewList.slice(i, i + perPage));
+        }
+        arr = arr[page - 1];
+        setReviewFilterList(arr);
+    }, [filter, page, review]);
 
     async function addToCart() {
         Loading.dots();
@@ -117,11 +142,11 @@ function ProductDetail({ product, similarProducts }: Props) {
                             {RatingFormatter.format(rating)}
                         </span>
                         <div className='text-amber-500 w-28 flex flex-row justify-between'>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
-                            <i className='bi bi-star-fill'></i>
+                            <i className={'bi ' + (rating > 0.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 1.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 2.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 3.5 ? 'bi-star-fill' : 'bi-star')}></i>
+                            <i className={'bi ' + (rating > 4.5 ? 'bi-star-fill' : 'bi-star')}></i>
                         </div>
                         <span className='mx-4 font-sans text-gray-300 text-2xl relative -top-1'>
                             |
@@ -224,34 +249,136 @@ function ProductDetail({ product, similarProducts }: Props) {
                         </div>
                     </div>
                     <div className='ml-8'>
-                        <Button className='bg-white text-xl mr-5 px-8 py-2 border border-amber-500 text-amber-500'>
+                        <Button
+                            className={
+                                'bg-white text-xl mr-5 px-8 py-2 ' +
+                                (filter == 0 ? 'border border-amber-500 text-amber-500' : '')
+                            }
+                            onClick={() => {
+                                setFilter(0);
+                                setPage(1);
+                            }}
+                        >
                             Tất cả
                         </Button>
-                        <Button className='bg-white text-xl mr-5 px-8 py-2'>5 sao</Button>
-                        <Button className='bg-white text-xl mr-5 px-8 py-2'>4 sao</Button>
-                        <Button className='bg-white text-xl mr-5 px-8 py-2'>3 sao</Button>
-                        <Button className='bg-white text-xl mr-5 px-8 py-2'>2 sao</Button>
-                        <Button className='bg-white text-xl mr-5 px-8 py-2'>1 sao</Button>
+                        <Button
+                            className={
+                                'bg-white text-xl mr-5 px-8 py-2 ' +
+                                (filter == 5 ? 'border border-amber-500 text-amber-500' : '')
+                            }
+                            onClick={() => {
+                                setFilter(5);
+                                setPage(1);
+                            }}
+                        >
+                            5 sao
+                        </Button>
+                        <Button
+                            className={
+                                'bg-white text-xl mr-5 px-8 py-2 ' +
+                                (filter == 4 ? 'border border-amber-500 text-amber-500' : '')
+                            }
+                            onClick={() => {
+                                setFilter(4);
+                                setPage(1);
+                            }}
+                        >
+                            4 sao
+                        </Button>
+                        <Button
+                            className={
+                                'bg-white text-xl mr-5 px-8 py-2 ' +
+                                (filter == 3 ? 'border border-amber-500 text-amber-500' : '')
+                            }
+                            onClick={() => {
+                                setFilter(3);
+                                setPage(1);
+                            }}
+                        >
+                            3 sao
+                        </Button>
+                        <Button
+                            className={
+                                'bg-white text-xl mr-5 px-8 py-2 ' +
+                                (filter == 2 ? 'border border-amber-500 text-amber-500' : '')
+                            }
+                            onClick={() => {
+                                setFilter(2);
+                                setPage(1);
+                            }}
+                        >
+                            2 sao
+                        </Button>
+                        <Button
+                            className={
+                                'bg-white text-xl mr-5 px-8 py-2 ' +
+                                (filter == 1 ? 'border border-amber-500 text-amber-500' : '')
+                            }
+                            onClick={() => {
+                                setFilter(1);
+                                setPage(1);
+                            }}
+                        >
+                            1 sao
+                        </Button>
                     </div>
                 </div>
                 <div className='review'>
-                    {reviewList.map(item => (
+                    {reviewFilterList.map(item => (
                         <ReviewItem
                             key={item.id}
-                            image={item.User?.image?.path || ''}
+                            image={item.User?.image?.path || '/images/logo.png'}
                             reviewText={item.comment}
                             star={item.rating}
                             username={item.User?.name || ''}
-                            time={item.createdAt?.toString()||''}
+                            time={item.createdAt?.toString() || ''}
                         />
                     ))}
                 </div>
 
                 {/* Pagination */}
                 <div className='flex flex-row items-center justify-end mt-4'>
-                    <Button className=' bg-white px-4 py-2'>{'<'}</Button>
-                    <h2 className='py-1 px-3 bg-amber-500 mx-2 rounded-lg'>1</h2>
-                    <Button className=' bg-white px-4 py-2'>{'>'}</Button>
+                    <Button
+                        className=' bg-white px-4 py-2'
+                        onClick={() => {
+                            if (page - 1 < 1) return;
+                            setPageText(`${page - 1}`);
+                            setPage(page - 1);
+                        }}
+                    >
+                        {'<'}
+                    </Button>
+                    <input
+                        value={pageText}
+                        onChange={event => {
+                            setPageText(event.target.value);
+                        }}
+                        onKeyUp={event => {
+                            if (event.key === 'Enter') {
+                                const value = parseInt(event.currentTarget.value);
+                                if (
+                                    value < 1 ||
+                                    value > Math.ceil(reviewFilterList.length / perPage)
+                                ) {
+                                    setPageText(`${page}`);
+                                    return;
+                                }
+                                setPage(value);
+                            }
+                        }}
+                        type='number'
+                        className='w-12 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none mx-2 px-2 py-2 rounded-lg bg-amber-500 text-white'
+                    ></input>
+                    <Button
+                        className=' bg-white px-4 py-2'
+                        onClick={() => {
+                            if (page + 1 > Math.ceil(reviewFilterList.length / perPage)) return;
+                            setPageText(`${page + 1}`);
+                            setPage(page + 1);
+                        }}
+                    >
+                        {'>'}
+                    </Button>
                 </div>
             </div>
 
