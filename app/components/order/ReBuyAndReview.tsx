@@ -4,6 +4,7 @@ import Button from '../widgets/button/Button';
 import { useEffect, useState } from 'react';
 import { Block } from 'notiflix';
 import { Review } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
 function useReview(url: string) {
     const [review, setReview] = useState(null);
@@ -40,6 +41,7 @@ export default function ReBuyAndReview({
     const review = useReview(`/api/review/check/${productId}`);
     const star = (review || ({} as Review))?.rating;
     const reviewId = (review || ({} as Review))?.id;
+    const router = useRouter();
     return (
         <>
             <div className='flex justify-between items-center mt-4'>
@@ -53,21 +55,20 @@ export default function ReBuyAndReview({
                     >
                         Mua Lại
                     </Button>
-                    <Link
-                        href={
-                            review
-                                ? `/review/${reviewId}/edit?product=${productId}`
-                                : `/product/${productSlug}/rate?invoiceItemId=${invoiceItemId}`
+                    <Button
+                        className={
+                            'rounded-sm bg-white hover:bg-gray-200 px-5 py-2 outline outline-1 outline-gray-500 review'
                         }
+                        onClick={() => {
+                            router.push(
+                                review
+                                    ? `/review/${reviewId}/edit?product=${productId}`
+                                    : `/product/${productSlug}/rate?invoiceItemId=${invoiceItemId}`,
+                            );
+                        }}
                     >
-                        <Button
-                            className={
-                                'rounded-sm bg-white hover:bg-gray-200 px-5 py-2 outline outline-1 outline-gray-500 review'
-                            }
-                        >
-                            {review ? 'Chỉnh sửa đánh giá' : 'Đánh Giá'}
-                        </Button>
-                    </Link>
+                        {review ? 'Chỉnh sửa đánh giá' : 'Đánh Giá'}
+                    </Button>
                 </div>
             </div>
         </>

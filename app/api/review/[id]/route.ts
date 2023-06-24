@@ -21,11 +21,15 @@ export async function PATCH(request: Request, { params }: { params: { id: string
         if (!id) {
             return NextResponse.json({ message: 'Missing id' }, { status: 400 });
         }
-        const { rating, comment } = await request.json();
+        const { rating, message, userId } = await request.json();
         if (!rating) {
             return NextResponse.json({ message: 'Missing rating' }, { status: 400 });
         }
-        const review = await updateReview(id, session.user.id, rating, comment);
+        if (session.user.role === 'ADMIN') {
+            const review = await updateReview(id, userId, rating, message);
+            return NextResponse.json({ message: 'success', data: review });
+        }
+        const review = await updateReview(id, session.user.id, rating, message);
         return NextResponse.json({ message: 'success', data: review });
     } catch (error) {
         console.log('Error updating review', getErrorMessage(error));
@@ -70,7 +74,6 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
         if (!session || !session.user) {
             return NextResponse.json({ message: 'Unauthenticated' }, { status: 401 });
         }
-
         const review = await deleteReview(id, session.user.id);
         return NextResponse.json({ message: 'success', data: review });
     } catch (error) {

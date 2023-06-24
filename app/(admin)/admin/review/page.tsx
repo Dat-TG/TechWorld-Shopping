@@ -1,4 +1,5 @@
 import ReviewList from '@/app/components/admin/review/ReviewList';
+import { FullReviewWithProduct, listReviews } from '@/models/review';
 
 export const metadata = {
     title: 'Quản lý đánh giá | Admin site | TechWorld',
@@ -7,10 +8,11 @@ export const metadata = {
 
 export const revalidate = 0;
 
-export default function Page() {
+export default async function Page() {
+    const list = await listReviews();
     return (
         <div className='w-full'>
-            <ReviewList />
+            <ReviewList list={list} />
         </div>
     );
 }

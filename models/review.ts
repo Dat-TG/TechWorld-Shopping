@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import prisma from '@/libs/prismadb';
 import { InvoiceNotDelivered, InvoiceNotFound } from './invoice';
-import { Attachment, Review, Status } from '@prisma/client';
+import { Attachment, Brand, Category, Review, Status } from '@prisma/client';
 import { Unauthorized } from './user';
 
 export type FullReview = Review & {
@@ -13,17 +13,50 @@ export type FullReview = Review & {
     };
 };
 
+export type FullReviewWithProduct = Review & {
+    Product: {
+        id: string;
+        slug: string;
+        name: string;
+        attachments: Attachment[];
+        category: Category | null;
+        brand: Brand | null;
+    };
+    User: {
+        id: string;
+        name: string | null;
+        image: Attachment | null;
+    };
+};
+
 export const ReviewNotFound = new Error('Review not found');
 
 export async function listReviews(userId?: string) {
-    return await prisma.review.findMany({
+    const res = await prisma.review.findMany({
         where: {
             userId: userId,
         },
         include: {
-            Product: true,
+            Product: {
+                select: {
+                    id: true,
+                    slug: true,
+                    name: true,
+                    attachments: true,
+                    category: true,
+                    brand: true,
+                },
+            },
+            User: {
+                select: {
+                    id: true,
+                    name: true,
+                    image: true,
+                },
+            },
         },
     });
+    return res;
 }
 
 export async function getReviewOfUserAboutProduct(productId: string, userId: string) {
@@ -147,7 +180,11 @@ export async function deleteReview(id: string, userId: string) {
         throw ReviewNotFound;
     }
 
-    if (review.userId !== userId || review.User.role !== 'ADMIN') {
+    if (review.userId !== userId && review.User.role !== 'ADMIN') {
+        throw Unauthorized;
+    }
+
+    if (review.User.role !== 'ADMIN') {
         throw Unauthorized;
     }
 

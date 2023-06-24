@@ -105,6 +105,7 @@ function OrderItem(props: Props) {
             )}
             {props.invoice.status === Status.DELIVERED && (
                 <ReBuyAndReview
+                    key={new Date().toString()}
                     buyNow={buyNow}
                     invoiceItemId={props.item?.id}
                     productId={product?.id}

@@ -3,7 +3,7 @@ import { getProduct } from '@/models/product';
 import { getReviewById } from '@/models/review';
 
 export const metadata = {
-    title: 'Chỉnh sửa Đánh giá | TechWorld',
+    title: 'Chỉnh sửa Đánh giá |  | TechWorld',
     icons: '/images/logo.png',
 };
 
@@ -19,13 +19,5 @@ export default async function Page({
         : undefined;
     const product = await getProduct(productId);
     const review = await getReviewById(params.id);
-    return (
-        product && (
-            <Rating
-                product={product}
-                mode='update'
-                review={review || undefined}
-            />
-        )
-    );
+    return product && <Rating product={product} mode='ADMIN' review={review || undefined} />;
 }

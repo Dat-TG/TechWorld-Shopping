@@ -2,8 +2,13 @@
 
 import React from 'react';
 import ReviewItem from './ReviewItem';
+import { FullReviewWithProduct } from '@/models/review';
 
-function ReviewList() {
+interface Props {
+    list: FullReviewWithProduct[];
+}
+
+function ReviewList({ list }: Props) {
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
             <div className='flex items-center justify-between'>
@@ -14,7 +19,7 @@ function ReviewList() {
                         </h2>
 
                         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
-                            Tổng 1001 đánh giá
+                            Tổng {list.length} đánh giá
                         </span>
                     </div>
                 </div>
@@ -97,7 +102,13 @@ function ReviewList() {
                                             scope='col'
                                             className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
                                         >
-                                            Ngày đánh giá
+                                            Ngày
+                                        </th>
+                                        <th
+                                            scope='col'
+                                            className='px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-gray-500 dark:text-gray-400'
+                                        >
+                                            Thời gian
                                         </th>
                                         <th
                                             scope='col'
@@ -115,18 +126,15 @@ function ReviewList() {
                                         <th scope='col' className='relative py-3.5 px-4'>
                                             <span className='sr-only'>Edit</span>
                                         </th>
+                                        <th scope='col' className='relative py-3.5 px-4'>
+                                            <span className='sr-only'>Delete</span>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className='bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900'>
-                                    <ReviewItem />
-                                    <ReviewItem />
-                                    <ReviewItem />
-                                    <ReviewItem />
-                                    <ReviewItem />
-                                    <ReviewItem />
-                                    <ReviewItem />
-                                    <ReviewItem />
-                                    <ReviewItem />
+                                    {list.map(data => (
+                                        <ReviewItem key={data.id} review={data} />
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
