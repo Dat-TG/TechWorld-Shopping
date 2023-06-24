@@ -41,7 +41,7 @@ interface Props {
     similarProducts: Array<FullProduct>;
 }
 
-const perPage = 10;
+const perPage = 1;
 
 function ProductDetail({ product, similarProducts }: Props) {
     const review = useReview(`/api/review/product/${product.id}`);
@@ -51,6 +51,7 @@ function ProductDetail({ product, similarProducts }: Props) {
     const router = useRouter();
     const [filter, setFilter] = useState(0);
     const [reviewFilterList, setReviewFilterList] = useState([] as Array<FullReview>);
+    const [cur, setCur] = useState([] as Array<FullReview>);
     const [page, setPage] = useState(1);
     const [pageText, setPageText] = useState('1');
 
@@ -64,6 +65,7 @@ function ProductDetail({ product, similarProducts }: Props) {
             });
             setReviewFilterList(reviewList);
         }
+        setCur(reviewList);
         if (!reviewList) return;
         if (page < 1 || page > Math.ceil(reviewList.length / perPage)) return;
         let arr = [];
@@ -108,7 +110,7 @@ function ProductDetail({ product, similarProducts }: Props) {
     const numberOfReviews = product.Reviews.length;
     const rating = numberOfReviews
         ? product.Reviews.reduce((a, b) => a + b.rating, 0) / numberOfReviews
-        : 5;
+        : 0;
 
     return (
         <>
@@ -257,6 +259,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                             onClick={() => {
                                 setFilter(0);
                                 setPage(1);
+                                setPageText('1');
                             }}
                         >
                             Tất cả
@@ -269,6 +272,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                             onClick={() => {
                                 setFilter(5);
                                 setPage(1);
+                                setPageText('1');
                             }}
                         >
                             5 sao
@@ -281,6 +285,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                             onClick={() => {
                                 setFilter(4);
                                 setPage(1);
+                                setPageText('1');
                             }}
                         >
                             4 sao
@@ -293,6 +298,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                             onClick={() => {
                                 setFilter(3);
                                 setPage(1);
+                                setPageText('1');
                             }}
                         >
                             3 sao
@@ -305,6 +311,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                             onClick={() => {
                                 setFilter(2);
                                 setPage(1);
+                                setPageText('1');
                             }}
                         >
                             2 sao
@@ -317,6 +324,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                             onClick={() => {
                                 setFilter(1);
                                 setPage(1);
+                                setPageText('1');
                             }}
                         >
                             1 sao
@@ -356,10 +364,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                         onKeyUp={event => {
                             if (event.key === 'Enter') {
                                 const value = parseInt(event.currentTarget.value);
-                                if (
-                                    value < 1 ||
-                                    value > Math.ceil(reviewFilterList.length / perPage)
-                                ) {
+                                if (value < 1 || value > Math.ceil(cur.length / perPage)) {
                                     setPageText(`${page}`);
                                     return;
                                 }
@@ -372,7 +377,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                     <Button
                         className=' bg-white px-4 py-2'
                         onClick={() => {
-                            if (page + 1 > Math.ceil(reviewFilterList.length / perPage)) return;
+                            if (page + 1 > Math.ceil(cur.length / perPage)) return;
                             setPageText(`${page + 1}`);
                             setPage(page + 1);
                         }}
