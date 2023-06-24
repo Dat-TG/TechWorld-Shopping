@@ -15,8 +15,9 @@ interface Props {
 
 function OrderDetail(props: Props) {
     const [data, setData] = useState<InvoiceWithProducts>(props.order);
-    const [flat, setFlat] = useState(true);
+    const [flag, setFlag] = useState(true);
     const [quantity, setQuantity] = useState(0);
+    const [updateStatus, setUpdateStatus] = useState(false);
 
     useEffect(() => {
         setData(props.order);
@@ -28,15 +29,31 @@ function OrderDetail(props: Props) {
     }, [props.order]);
 
     useEffect(() => {
-        async function getOrderDetail() {
-            const res = await fetch(`/api/invoice/${data.id}`);
-            const json = await res.json();
-            setData(json.data);
-        }
         getOrderDetail();
-    }, [flat]);
+    }, [flag]);
 
-    const [updateStatus, setUpdateStatus] = useState(false);
+    async function getOrderDetail() {
+        const res = await fetch(`/api/invoice/${data.id}`);
+        const json = await res.json();
+        setData(json.data);
+    }
+
+    async function changeOrderStatus(status: string) {
+        try {
+            await fetch(`/api/invoice/${data.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: status,
+                }),
+            });
+            setFlag(!flag);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
@@ -50,7 +67,6 @@ function OrderDetail(props: Props) {
                         Đơn hàng #{data.id}
                     </h2>
                 </div>
-                <Button className='w-20 bg-red-700 text-white hover:bg-red-800'>Delete</Button>
             </div>
             <div className='w-full flex bg-white px-6 pb-8 pt-6 rounded-md flex-col mb-6'>
                 <div className='flex flex-row justify-between items-center  mb-4'>
@@ -83,6 +99,7 @@ function OrderDetail(props: Props) {
                                 )
                                     return (
                                         <div
+                                            onClick={() => changeOrderStatus(s.status)}
                                             key={key}
                                             className={
                                                 'p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'
@@ -156,10 +173,14 @@ function OrderDetail(props: Props) {
                 <hr className='mb-6' />
                 <div className='flex flex-row justify-between'></div>
                 {data.InvoicesItem.map((item: any) => {
-                    return <OrderItem item={item} key={item.id} />;
+                    return (
+                        <>
+                            <OrderItem item={item} key={item.id} />
+                            <hr className='my-2' />
+                        </>
+                    );
                 })}
 
-                <hr />
                 <div className='my-3 text-base flex flex-row justify-between'>
                     <div className='font-semibold text-xl'>Tổng cộng:</div>
                     <div className='text-xl font-bold text-amber-700'>

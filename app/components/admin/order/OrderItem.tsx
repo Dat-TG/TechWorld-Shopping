@@ -89,15 +89,6 @@ function OrderItem(props: OrderItemProp) {
                     >
                         Chỉnh sửa
                     </Link>
-                    <button
-                        onClick={() => {
-                            if (props.setEnableDeleteModel != null)
-                                props.setEnableDeleteModel(!props.enableDeleteModel);
-                        }}
-                        className='block w-full text-left p-2 pl-4 hover:bg-red-200 cursor-pointer border-b'
-                    >
-                        Xóa
-                    </button>
                 </div>
             </td>
         </tr>
