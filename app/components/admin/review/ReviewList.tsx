@@ -3,12 +3,20 @@
 import React from 'react';
 import ReviewItem from './ReviewItem';
 import { FullReviewWithProduct } from '@/models/review';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface Props {
     list: FullReviewWithProduct[];
+    keyword?: string;
+    star?: number;
+    page?: number;
+    perPage?: number;
+    total: number;
 }
 
-function ReviewList({ list }: Props) {
+function ReviewList({ list, keyword, star, page, perPage, total }: Props) {
+    const router = useRouter();
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>
             <div className='flex items-center justify-between'>
@@ -19,34 +27,107 @@ function ReviewList({ list }: Props) {
                         </h2>
 
                         <span className='px-3 py-1 text-xs text-blue-600 bg-blue-100 rounded-full dark:bg-gray-800 dark:text-blue-400'>
-                            Tổng {list.length} đánh giá
+                            Tổng {total} đánh giá
                         </span>
+
+                        {(keyword || star) && (
+                            <span className='px-3 py-1 text-sm'>
+                                Kết quả tìm kiếm cho <b>{keyword}</b> {keyword && star ? ', ' : ''}{' '}
+                                {star && (
+                                    <span>
+                                        <b>{star}</b>
+                                        {' sao'}
+                                    </span>
+                                )}
+                            </span>
+                        )}
                     </div>
                 </div>
             </div>
 
             <div className='mt-6 flex items-center justify-between '>
                 <div className='inline-flex overflow-hidden bg-white border divide-x rounded-lg dark:bg-gray-900 rtl:flex-row-reverse dark:border-gray-700 dark:divide-gray-700'>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 bg-gray-100 sm:text-sm dark:bg-gray-800 dark:text-gray-300'>
-                        Tất cả
-                    </button>
+                    <Link href={'/admin/review?' + 'key=' + (keyword ? keyword : '') + '&page=1'}>
+                        <button
+                            className={
+                                'px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-100 ' +
+                                (star == undefined ? 'bg-gray-100' : '')
+                            }
+                        >
+                            Tất cả
+                        </button>
+                    </Link>
 
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        1 sao
-                    </button>
-
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        2 sao
-                    </button>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        3 sao
-                    </button>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        4 sao
-                    </button>
-                    <button className='px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100'>
-                        5 sao
-                    </button>
+                    <Link
+                        href={
+                            '/admin/review?' + 'key=' + (keyword ? keyword : '') + '&star=1&&page=1'
+                        }
+                    >
+                        <button
+                            className={
+                                'px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-100 ' +
+                                (star == 1 ? 'bg-gray-100' : '')
+                            }
+                        >
+                            1 sao
+                        </button>
+                    </Link>
+                    <Link
+                        href={
+                            '/admin/review?' + 'key=' + (keyword ? keyword : '') + '&star=2&&page=1'
+                        }
+                    >
+                        <button
+                            className={
+                                'px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-100 ' +
+                                (star == 2 ? 'bg-gray-100' : '')
+                            }
+                        >
+                            2 sao
+                        </button>
+                    </Link>
+                    <Link
+                        href={
+                            '/admin/review?' + 'key=' + (keyword ? keyword : '') + '&star=3&&page=1'
+                        }
+                    >
+                        <button
+                            className={
+                                'px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-100 ' +
+                                (star == 3 ? 'bg-gray-100' : '')
+                            }
+                        >
+                            3 sao
+                        </button>
+                    </Link>
+                    <Link
+                        href={
+                            '/admin/review?' + 'key=' + (keyword ? keyword : '') + '&star=4&&page=1'
+                        }
+                    >
+                        <button
+                            className={
+                                'px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-100 ' +
+                                (star == 4 ? 'bg-gray-100' : '')
+                            }
+                        >
+                            4 sao
+                        </button>
+                    </Link>
+                    <Link
+                        href={
+                            '/admin/review?' + 'key=' + (keyword ? keyword : '') + '&star=5&&page=1'
+                        }
+                    >
+                        <button
+                            className={
+                                'px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:bg-gray-800 dark:text-gray-300 hover:bg-gray-100 ' +
+                                (star == 5 ? 'bg-gray-100' : '')
+                            }
+                        >
+                            5 sao
+                        </button>
+                    </Link>
                 </div>
 
                 <div className='relative flex items-center mt-4 md:mt-0'>
@@ -68,6 +149,19 @@ function ReviewList({ list }: Props) {
                     </span>
 
                     <input
+                        defaultValue={keyword || ''}
+                        onKeyUp={event => {
+                            if (event.key === 'Enter') {
+                                router.push(
+                                    '/admin/review?' +
+                                        'key=' +
+                                        event.currentTarget.value +
+                                        '&star=' +
+                                        star +
+                                        '&page=1',
+                                );
+                            }
+                        }}
                         type='text'
                         placeholder='Search'
                         className='block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40'
@@ -145,12 +239,20 @@ function ReviewList({ list }: Props) {
             <div className='mt-6 sm:flex sm:items-center sm:justify-between '>
                 <div className='text-sm text-gray-500 dark:text-gray-400'>
                     Trang{' '}
-                    <span className='font-medium text-gray-700 dark:text-gray-100'>1 trên 10</span>
+                    <span className='font-medium text-gray-700 dark:text-gray-100'>{`${page} trên ${Math.ceil(
+                        total / (perPage || 1),
+                    )}`}</span>
                 </div>
 
                 <div className='flex items-center mt-4 gap-x-4 sm:mt-0'>
-                    <a
-                        href='#'
+                    <Link
+                        href={
+                            '/admin/review?key=' +
+                            (keyword ? keyword : '') +
+                            (star ? `&star=${star}` : '') +
+                            '&page=' +
+                            (page ? (page - 1 > 0 ? `${page - 1}` : '1') : '1')
+                        }
                         className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
                     >
                         <svg
@@ -169,10 +271,20 @@ function ReviewList({ list }: Props) {
                         </svg>
 
                         <span>Trước</span>
-                    </a>
+                    </Link>
 
-                    <a
-                        href='#'
+                    <Link
+                        href={
+                            '/admin/review?key=' +
+                            (keyword ? keyword : '') +
+                            (star ? `&star=${star}` : '') +
+                            '&page=' +
+                            (page
+                                ? page + 1 <= Math.ceil(total / (perPage || 1))
+                                    ? `${page + 1}`
+                                    : `${Math.ceil(total / (perPage || 1))}`
+                                : `${Math.ceil(total / (perPage || 1))}`)
+                        }
                         className='flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800'
                     >
                         <span>Sau</span>
@@ -191,7 +303,7 @@ function ReviewList({ list }: Props) {
                                 d='M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3'
                             />
                         </svg>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

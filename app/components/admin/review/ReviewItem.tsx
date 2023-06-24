@@ -29,6 +29,7 @@ function ReviewItem({ review }: Props) {
                     <Link
                         href={`/product/${review.Product.slug}`}
                         className='font-medium text-gray-800 dark:text-white '
+                        title={review.Product.name}
                     >
                         {review.Product.id}
                     </Link>
@@ -55,7 +56,9 @@ function ReviewItem({ review }: Props) {
                         height={20}
                         alt=''
                     />
-                    <div className='font-medium pl-2 '>{review.User.name}</div>
+                    <div className='font-medium pl-2 ' title={review.User.phone}>
+                        {review.User.name}
+                    </div>
                 </div>
             </td>
             <td className='px-4 py-4 text-sm min-w-2/5'>{review.comment}</td>

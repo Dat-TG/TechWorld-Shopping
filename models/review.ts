@@ -26,15 +26,53 @@ export type FullReviewWithProduct = Review & {
         id: string;
         name: string | null;
         image: Attachment | null;
+        phone: string;
     };
 };
 
 export const ReviewNotFound = new Error('Review not found');
 
-export async function listReviews(userId?: string) {
+export async function listReviews(
+    userId?: string,
+    keyword?: string,
+    star?: number,
+    page?: number,
+    perPage?: number,
+) {
     const res = await prisma.review.findMany({
+        take: perPage,
+        skip: page != undefined && perPage != undefined ? (page - 1) * perPage : 0,
         where: {
+            rating: star,
             userId: userId,
+            OR: [
+                {
+                    comment: { contains: keyword, mode: 'insensitive' },
+                },
+                {
+                    User: {
+                        OR: [
+                            {
+                                name: {
+                                    contains: keyword,
+                                    mode: 'insensitive',
+                                },
+                            },
+                            {
+                                phone: {
+                                    contains: keyword,
+                                    mode: 'insensitive',
+                                },
+                            },
+                        ],
+                    },
+                },
+                {
+                    Product: {
+                        name: { contains: keyword, mode: 'insensitive' },
+                    },
+                },
+            ],
         },
         include: {
             Product: {
@@ -52,8 +90,46 @@ export async function listReviews(userId?: string) {
                     id: true,
                     name: true,
                     image: true,
+                    phone: true,
                 },
             },
+        },
+    });
+    return res;
+}
+
+export async function numberOfReviews(star?: number, keyword?: string) {
+    const res = await prisma.review.count({
+        where: {
+            rating: star,
+            OR: [
+                {
+                    comment: { contains: keyword, mode: 'insensitive' },
+                },
+                {
+                    User: {
+                        OR: [
+                            {
+                                name: {
+                                    contains: keyword,
+                                    mode: 'insensitive',
+                                },
+                            },
+                            {
+                                phone: {
+                                    contains: keyword,
+                                    mode: 'insensitive',
+                                },
+                            },
+                        ],
+                    },
+                },
+                {
+                    Product: {
+                        name: { contains: keyword, mode: 'insensitive' },
+                    },
+                },
+            ],
         },
     });
     return res;
