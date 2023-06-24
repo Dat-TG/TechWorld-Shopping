@@ -15,7 +15,8 @@ import { defaultValue } from '../Constant';
 
 interface Props {
     item?: InvoiceItemWithProduct;
-    invoice: Invoice;
+    invoice?: Invoice;
+    enableButton?: boolean | undefined;
 }
 
 function OrderItem(props: Props) {
@@ -89,27 +90,32 @@ function OrderItem(props: Props) {
                     </span>
                 </div>
             </div>
-            {props.invoice.status === Status.PENDING && (
-                <div className='flex justify-end items-center mt-4'>
-                    <div className='flex justify-end items-center space-x-5'>
-                        <Button
-                            onClick={() => {
-                                /* todo: huy don hang*/
-                            }}
-                            className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2'
-                        >
-                            Hủy
-                        </Button>
-                    </div>
-                </div>
-            )}
-            {props.invoice.status === Status.DELIVERED && (
-                <ReBuyAndReview
-                    buyNow={buyNow}
-                    invoiceItemId={props.item?.id}
-                    productId={product?.id}
-                    productSlug={product?.slug}
-                />
+            {props.enableButton != false && (
+                <>
+                    {props.invoice?.status === Status.PENDING && (
+                        <div className='flex justify-end items-center mt-4'>
+                            <div className='flex justify-end items-center space-x-5'>
+                                <Button
+                                    onClick={() => {
+                                        /* todo: huy don hang*/
+                                    }}
+                                    className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2'
+                                >
+                                    Hủy
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+
+                    {props.invoice?.status === Status.DELIVERED && (
+                        <ReBuyAndReview
+                            buyNow={buyNow}
+                            invoiceItemId={props.item?.id}
+                            productId={product?.id}
+                            productSlug={product?.slug}
+                        />
+                    )}
+                </>
             )}
         </>
     );

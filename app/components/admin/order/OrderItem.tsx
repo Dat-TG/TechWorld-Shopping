@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { defaultStatus } from '../../Constant';
-import { CurrencyFormatter } from '@/utils/formatter';
+import { CurrencyFormatter, TimeConverter } from '@/utils/formatter';
 import { InvoiceWithProducts } from '@/models/invoice';
 
 interface OrderItemProp {
@@ -13,11 +13,9 @@ interface OrderItemProp {
 }
 
 function OrderItem(props: OrderItemProp) {
-    const [updateStatus, setUpdateStatus] = useState(false);
     const [settings, setSettings] = useState(false);
 
     useEffect(() => {
-        setUpdateStatus(false);
         setSettings(false);
     }, []);
 
@@ -30,39 +28,20 @@ function OrderItem(props: OrderItemProp) {
                     </h2>
                 </div>
             </td>
-            <td className='px-12 py-4 text-sm font-medium whitespace-nowrap'>
+            <td className='px-8 py-4 w-40 text-sm font-medium whitespace-nowrap'>
                 <button
-                    onMouseOver={() => setUpdateStatus(true)}
-                    onMouseOut={() => setUpdateStatus(false)}
-                    className={`relative inline px-3 py-1 text-sm font-normal rounded-full gap-x-2 ${
+                    disabled
+                    className={`relative inline px-3 py-1 w-28 text-sm font-normal rounded-full gap-x-2 ${
                         defaultStatus.statusOrder.find(o => o.status == props.order?.status)
                             ?.backgroundColor
                     }`}
                 >
-                    {props.order?.status} <i className='bi bi-chevron-down'></i>
-                    <div className='w-32 h-12 bg-transparent absolute left-0'></div>
+                    {props.order?.status} 
                 </button>
-                <div
-                    onMouseOver={() => setUpdateStatus(true)}
-                    onMouseOut={() => setUpdateStatus(false)}
-                    className={`${
-                        !updateStatus ? 'hidden' : 'absolute'
-                    } absolute z-10 bg-white w-32 rounded-md border border-solid border-slate-400 shadow-lg mt-4 overflow-hidden`}
-                >
-                    {defaultStatus.statusOrder.map((s, key) => {
-                        return (
-                            <div
-                                key={key}
-                                className={'p-2 pl-4 hover:bg-slate-200 cursor-pointer border-b'}
-                            >
-                                {s.status}
-                            </div>
-                        );
-                    })}
-                </div>
+                
             </td>
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
-                {props.order?.createAt.toDateString()}
+                {TimeConverter(`${props.order?.createAt}`).toString()}
             </td>
             <td className='px-4 py-4 text-sm whitespace-nowrap'>
                 {CurrencyFormatter.format(props.order?.total ?? 0)}
