@@ -89,3 +89,8 @@ export async function listTrendingCategories() {
     }
     return categories;
 }
+
+export default async function numberOfCategories() {
+    const res=await prisma.category.count();
+    return res;
+}

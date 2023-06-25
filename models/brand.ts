@@ -8,3 +8,8 @@ export async function listBrands() {
     });
     return brands;
 }
+
+export async function numberOfBrands() {
+    const brands = await prisma.brand.count();
+    return brands;
+}
