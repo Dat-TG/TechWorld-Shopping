@@ -5,7 +5,10 @@ import FeaturedCategory from '@/app/components/featuredCategory/FeaturedCategory
 // import Suggest from '@/app/components/suggest/Suggest';
 // import Trending from '@/app/components/trending/Trending';
 import { listCarousel } from '@/models/carousel';
-import { listCat } from '@/models/slides';
+import { listCat, listFilterSuggest } from '@/models/slides';
+import PromotionBox from '../components/promotionBox/PromotionBox';
+import Suggest from '../components/suggest/Suggest';
+import Trending from '../components/trending/Trending';
 
 export const metadata = {
     title: 'TechWord - Điện thoại, Laptop, PC, Đồng hồ, Phụ kiện chính hãng',
@@ -23,28 +26,18 @@ export default async function Page() {
             </div>
             <Carousel slides={smallCarousels} />
             <FeaturedCategory list={listCat} />
-            {/*
             <PromotionBox
-                banner={
-                    'https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2023/05/campaign/knockout-desk-1200x120.png'
-                }
+                banner={'/images/banner/knockout-desk-1200x120.webp'}
                 bg={'bg-orange-200'}
+                categorySlug='dien-thoai'
             />
             <PromotionBox
-                banner={
-                    'https://img.tgdd.vn/imgt/f_webp,fit_outside,quality_100/https://cdn.tgdd.vn/2023/05/banner/Cuoi-tuan-1200x120.png'
-                }
-                bg={'bg-red-200'}
-            />
-            <PromotionBox
-                banner={
-                    'https://lh3.googleusercontent.com/0euzDgfadytUI5kSBZo3dii5kzFPu9DFBC4sqlofyoFC0aXXKFdJ2Sk0KX8IPRSJ597nxrnl8GMP-PP7kRWOKWYmm51LhSmp=w1232-rw'
-                }
+                banner={'/images/banner/unnamed.webp'}
                 bg={'bg-blue-200'}
+                categorySlug='laptop'
             />
             <Suggest filter={listFilterSuggest} />
             <Trending />
-            */}
         </>
     );
 }

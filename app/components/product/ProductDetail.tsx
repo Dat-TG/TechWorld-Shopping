@@ -229,7 +229,7 @@ function ProductDetail({ product, similarProducts }: Props) {
                 <div className='w-full mb-5 bg-gray-100 uppercase text-xl tracking-wider font-medium px-2 py-4 '>
                     Mô tả sản phẩm
                 </div>
-                <ul className='px-6 pb-6'>{product.description}</ul>
+                <p className='px-6 pb-6 whitespace-pre-line'>{product.description}</p>
             </div>
 
             {/* Review */}

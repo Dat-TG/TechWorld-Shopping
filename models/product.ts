@@ -464,9 +464,14 @@ export async function searchProduct(key: string, category?: string, option?: str
     return users;
 }
 
-export async function listTrendingProducts(categorySlug?: string, brandSlug?: string) {
+export async function listTrendingProducts(
+    categorySlug?: string,
+    brandSlug?: string,
+    take?: number,
+) {
+    if (!take) take = 10;
     const products = await prisma.product.findMany({
-        take: 10,
+        take: take,
         where: {
             category: {
                 slug: categorySlug != null ? categorySlug : undefined,
