@@ -60,4 +60,4 @@ Check out our deployed version at [https://tech-world-hcmus.vercel.app/](https:/
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details.
