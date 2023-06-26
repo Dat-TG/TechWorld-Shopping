@@ -42,6 +42,16 @@ CLOUDINARY_API_SECRET=""
 CLOUDINARY_UPLOAD_PRESET=""
 ```
 
+Next, sync the database schema by running the following command:
+
+```bash
+npx prisma db push
+# or
+yarn prisma db push
+# or
+pnpx prisma db push
+```
+
 Finally, run the development server:
 
 ```bash
