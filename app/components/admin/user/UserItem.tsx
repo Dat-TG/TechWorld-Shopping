@@ -99,7 +99,7 @@ function UserItem({ user }: { user: UserWithImage }) {
                                             });
                                         }
                                     },
-                                    clientAnswer => {
+                                    () => {
                                         //
                                     },
                                     {

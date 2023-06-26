@@ -6,11 +6,13 @@ export const metadata = {
     icons: '/images/logo.png',
 };
 
+export const revalidate = 0;
+
 export default async function Page() {
-    const carousels=await listCarousel();
+    const carousels = await listCarousel();
     return (
         <div className='w-full'>
-            <AllCarousel carousels={carousels}/>
+            <AllCarousel carousels={carousels} />
         </div>
     );
 }

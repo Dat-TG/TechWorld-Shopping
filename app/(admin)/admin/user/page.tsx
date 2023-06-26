@@ -6,6 +6,8 @@ export const metadata = {
     icons: '/images/logo.png',
 };
 
+export const revalidate = 0;
+
 export default async function Page() {
     const perPage = 10;
     const totalUser = await numberOfUsers();

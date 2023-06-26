@@ -3,14 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import Input from '../../widgets/input/Input';
 import { defaultStatus } from '../../Constant';
-import Button from '../../widgets/button/Button';
 import { InvoiceWithProducts } from '@/models/invoice';
 import { CurrencyFormatter } from '@/utils/formatter';
 import Link from 'next/link';
 import OrderItem from '../../order/OrderItem';
 
 interface Props {
-    order: any;
+    order: InvoiceWithProducts;
 }
 
 function OrderDetail(props: Props) {

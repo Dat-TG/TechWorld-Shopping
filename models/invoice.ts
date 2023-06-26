@@ -30,7 +30,6 @@ export type InvoiceWithProducts = Invoice & {
 };
 
 export type InvoiceItemWithProduct = InvoiceItem & {
-    address: Address;
     Product: Product & {
         category: Category | null;
         brand: Brand | null;
