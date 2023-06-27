@@ -22,7 +22,7 @@ export const defaultStatus = {
             status: 'DELIVERED',
             message: 'Đã giao',
             backgroundColor: 'bg-green-500 text-white',
-            nextStatus: '',
+            nextStatus: 'RETURNING',
         },
         {
             status: 'CANCELLED',
