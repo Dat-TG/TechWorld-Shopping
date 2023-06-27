@@ -7,14 +7,13 @@ import { defaultStatus } from '../../Constant';
 import { InvoiceWithProducts } from '@/models/invoice';
 
 interface Props {
-    orders: any;
+    orders: InvoiceWithProducts[];
 }
 
 function OrderList(props: Props) {
     const [enableDeleteModel, setEnableDeleteModel] = useState(false);
     const [filter, setFilter] = useState<Array<InvoiceWithProducts>>(props.orders);
     const [filterType, setFilterType] = useState(0);
-    const [flag, setFlag] = useState(true);
 
     useEffect(() => {
         if (filterType != 0) {
@@ -26,27 +25,6 @@ function OrderList(props: Props) {
             );
         } else setFilter(props.orders);
     }, [filterType, props.orders]);
-
-    useEffect(() => {
-        // async function updateStatus(id: string, value: number) {
-        //     await fetch('/api/product', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             name: product.name,
-        //             price: Number(product.price),
-        //             quantity: Number(product.quantity),
-        //             sale: Number(product.sale),
-        //             categoryId: product.category,
-        //             brandId: product.brand,
-        //             description: product.description,
-        //             attachments: attachments,
-        //         }),
-        //     });
-        // }
-    }, [flag]);
 
     return (
         <div className='flex flex-col min-w-full justify-between mb-16'>

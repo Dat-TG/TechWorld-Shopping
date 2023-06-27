@@ -77,6 +77,10 @@ function ProductDetail({ product, similarProducts }: Props) {
     }, [filter, page, review]);
 
     async function addToCart() {
+        if (user == null) {
+            router.replace('/auth/login');
+            return;
+        }
         Loading.dots();
         const data = {
             userId: user?.id,

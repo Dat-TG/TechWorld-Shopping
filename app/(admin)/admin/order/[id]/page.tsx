@@ -9,6 +9,7 @@ export const metadata = {
 
 async function Page({ params }: { params: { id: string } }) {
     const order = await getInvoiceById(params.id);
+    if (!order) return <p>No data</p>;
     return <OrderDetail order={order} />;
 }
 

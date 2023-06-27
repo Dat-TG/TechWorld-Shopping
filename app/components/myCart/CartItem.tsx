@@ -7,9 +7,10 @@ import InputQuantity from '../widgets/inputQuantity/InputQuantity';
 import React from 'react';
 import Link from 'next/link';
 import { Loading } from 'notiflix';
+import { FullCartItem } from '@/models/user';
 
 interface CartItemProps {
-    item: any;
+    item: FullCartItem;
     removeItemFromCart?: () => Promise<void>;
 }
 
