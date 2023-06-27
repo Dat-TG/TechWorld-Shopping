@@ -10,16 +10,16 @@ export default function Footer() {
                         <h4>TechWorld</h4>
                         <ul>
                             <li>
-                                <Link href='#'>Giới thiệu</Link>
+                                <Link href='/about'>Giới thiệu</Link>
                             </li>
                             <li>
-                                <Link href='#'>Tuyển dụng</Link>
+                                <Link href='/recruitment'>Tuyển dụng</Link>
                             </li>
                             <li>
-                                <Link href='#'>Điều khoản sử dụng</Link>
+                                <Link href='/term-of-use'>Điều khoản sử dụng</Link>
                             </li>
                             <li>
-                                <Link href='#'>Chính sách bảo mật</Link>
+                                <Link href='/privacy-policy'>Chính sách bảo mật</Link>
                             </li>
                         </ul>
                     </div>
@@ -27,22 +27,19 @@ export default function Footer() {
                         <h4>Trung tâm hỗ trợ</h4>
                         <ul>
                             <p className='text-white'>
-                                Hot line: 1900-6035 <br></br> (1000 đ/phút, 8-21h mỗi ngày)
+                                Hot line: 1900-xxxx <br></br> (1000 đ/phút, 8-21h mỗi ngày)
                             </p>
-                            <li>
-                                <Link href='#'>FAQ</Link>
+                            <li className='mt-4'>
+                                <Link href='/faq'>FAQ</Link>
                             </li>
                             <li>
-                                <Link href='#'>Hướng dẫn đặt hàng</Link>
+                                <Link href='/order-guide'>Hướng dẫn đặt hàng</Link>
                             </li>
                             <li>
-                                <Link href='#'>Giao hàng và nhận hàng</Link>
+                                <Link href='/returning-guide'>Hướng dẫn đổi trả hàng</Link>
                             </li>
                             <li>
-                                <Link href='#'>Hướng dẫn đổi trả hàng</Link>
-                            </li>
-                            <li>
-                                <Link href='#'>Chính sách bảo hành</Link>
+                                <Link href='/warranty-policy'>Chính sách bảo hành</Link>
                             </li>
                         </ul>
                     </div>
@@ -50,34 +47,31 @@ export default function Footer() {
                         <h4>Danh mục sản phẩm</h4>
                         <ul>
                             <li>
-                                <Link href='#'>Điện thoại</Link>
+                                <Link href='/dien-thoai'>Điện thoại</Link>
                             </li>
                             <li>
-                                <Link href='#'>Laptop</Link>
+                                <Link href='/laptop'>Laptop</Link>
                             </li>
                             <li>
-                                <Link href='#'>Tablet</Link>
+                                <Link href='/tablet'>Tablet</Link>
                             </li>
                             <li>
-                                <Link href='#'>Phụ kiện</Link>
+                                <Link href='/smartwatch'>Smartwatch</Link>
                             </li>
                             <li>
-                                <Link href='#'>Smartwatch</Link>
+                                <Link href='/dong-ho'>Đồng hồ</Link>
                             </li>
                             <li>
-                                <Link href='#'>Đồng hồ</Link>
+                                <Link href='/may-cu-gia-re'>Máy cũ giá rẻ</Link>
                             </li>
                             <li>
-                                <Link href='#'>Máy cũ giá rẻ</Link>
+                                <Link href='/pc'>PC</Link>
                             </li>
                             <li>
-                                <Link href='#'>PC</Link>
+                                <Link href='/may-in'>Máy in</Link>
                             </li>
                             <li>
-                                <Link href='#'>Máy in</Link>
-                            </li>
-                            <li>
-                                <Link href='#'>Điện gia dụng</Link>
+                                <Link href='/dien-gia-dung'>Điện gia dụng</Link>
                             </li>
                         </ul>
                     </div>
