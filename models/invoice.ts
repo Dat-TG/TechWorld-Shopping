@@ -139,7 +139,7 @@ export async function createInvoice(
             throw NotEnoughQuantity;
         }
 
-        total += item.Product.price * item.quantity;
+        total += item.Product.price * item.quantity * (1 - item.Product.sale);
         invoiceItems.push({
             productId: item.productId,
             quantity: item.quantity,
