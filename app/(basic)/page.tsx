@@ -36,7 +36,7 @@ export default async function Page() {
                 bg={'bg-blue-200'}
                 categorySlug='laptop'
             />
-            <Suggest filter={listFilterSuggest} />
+            {/* <Suggest filter={listFilterSuggest} />*/}
             <Trending />
         </>
     );

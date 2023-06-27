@@ -41,7 +41,7 @@ interface Props {
     similarProducts: Array<FullProduct>;
 }
 
-const perPage = 1;
+const perPage = 10;
 
 function ProductDetail({ product, similarProducts }: Props) {
     const review = useReview(`/api/review/product/${product.id}`);
@@ -181,7 +181,7 @@ function ProductDetail({ product, similarProducts }: Props) {
 
                         {product.sale != 0 && (
                             <div className='inline-block bg-amber-500 text-white text-sm rounded-sm uppercase font-bold text-center px-1 py-0'>
-                                {product.sale * 100}% giảm
+                                {Math.floor(product.sale * 100)}% giảm
                             </div>
                         )}
                     </div>
