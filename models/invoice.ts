@@ -314,3 +314,29 @@ export default async function numberOfInvoices() {
     const res = await prisma.invoice.count();
     return res;
 }
+
+export async function listNotification(userId: string) {
+    return await prisma.invoice.findMany({
+        where: {
+            userId: userId,
+            status: { in: ['DELIVERING', 'DELIVERED'] },
+        },
+        orderBy: {
+            updatedAt: 'desc',
+        },
+        include: {
+            address: true,
+            InvoicesItem: {
+                include: {
+                    Product: {
+                        include: {
+                            attachments: true,
+                            category: true,
+                            brand: true,
+                        },
+                    },
+                },
+            },
+        },
+    });
+}
