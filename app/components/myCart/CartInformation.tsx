@@ -1,13 +1,13 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+import Button from '../widgets/button/Button';
 import { useGlobalContext } from '@/app/context/GlobalContext';
 import { FullCartItem } from '@/models/user';
 import { CurrencyFormatter } from '@/utils/formatter';
+import Input from '../widgets/input/Input';
 import { Address } from '@prisma/client';
 import { Block, Loading, Notify } from 'notiflix';
-import { useEffect, useState } from 'react';
-import Button from '../widgets/button/Button';
-import Input from '../widgets/input/Input';
 
 function CartInformation() {
     const { removeAllCart, isOutOfStock } = useGlobalContext();
@@ -17,11 +17,11 @@ function CartInformation() {
 
     useEffect(() => {
         async function getAddress() {
-            Loading.dots();
+            Block.dots('.information');
             const res = await fetch('/api/user/address');
             const data = await res.json();
             setAddress(data?.data);
-            Loading.remove();
+            Block.remove('.information');
         }
         getAddress();
     }, []);
@@ -44,9 +44,7 @@ function CartInformation() {
     }
 
     async function submitOrder() {
-        Block.dots('.submitbtn', {
-            svgSize: '30px'
-        });
+        Loading.dots();
         const res = await fetch('/api/invoice', {
             method: 'POST',
             headers: {
@@ -58,7 +56,7 @@ function CartInformation() {
             }),
         });
         const data = await res.json();
-        Block.remove('.submitbtn');
+        Loading.remove();
         if (data?.message == 'success') {
             Notify.success('Đặt hàng thành công', { clickToClose: true });
             await removeAllCart?.();
