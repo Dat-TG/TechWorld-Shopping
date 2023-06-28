@@ -1,8 +1,8 @@
 'use client';
 import Button from '../widgets/button/Button';
 import { useEffect, useState } from 'react';
-import { Block } from 'notiflix';
-import { Review } from '@prisma/client';
+import { Block, Loading, Notify } from 'notiflix';
+import { Review, Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 function useReview(url: string) {
@@ -31,11 +31,13 @@ export default function ReBuyAndReview({
     invoiceItemId,
     productSlug,
     productId,
+    invoiceId,
 }: {
     buyNow: () => Promise<void>;
     productSlug?: string;
     invoiceItemId?: string;
     productId?: string;
+    invoiceId?: string;
 }) {
     const review = useReview(`/api/review/check/${productId}`);
     const star = (review || ({} as Review))?.rating;
@@ -67,6 +69,41 @@ export default function ReBuyAndReview({
                         }}
                     >
                         {review ? 'Chỉnh sửa đánh giá' : 'Đánh Giá'}
+                    </Button>
+                    <Button
+                        onClick={async () => {
+                            Loading.hourglass();
+                            try {
+                                const res = await fetch(`/api/invoice/${invoiceId}`, {
+                                    method: 'PATCH',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify({
+                                        status: Status.RETURNING,
+                                    }),
+                                });
+                                const json = await res.json();
+                                if (json.message === 'success') {
+                                    Notify.success(
+                                        'Yêu cầu trả đơn hàng thành công. Đơn vị vận chuyển sẽ sớm liên hệ với bạn để nhận lại hàng',
+                                        {
+                                            clickToClose: true,
+                                        },
+                                    );
+                                } else {
+                                    Notify.failure(json.message);
+                                }
+                            } catch (error) {
+                                console.log(error);
+                                Notify.failure('Cập nhật thất bại');
+                            }
+                            Loading.remove();
+                            router.push('/user/invoice');
+                        }}
+                        className='rounded-sm bg-white hover:bg-gray-200 px-5 py-2 outline outline-1 outline-gray-500'
+                    >
+                        Trả hàng
                     </Button>
                 </div>
             </div>

@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Button from '../widgets/button/Button';
 import { useGlobalContext } from '@/app/context/GlobalContext';
 import { FullCartItem } from '@/models/user';
 import { CurrencyFormatter } from '@/utils/formatter';
-import Input from '../widgets/input/Input';
 import { Address } from '@prisma/client';
-import { Block, Notify } from 'notiflix';
+import { Block, Loading, Notify } from 'notiflix';
+import { useEffect, useState } from 'react';
+import Button from '../widgets/button/Button';
+import Input from '../widgets/input/Input';
 
 function CartInformation() {
     const { removeAllCart, isOutOfStock } = useGlobalContext();
@@ -17,11 +17,11 @@ function CartInformation() {
 
     useEffect(() => {
         async function getAddress() {
-            Block.dots('.information');
+            Loading.dots();
             const res = await fetch('/api/user/address');
             const data = await res.json();
             setAddress(data?.data);
-            Block.remove('.information');
+            Loading.remove();
         }
         getAddress();
     }, []);
@@ -44,6 +44,9 @@ function CartInformation() {
     }
 
     async function submitOrder() {
+        Block.dots('.submitbtn', {
+            svgSize: '30px'
+        });
         const res = await fetch('/api/invoice', {
             method: 'POST',
             headers: {
@@ -55,9 +58,9 @@ function CartInformation() {
             }),
         });
         const data = await res.json();
-
+        Block.remove('.submitbtn');
         if (data?.message == 'success') {
-            Notify.success('Đặt hàng thành công');
+            Notify.success('Đặt hàng thành công', { clickToClose: true });
             await removeAllCart?.();
         } else Notify.failure('Đã có lỗi xảy ra');
     }
@@ -145,7 +148,7 @@ function CartInformation() {
             </div>
             <Button
                 onClick={submitOrder}
-                className={`mt-6 w-full ${
+                className={`submitbtn mt-6 w-full ${
                     isOutOfStock ? 'bg-gray-500' : 'bg-amber-600 hover:bg-amber-700'
                 } text-xl text-white font-bold`}
                 disable={isOutOfStock}

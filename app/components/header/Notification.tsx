@@ -1,16 +1,13 @@
 'use client';
 
+import { InvoiceWithProducts } from '@/models/invoice';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Noti from '../noti/Noti';
-import { Block } from 'notiflix';
-import { Invoice } from '@prisma/client';
-import { InvoiceWithProducts } from '@/models/invoice';
 
 function useNotification(url: string) {
     const [notification, setNotification] = useState(null);
     useEffect(() => {
-        Block.hourglass('.noti');
         let ignore = false;
         fetch(url)
             .then(response => response.json())
@@ -20,7 +17,6 @@ function useNotification(url: string) {
                 }
             })
             .catch(console.log);
-        Block.remove('.noti');
         return () => {
             ignore = true;
         };
