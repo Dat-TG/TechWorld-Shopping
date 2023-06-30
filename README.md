@@ -96,13 +96,13 @@ Check out our deployed version at [https://tech-world-hcmus.vercel.app/](https:/
 
 ### To-do
 
--   [] Compare products: Compare the features, prices, and specifications of different products.
--   [] Share products: Share product information with others through various communication channels.
--   [] Apply promo codes: Apply promotional codes or discount coupons during the checkout process.
--   [] View recommendations: Receive personalized product recommendations based on your browsing and purchase history.
--   [] Set preferences: Customize your preferences for notifications, language, currency, and other settings.
--   [] View and redeem loyalty points: Check your accumulated loyalty points and redeem them for rewards or discounts.
--   [] Participate in surveys or polls: Engage in surveys or polls to provide feedback or opinions on products or services.
+-   [ ] Compare products: Compare the features, prices, and specifications of different products.
+-   [ ] Share products: Share product information with others through various communication channels.
+-   [ ] Apply promo codes: Apply promotional codes or discount coupons during the checkout process.
+-   [ ] View recommendations: Receive personalized product recommendations based on your browsing and purchase history.
+-   [ ] Set preferences: Customize your preferences for notifications, language, currency, and other settings.
+-   [ ] View and redeem loyalty points: Check your accumulated loyalty points and redeem them for rewards or discounts.
+-   [ ] Participate in surveys or polls: Engage in surveys or polls to provide feedback or opinions on products or services.
 
 ## License
 
