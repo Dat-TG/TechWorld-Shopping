@@ -28,7 +28,7 @@ export default async function CategoryPage(props: Props) {
     );
     const categories = await listCategories();
     return (
-        <div className='flex flex-row mt-4 mx-5 w-fit space-x-4'>
+        <div className='flex flex-row mt-4 mx-5 space-x-4'>
             <div className='w-1/6'>
                 <SideBarCategory categories={categories} />
             </div>
@@ -86,7 +86,7 @@ export default async function CategoryPage(props: Props) {
                 {products.length > 0 ? (
                     <ListProduct products={products} />
                 ) : (
-                    <div>Không có sản phẩm nào</div>
+                    <div className='text-center w-full'>Không có sản phẩm nào</div>
                 )}
             </div>
         </div>
