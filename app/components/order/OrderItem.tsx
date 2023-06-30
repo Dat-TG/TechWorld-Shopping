@@ -1,17 +1,16 @@
 'use client';
 
-import { CurrencyFormatter } from '@/utils/formatter';
-import Image from 'next/image';
-import React from 'react';
-import Button from '../widgets/button/Button';
 import { useGlobalContext } from '@/app/context/GlobalContext';
-import { Notify } from 'notiflix';
-import { useRouter } from 'next/navigation';
 import { InvoiceItemWithProduct } from '@/models/invoice';
+import { CurrencyFormatter } from '@/utils/formatter';
 import { Invoice, Status } from '@prisma/client';
+import Image from 'next/image';
 import Link from 'next/link';
-import ReBuyAndReview from './ReBuyAndReview';
+import { useRouter } from 'next/navigation';
+import { Loading, Notify } from 'notiflix';
 import { defaultValue } from '../Constant';
+import Button from '../widgets/button/Button';
+import ReBuyAndReview from './ReBuyAndReview';
 
 interface Props {
     item?: InvoiceItemWithProduct;
@@ -90,17 +89,44 @@ function OrderItem(props: Props) {
                     </span>
                 </div>
             </div>
-        
+
             {props.enableButton != false && (
                 <>
                     {props.invoice?.status === Status.PENDING && (
                         <div className='flex justify-end items-center mt-4'>
                             <div className='flex justify-end items-center space-x-5'>
                                 <Button
-                                    onClick={() => {
-                                        /* todo: huy don hang*/
+                                    onClick={async () => {
+                                        Loading.hourglass();
+                                        try {
+                                            const res = await fetch(
+                                                `/api/invoice/${props.invoice?.id}`,
+                                                {
+                                                    method: 'PATCH',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify({
+                                                        status: Status.CANCELLED,
+                                                    }),
+                                                },
+                                            );
+                                            const json = await res.json();
+                                            if (json.message === 'success') {
+                                                Notify.success('Hủy đơn hàng thành công', {
+                                                    clickToClose: true,
+                                                });
+                                            } else {
+                                                Notify.failure(json.message);
+                                            }
+                                        } catch (error) {
+                                            console.log(error);
+                                            Notify.failure('Cập nhật thất bại');
+                                        }
+                                        Loading.remove();
+                                        router.push('/user/invoice');
                                     }}
-                                    className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2'
+                                    className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2 cancel'
                                 >
                                     Hủy
                                 </Button>
@@ -114,6 +140,7 @@ function OrderItem(props: Props) {
                             invoiceItemId={props.item?.id}
                             productId={product?.id}
                             productSlug={product?.slug}
+                            invoiceId={props.invoice.id}
                         />
                     )}
                 </>

@@ -45,7 +45,7 @@ export default function FormAddProduct({ product, submit, categoriesList, brands
             name: product?.name || undefined,
             price: product?.price,
             quantity: product?.quantity,
-            sale: (product?.sale || 0) * 100,
+            sale: Math.floor((product?.sale || 0) * 100),
         },
     });
 
@@ -172,7 +172,7 @@ export default function FormAddProduct({ product, submit, categoriesList, brands
                                     className={
                                         'border border-gray-300 focus:outline-none text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
                                     }
-                                    defaultValue={(product?.sale || 0) * 100}
+                                    defaultValue={Math.floor((product?.sale || 0) * 100)}
                                 />
                                 {errors.sale?.type === 'min' && (
                                     <p role='alert' className='text-sm text-red-500'>

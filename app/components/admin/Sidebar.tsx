@@ -38,6 +38,15 @@ export default function Sidebar() {
                     <i className='bi bi-tags-fill'></i>
                     <p className='text-md'>Danh mục</p>
                 </Link>
+                <Link
+                    href='/admin/brand'
+                    className={`${
+                        pathName.includes('/admin/brand') ? 'bg-gray-200' : 'hover:bg-gray-200'
+                    } rounded-xl flex py-3 px-3 space-x-3 cursor-pointer `}
+                >
+                    <i className='bi bi-apple'></i>
+                    <p className='text-md'>Thương hiệu</p>
+                </Link>
                 <CollapsableSidebarItem />
                 <Link
                     href='/admin/order'
@@ -55,7 +64,7 @@ export default function Sidebar() {
                     } rounded-xl flex py-3 px-3 space-x-3 cursor-pointer`}
                 >
                     <i className='bi bi-star'></i>
-                    <p className='text-md'>Reviews</p>
+                    <p className='text-md'>Đánh giá</p>
                 </Link>
                 <Link
                     href='/admin/user'

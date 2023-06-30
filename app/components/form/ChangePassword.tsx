@@ -1,20 +1,20 @@
 'use client';
-import { Notify } from 'notiflix';
+import { Loading, Notify } from 'notiflix';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function ChangePassword() {
     const [isRetypePasswordVisible, setIsRetypePasswordVisible] = useState(false);
     function toggleRetypePasswordVisibility() {
-        setIsRetypePasswordVisible((prevState) => !prevState);
+        setIsRetypePasswordVisible(prevState => !prevState);
     }
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     function togglePasswordVisibility() {
-        setIsPasswordVisible((prevState) => !prevState);
+        setIsPasswordVisible(prevState => !prevState);
     }
     const [isOldPasswordVisible, setIsOldPasswordVisible] = useState(false);
     function toggleOldPasswordVisibility() {
-        setIsOldPasswordVisible((prevState) => !prevState);
+        setIsOldPasswordVisible(prevState => !prevState);
     }
     type Data = {
         oldpassword: string;
@@ -31,15 +31,16 @@ export default function ChangePassword() {
     });
     const onSubmit = async (data: Data) => {
         console.log(data);
+        Loading.dots();
         try {
             const res = await fetch('/api/user/password', {
-                method: 'POST',
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    oldpassword: data.oldpassword,
-                    password: data.password,
+                    password: data.oldpassword,
+                    newPassword: data.password,
                 }),
             });
             const json = await res.json();
@@ -49,13 +50,14 @@ export default function ChangePassword() {
                 });
             } else {
                 Notify.failure(json.message, {
-                    clickToClose: true
+                    clickToClose: true,
                 });
             }
         } catch (error) {
             console.log(error);
             Notify.failure('Cập nhật thất bại');
         }
+        Loading.remove();
     };
     return (
         <form className='space-y-6' action='#' method='POST' onSubmit={handleSubmit(onSubmit)}>

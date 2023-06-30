@@ -7,7 +7,7 @@ import { FullCartItem } from '@/models/user';
 import { CurrencyFormatter } from '@/utils/formatter';
 import Input from '../widgets/input/Input';
 import { Address } from '@prisma/client';
-import { Block, Notify } from 'notiflix';
+import { Block, Loading, Notify } from 'notiflix';
 
 function CartInformation() {
     const { removeAllCart, isOutOfStock } = useGlobalContext();
@@ -44,6 +44,7 @@ function CartInformation() {
     }
 
     async function submitOrder() {
+        Loading.dots();
         const res = await fetch('/api/invoice', {
             method: 'POST',
             headers: {
@@ -55,9 +56,9 @@ function CartInformation() {
             }),
         });
         const data = await res.json();
-
+        Loading.remove();
         if (data?.message == 'success') {
-            Notify.success('Đặt hàng thành công');
+            Notify.success('Đặt hàng thành công', { clickToClose: true });
             await removeAllCart?.();
         } else Notify.failure('Đã có lỗi xảy ra');
     }
@@ -145,7 +146,7 @@ function CartInformation() {
             </div>
             <Button
                 onClick={submitOrder}
-                className={`mt-6 w-full ${
+                className={`submitbtn mt-6 w-full ${
                     isOutOfStock ? 'bg-gray-500' : 'bg-amber-600 hover:bg-amber-700'
                 } text-xl text-white font-bold`}
                 disable={isOutOfStock}
