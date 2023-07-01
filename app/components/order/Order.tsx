@@ -12,7 +12,6 @@ export default function Order() {
     const [orders, setOrders] = useState<Array<InvoiceWithProducts>>([]);
     const [ordersFilter, setOrdersFilter] = useState<Array<InvoiceWithProducts>>([]);
     const { user } = useGlobalContext();
-
     useEffect(() => {
         async function getOrders() {
             Block.hourglass('.orderpage');
@@ -77,7 +76,7 @@ export default function Order() {
                 </div>
                 <hr className='h-0.5 bg-gray-100 w-full mb-4' />
                 <div className='flex flex-col space-y-5 mt-4 w-full'>
-                    {ordersFilter.map((order, key: number) => {
+                    {ordersFilter?.map((order, key: number) => {
                         return <OrderBox data={order} key={key} />;
                     })}
                 </div>

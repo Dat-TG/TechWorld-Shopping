@@ -43,6 +43,39 @@ export default function ReBuyAndReview({
     const star = (review || ({} as Review))?.rating;
     const reviewId = (review || ({} as Review))?.id;
     const router = useRouter();
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    async function ReturnOrder(orderID: string) {
+        Loading.hourglass();
+        try {
+            const res = await fetch(`/api/invoice/${orderID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: Status.RETURNING,
+                }),
+            });
+            const json = await res.json();
+            Loading.remove();
+            if (json.message === 'success') {
+                Notify.success(
+                    'Yêu cầu trả đơn hàng thành công. Đơn vị vận chuyển sẽ sớm liên hệ với bạn để nhận lại hàng',
+                    {
+                        clickToClose: true,
+                    },
+                );
+                await delay(2000);
+                router.push('/user/invoice?return=true', { forceOptimisticNavigation: true });
+            } else {
+                Notify.failure(json.message);
+            }
+        } catch (error) {
+            console.log(error);
+            Notify.failure('Cập nhật thất bại');
+            Loading.remove();
+        }
+    }
     return (
         <>
             <div className='flex justify-between items-center mt-4'>
@@ -71,35 +104,8 @@ export default function ReBuyAndReview({
                         {review ? 'Chỉnh sửa đánh giá' : 'Đánh Giá'}
                     </Button>
                     <Button
-                        onClick={async () => {
-                            Loading.hourglass();
-                            try {
-                                const res = await fetch(`/api/invoice/${invoiceId}`, {
-                                    method: 'PATCH',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        status: Status.RETURNING,
-                                    }),
-                                });
-                                const json = await res.json();
-                                if (json.message === 'success') {
-                                    Notify.success(
-                                        'Yêu cầu trả đơn hàng thành công. Đơn vị vận chuyển sẽ sớm liên hệ với bạn để nhận lại hàng',
-                                        {
-                                            clickToClose: true,
-                                        },
-                                    );
-                                } else {
-                                    Notify.failure(json.message);
-                                }
-                            } catch (error) {
-                                console.log(error);
-                                Notify.failure('Cập nhật thất bại');
-                            }
-                            Loading.remove();
-                            router.push('/user/invoice');
+                        onClick={() => {
+                            ReturnOrder(invoiceId || '');
                         }}
                         className='rounded-sm bg-white hover:bg-gray-200 px-5 py-2 outline outline-1 outline-gray-500'
                     >

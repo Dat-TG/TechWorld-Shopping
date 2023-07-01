@@ -1,5 +1,5 @@
 'use client';
-import { Brand, Category } from '@prisma/client';
+import { Brand } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Loading, Notify } from 'notiflix';
 

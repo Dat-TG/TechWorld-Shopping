@@ -52,6 +52,38 @@ function OrderItem(props: Props) {
         router.push('/cart');
     }
 
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+    async function cancelOrder(orderID: string) {
+        Loading.hourglass();
+        try {
+            const res = await fetch(`/api/invoice/${orderID}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: Status.CANCELLED,
+                }),
+            });
+            const json = await res.json();
+            Loading.remove();
+            if (json.message === 'success') {
+                Notify.success('Hủy đơn hàng thành công', {
+                    clickToClose: true,
+                });
+                await delay(2000);
+                router.push('/user/invoice?cancel=true', { forceOptimisticNavigation: true });
+            } else {
+                Notify.failure(json.message);
+            }
+        } catch (error) {
+            console.log(error);
+            Loading.remove();
+            Notify.failure('Cập nhật thất bại');
+        }
+    }
+
     return (
         <>
             <div className='flex flex-row py-3 cursor-pointer w-full'>
@@ -96,35 +128,8 @@ function OrderItem(props: Props) {
                         <div className='flex justify-end items-center mt-4'>
                             <div className='flex justify-end items-center space-x-5'>
                                 <Button
-                                    onClick={async () => {
-                                        Loading.hourglass();
-                                        try {
-                                            const res = await fetch(
-                                                `/api/invoice/${props.invoice?.id}`,
-                                                {
-                                                    method: 'PATCH',
-                                                    headers: {
-                                                        'Content-Type': 'application/json',
-                                                    },
-                                                    body: JSON.stringify({
-                                                        status: Status.CANCELLED,
-                                                    }),
-                                                },
-                                            );
-                                            const json = await res.json();
-                                            if (json.message === 'success') {
-                                                Notify.success('Hủy đơn hàng thành công', {
-                                                    clickToClose: true,
-                                                });
-                                            } else {
-                                                Notify.failure(json.message);
-                                            }
-                                        } catch (error) {
-                                            console.log(error);
-                                            Notify.failure('Cập nhật thất bại');
-                                        }
-                                        Loading.remove();
-                                        router.push('/user/invoice');
+                                    onClick={() => {
+                                        cancelOrder(props.invoice?.id || '');
                                     }}
                                     className='rounded-sm bg-amber-500 text-white hover:bg-amber-700 px-5 py-2 cancel'
                                 >
