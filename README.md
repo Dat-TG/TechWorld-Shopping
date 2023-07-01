@@ -83,8 +83,8 @@ Check out our deployed version at [https://tech-world-hcmus.vercel.app/](https:/
 -   [x] View product details
 -   [x] Add products to the shopping cart
 -   [x] View the shopping cart
--   [x] Cancel some products in the order
--   [x] Return some products in the order
+-   [x] Cancel an order
+-   [x] Return an the order
 -   [x] Place/Purchase an order
 -   [x] Update quantity of each product/Delete an product in the shopping cart
 -   [x] Order history: view all, filter by status
@@ -93,6 +93,7 @@ Check out our deployed version at [https://tech-world-hcmus.vercel.app/](https:/
 -   [x] Review delivered products
 -   [x] Update an review
 -   [x] View trending products
+-   [x] View all categories
 #### Administrators
 -   [x] View dashboard: statistics about the whole system
 -   [x] Manage products (view all products, add, delete, update, search, filter)
