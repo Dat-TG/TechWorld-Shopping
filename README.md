@@ -73,26 +73,36 @@ Check out our deployed version at [https://tech-world-hcmus.vercel.app/](https:/
 ## Features
 
 ### Done
-
--   [x] View products by category
--   [x] Search for a product
--   [x] View product details
--   [x] Add a product to the shopping cart
--   [x] View the shopping cart
--   [x] Cancel an order
--   [x] Place an order
--   [x] Update the shopping cart
--   [x] Review a product
--   [x] Return a product
--   [x] Update account information
+#### General Users
+-   [x] Register an accout
+-   [x] Sign in
 -   [x] Authenticate users
--   [x] Manage cover images
--   [x] Manage users
--   [x] Manage categories
--   [x] Manage orders
--   [x] View dashboard
--   [x] Manage products
--   [x] Manage reviews
+-   [x] View products by category
+-   [x] Search for a product by keyword
+-   [x] Filter products list 
+-   [x] View product details
+-   [x] Add products to the shopping cart
+-   [x] View the shopping cart
+-   [x] Cancel some products in the order
+-   [x] Return some products in the order
+-   [x] Place/Purchase an order
+-   [x] Update quantity of each product/Delete an product in the shopping cart
+-   [x] Order history: view all, filter by status
+-   [x] Notifications: notify about delivering, delivered orders  
+-   [x] Update account information: Name, Phone number, Email, Avatar, Addresses
+-   [x] Review delivered products
+-   [x] Update an review
+-   [x] View trending products
+#### Administrators
+-   [x] View dashboard: statistics about the whole system
+-   [x] Manage products (view all products, add, delete, update, search, filter)
+-   [x] Statistics about top 10 trending categories, top 10 trending products 
+-   [x] Manage advertisements, promotions (view all, add, delete, update)
+-   [x] Manage users (view all users, delete, update Role, search)
+-   [x] Manage categories (view all categories, add, update, delete, search)
+-   [x] Manage brands (view all brands, add, update, delete, search)
+-   [x] Manage orders (view all orders, update status, delete, search, filter)
+-   [x] Manage reviews (view all reviews, update, delete, search, filter)
 
 ### To-do
 
@@ -103,6 +113,7 @@ Check out our deployed version at [https://tech-world-hcmus.vercel.app/](https:/
 -   [ ] Set preferences: Customize your preferences for notifications, language, currency, and other settings.
 -   [ ] View and redeem loyalty points: Check your accumulated loyalty points and redeem them for rewards or discounts.
 -   [ ] Participate in surveys or polls: Engage in surveys or polls to provide feedback or opinions on products or services.
+-   [ ] Recycle bin: Restore deleted items, such as products, images, ...
 
 ## License
 
